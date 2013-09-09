@@ -408,7 +408,7 @@
 		// A bit experimental
 		var jsFileLocation = $('script[src*=jzhands]').attr('src');
 		jsFileLocation = jsFileLocation.replace('jzhands.js', ''); 
-		var filePath = jsFileLocation + "images/";
+		var filePath = Jazz.filePath = jsFileLocation + "images/";
 
 		Jazz.upArrow = new Image();
 		Jazz.upArrow.src = filePath+Jazz.arrowColor+"_up_arrow.png"
