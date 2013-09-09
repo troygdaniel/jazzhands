@@ -1,0 +1,32 @@
+<html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" language="javascript" ></script>
+<script type="text/javascript" src="/jazz/jzhands.js" language="javascript" ></script>
+<script src="/jazz/leap.min.js"></script>
+
+<body>
+<h1>jz hands test harness</h1>
+</body></html>
+
+<script>
+
+$(function() {
+	Jazz.init({
+		canvas: "jazz-fingers"
+	});
+});
+
+Jazz.on("finger", function(fingers) {
+	console.log("on fingers = " + fingers)
+});
+
+Jazz.on("navigation", function(navEvent) {
+	console.log("navigation = "+ navEvent);
+});
+
+Jazz.on("gestures", function (gestures) {
+	console.log("gestures");
+	console.log(gestures);
+});
+
+</script>
