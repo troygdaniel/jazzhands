@@ -372,6 +372,10 @@
 	var configureFromOptions = function(options) {
 		Jazz.fillStyle = "black";
 		Jazz.LAST_VALID_FINGER=1;
+		setupImages();
+
+		if (!options)
+			return;
 
 		if (options.fillStyle) {
 			Jazz.arrowColor = Jazz.fillStyle = options.fillStyle;
@@ -396,8 +400,6 @@
 		if (options.opacity)
 			Jazz.opacity = options.opacity;
 		
-		// TODO: setup images using relative path
-		setupImages();
 	}
 	/**
 	 *	setupImages()
