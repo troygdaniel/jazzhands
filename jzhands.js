@@ -337,7 +337,10 @@
 			getContext().font='bold 22pt Arial';
 		    
 		    getContext().fillStyle = Jazz.fillStyle;		 
+			getContext().strokeStyle = 'white';
 			getContext().fillText(txt, x, y-30);
+		    // getContext().strokeText(txt, x, y-30);
+
 		}
 	}
 
@@ -368,6 +371,27 @@
 
 	/**
 	 *	configureFromOptions()
+	 *
+	 * 	Available options:
+	 *
+	 *	fingerWaitTimer:
+	 *	Time in milliseconds for timer before firing event:
+	 * 
+	 * 	fillStyle:
+	 *	Color of the finger circle:
+	 *	
+	 *	fingersHoverText:
+	 *	Text to display for each "finger" event
+	 *
+	 *
+	 *	Example usage during Jazz.init:
+	 *	Jazz.init({
+	 *		fingerWaitTimer:  100,
+	 *		fillStyle: "black",
+	 *		fingersHoverText: ["finger one", "finger two"]	 
+	 * 	})
+	 *		
+	 *	
 	 **/
 	var configureFromOptions = function(options) {
 		Jazz.fillStyle = "black";
