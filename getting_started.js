@@ -1,10 +1,8 @@
 $(function() {
-	console.log("getting started")
+
 	Jazz.init({
 		fillStyle: "black",
-		fingerWaitTimer: 1600
-	}, function () {
-	    document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
+		fingerWaitTimer: 1200
 	});
 
 	Jazz.on("finger", function(fingers) {

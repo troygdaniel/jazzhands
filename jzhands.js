@@ -404,7 +404,7 @@
 		if (options.fillStyle) {
 			Jazz.arrowColor = Jazz.fillStyle = options.fillStyle;
 		}
-		if (options.waitTimer) 
+		if (options.fingerWaitTimer) 
 			Jazz.WAIT_FINGER_MS = options.fingerWaitTimer;
 		
 		if (options.fingersHoverText) {
@@ -416,7 +416,6 @@
 		else {
 			Jazz.simpleMode=true;
 			Jazz.CIRCLE_RADIUS=1;
-			Jazz.WAIT_FINGER_MS = 1200;			
 		}
 		if (options.disableZoom)
 			Jazz.disableZoom = true;
