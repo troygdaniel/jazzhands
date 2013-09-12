@@ -25,8 +25,13 @@ Jazz.on("navigation", function(navEvent) {
 });
 
 Jazz.on("gestures", function (gestures) {
-	console.log("gestures not called?");
 	console.log(gestures);
+});
+
+
+Jazz.on("frames", function (frames) {
+	// Performance degrades if logging all frames to the console
+ 	// console.log(frames);
 });
 
 </script>

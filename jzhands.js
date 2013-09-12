@@ -15,19 +15,18 @@
 
 	// Current version of the library. Keep in sync with `package.json`.
 	Jazz.VERSION = '0.4';
-
 	/**
 	 * Jazz.init()
 	 * 
 	 * Initialize all that Jazz 
 	 */
 	Jazz.init = function (options, callback) {		
-
+		Jazz.leapController = new Leap.Controller({enableGestures: true}); 
 		Jazz.canvas = appendCanvasToDOM(); //document.getElementById(options.canvas);
 		configureFromOptions(options);
 		createFingerCanvas();
 
-		Leap.loop(function(frame) { Jazz.loop(frame); })
+		Jazz.leapController.loop(function(frame) { Jazz.loop(frame); })
 
 		// optional callback
 		if (callback) callback();
@@ -64,7 +63,9 @@
 			handleCapturedFingers();
 
 		handleCapturedNavigation();
-		// handleGestureEvents();		// Currently not working?
+		handleGestureEvents();
+
+		Jazz.event["frames"](Jazz.lastFrame);
 	}
 
 	/** 
@@ -172,6 +173,8 @@
 	}
 
 	/** 
+	 *  TODO: Clean method up and add specs
+	 *
 	 * 	handleGestureEvents()
 	 *
 	 *  Allow binding to the Jazz.on("gesture") event
@@ -180,7 +183,26 @@
 	 var handleGestureEvents = function () {
 		var gestures = Jazz.lastFrame.gestures;
 		if (getCapturedDigits() > 0 && gestures.length > 0) {
-			Jazz.event["gestures"](gestures);
+			for (var indx=0; indx < gestures.length; indx++) {
+				var g = gestures[indx];
+				if (g.type !== "swipe") {
+					Jazz.lastGesture = g;
+				}
+			}
+		}
+		else {
+			if (Jazz.lastGesture) {
+				var g = Jazz.lastGesture;
+				var validGesture = true;
+
+				if (g.type === "circle" && g.radius < 100)
+					validGesture = false;
+
+				if (validGesture === true)
+					Jazz.event["gestures"](Jazz.lastGesture);
+
+				Jazz.lastGesture = false;
+			}
 		}
 	 }
 
@@ -651,7 +673,8 @@
 	Jazz.event = {
 		finger: function(n){},
 		navigation: function(n){},
-		gestures: function(n){}
+		gestures: function(n){},
+		frames: function(f){}
 	}
 	Jazz.lastDigitsFound = 0;
 	Jazz.handNavigation = "";
