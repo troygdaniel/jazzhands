@@ -12,12 +12,13 @@
 
 Jazz.init({
 	fillStyle: "black",
-    fingersHoverText: ["One?","Two!","Three!?"],
+    // fingersHoverText: ["One?","Two!","Three!?"],
+    disableZoom: true
 
 });
 
 Jazz.on("finger", function(fingers) {
-	console.log("on fingers = " + fingers)
+	console.log("on fingers = " + fingers);
 });
 
 Jazz.on("navigation", function(navEvent) {

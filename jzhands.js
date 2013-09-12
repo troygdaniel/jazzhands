@@ -116,6 +116,10 @@
 			var canDrawFingerText = (Jazz.timerPercentage > 10 && isLastFinger);
 
 			drawFinger(getFinger(i).tipPosition);
+
+			if (Jazz.enableHelperArrows === true)
+				drawHelperArrows();
+
 			drawTimerArc(getFinger(i).tipPosition, Jazz.timerPercentage);
 
 			if (canDrawFingerText) 
@@ -440,7 +444,10 @@
 			Jazz.CIRCLE_RADIUS=1;
 		}
 		if (options.disableZoom)
-			Jazz.disableZoom = true;
+			Jazz.disableZoom = options.disableZoom;
+
+		if (options.enableHelperArrows)
+			Jazz.enableHelperArrows = options.enableHelperArrows;
 
 		if (options.opacity)
 			Jazz.opacity = options.opacity;
@@ -467,7 +474,25 @@
 		Jazz.zoomIn.src = filePath+Jazz.arrowColor+"_zoom_in.png"
 		Jazz.zoomOut = new Image();
 		Jazz.zoomOut.src = filePath+Jazz.arrowColor+"_zoom_out.png"
+
+		setupHelperImages();
 	}
+	var setupHelperImages = function () {
+		// A bit experimental
+		var jsFileLocation = $('script[src*=jzhands]').attr('src');
+		jsFileLocation = jsFileLocation.replace('jzhands.js', ''); 
+		var filePath = Jazz.filePath = jsFileLocation + "images/";
+
+		Jazz.upHelperArrow = new Image();
+		Jazz.upHelperArrow.src = filePath+"gray_up_arrow.png"
+		Jazz.downHelperArrow = new Image();
+		Jazz.downHelperArrow.src = filePath+"gray_down_arrow.png"
+		Jazz.rightHelperArrow = new Image();
+		Jazz.rightHelperArrow.src = filePath+"gray_right_arrow.png"
+		Jazz.leftHelperArrow = new Image();
+		Jazz.leftHelperArrow.src = filePath+"gray_left_arrow.png"
+	}
+
 	/**
 	 *	threshold()
 	 */
@@ -585,6 +610,13 @@
 			return hand.palmPosition[1];
 		else if (palmPosition === "depth")
 		 	return hand.palmPosition[2];
+	}
+	var drawHelperArrows = function () {
+		getContext().drawImage(Jazz.upHelperArrow, getHandPosX()-17, -500);
+		getContext().drawImage(Jazz.rightHelperArrow, -670, getHandPosY()-15);
+		getContext().drawImage(Jazz.leftHelperArrow, -1170, getHandPosY()-15);
+		getContext().drawImage(Jazz.downHelperArrow, getHandPosX()-17, -100);
+
 	}
 	var drawUpArrow = function () {
 		getContext().drawImage(Jazz.upArrow, getHandPosX()-17, getHandPosY()-15);

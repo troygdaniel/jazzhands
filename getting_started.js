@@ -2,7 +2,9 @@ $(function() {
 
 	Jazz.init({
 		fillStyle: "black",
-		fingerWaitTimer: 1200
+		fingerWaitTimer: 1200,
+		enableHelperArrows: true,
+		disableZoom: true
 	});
 
 	Jazz.on("finger", function(fingers) {
@@ -19,19 +21,23 @@ $(function() {
 		// TODO: organize the map in a more manageable way
 
 		// Navigation from Welcome slides
-		if (activeId === "welcome-1")
+		if (activeId === "welcome-1") {
 			goRight(nav, "welcome-2");
 			goDown(nav, "TOC");
+			goUp(nav, "TOC");
+		}
 		
 		if (activeId === "welcome-2") {
 			goRight(nav, "welcome-3");
 			goLeft(nav,  "welcome-1");
 			goDown(nav, "TOC");
+			goUp(nav, "TOC");
 		}
 		if (activeId === "welcome-3") {
 			goRight(nav,"TOC");
 			goLeft(nav, "welcome-2");
 			goDown(nav, "TOC");
+			goUp(nav, "TOC");
 		}
 		if (activeId === "TOC") {
 			goLeft(nav, "welcome-3");
@@ -48,10 +54,12 @@ $(function() {
 			goLeft(nav, "implement-1");
 			goUp(nav, "TOC");
 			goRight(nav, "implement-3");
+			goUp(nav, "TOC");
 		}
 		if (activeId === "implement-3") {
 			goLeft(nav, "implement-2");
 			goRight(nav, "implement-4");
+			goUp(nav, "TOC");
 		}
 		if (activeId === "implement-4") {
 			goLeft(nav, "implement-3");
@@ -60,7 +68,7 @@ $(function() {
 		}
 
 		// Global zoom out to TOC
-		goOut(nav,"TOC");
+		// goOut(nav,"TOC");
 	});
 
 	impress().init();
