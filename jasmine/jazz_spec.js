@@ -1,9 +1,9 @@
-//     Specs for jshands.js 0.4 Alpha
+//     Specs for jshands.js 0.5 Alpha
 
 //     (c) 2013 Troy Daniel
 //     Jazz hands may be freely distributed under the MIT license.
 
-describe("Jazz hands tests for Alpha version 0.4", function() {
+describe("Jazz hands tests for Alpha version 0.5", function() {
   var jz;
   var options = { 
     fillStyle: "black"
@@ -21,8 +21,8 @@ describe("Jazz hands tests for Alpha version 0.4", function() {
     it("should have jQuery as a prerequisite library", function() {
       expect(jQuery).toBeDefined();
     });
-    it("should be initialized as v0.4", function() {
-      expect(Jazz.VERSION).toEqual("0.4");
+    it("should be initialized as v0.5", function() {
+      expect(Jazz.VERSION).toEqual("0.5");
     });
   });
 

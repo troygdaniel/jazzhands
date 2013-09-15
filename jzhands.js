@@ -1,4 +1,4 @@
-//     jshands.js 0.4 Alpha
+//     jshands.js 0.5 Alpha
 
 //     (c) 2013 Troy Daniel
 //     Jazz hands may be freely distributed under the MIT license.
@@ -14,7 +14,7 @@
 	if (typeof exports !== 'undefined') { Jazz = exports; } else { Jazz = root.Jazz = {}; }
 
 	// Current version of the library. Keep in sync with `package.json`.
-	Jazz.VERSION = '0.4';
+	Jazz.VERSION = '0.5';
 	/**
 	 * Jazz.init()
 	 * 

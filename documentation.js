@@ -75,7 +75,8 @@ $(function() {
 		},
 		"future-home": {
 			up: "arch-home",
-			zoomIn: "future-1"
+			zoomIn: "future-1",
+			down: "user-home"
 		},
 		"future-1": {
 			zoomOut: "future-home",
@@ -94,6 +95,7 @@ $(function() {
 		"future-4": {
 			zoomOut: "future-home",
 			left: "future-3"
+
 		},		
 	};
 
