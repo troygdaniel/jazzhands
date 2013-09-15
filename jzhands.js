@@ -298,7 +298,7 @@
 
 		if (Jazz.frameDigitCount > 0) {
 			clearTimeout(Jazz.intervalTimer);
-			Jazz.incr = Jazz.timerPercentage = 0;
+			Jazz.lastDigitsFound = Jazz.incr = Jazz.timerPercentage = 0;
 		}
 	}
 
@@ -316,8 +316,9 @@
 
 	        if (getTimerPercentage() > 100) {
 	        	clearTimeout(Jazz.intervalTimer);
-		        if (Jazz.hands.length > 0 && Jazz.lastDigitsFound < Jazz.LAST_VALID_FINGER)
+		        if (Jazz.hands.length > 0 && Jazz.lastDigitsFound < Jazz.LAST_VALID_FINGER) {
 		        	Jazz.event["finger"](getCapturedDigits());
+		        }
 	        }
 
 	    }, Jazz.WAIT_INTERVAL_TIMER);		
@@ -330,7 +331,7 @@
 	 **/
 	var clearTimeoutForNav = function () {
 		clearTimeout(Jazz.intervalTimer);
-		Jazz.incr = Jazz.timerPercentage = 0;
+		Jazz.handNavigation = Jazz.incr = Jazz.timerPercentage = 0;
 	}
 
 	/**
@@ -346,9 +347,15 @@
 
 	        if (getTimerPercentage() > 100) {
 	        	clearTimeout(Jazz.intervalTimer);
-	        	if (Jazz.hands.length > 0)
+				if (Jazz.hands.length > 0) {
 		        	Jazz.event["navigation"](Jazz.handNavigation);
-	        }
+
+					Jazz.repeatNavInterval = setInterval(function() {
+						clearTimeoutForNav();
+						clearTimeout(Jazz.repeatNavInterval);
+					}, 800);
+				}
+			}
 	    }, Jazz.WAIT_INTERVAL_TIMER);
 	}
 
@@ -446,8 +453,8 @@
 		if (options.disableZoom)
 			Jazz.disableZoom = options.disableZoom;
 
-		if (options.enableHelperArrows)
-			Jazz.enableHelperArrows = options.enableHelperArrows;
+		if (options.enableHelperArrows === false)
+			Jazz.enableHelperArrows = false;
 
 		if (options.opacity)
 			Jazz.opacity = options.opacity;
@@ -498,13 +505,13 @@
 	 */
 	var threshold = function (direction) {
 		if (direction === "up") 
-			return 200;
+			return 300;
 		else if (direction === "down")
 			return 100;
 		else if (direction === "left")
-			return  -50;
+			return  -100;
 		else if (direction === "right")
-			return 50;
+			return 150;
 		else if (direction === "zoomIn") {
 			if (Jazz.simpleMode)
 				return 0;
@@ -562,10 +569,7 @@
 		return (-fingerPos[1]-100)-getRadiusForFinger(fingerPos)/2;
 	}
 	var getCapturedDigits = function() {
-		// if (Jazz.simpleMode === true && Jazz.frameDigitCount > 0)
-		// 	return 1;
-		// else
-			return Jazz.frameDigitCount;
+		return Jazz.frameDigitCount;
 	}
 	var isNewFingerCount = function () {
 		return ((getCapturedDigits() === 0) || Jazz.lastDigitsFound !== getCapturedDigits())
@@ -710,7 +714,7 @@
 	}
 	Jazz.lastDigitsFound = 0;
 	Jazz.handNavigation = "";
-	Jazz.WAIT_FINGER_MS = 1000;
+	Jazz.WAIT_FINGER_MS = 500;
 	Jazz.LAST_VALID_FINGER = 2;
 	Jazz.WAIT_INTERVAL_TIMER = 40;
 	Jazz.CIRCLE_RADIUS = .8;
@@ -723,7 +727,7 @@
 	Jazz.timerPercentage = 0;
 	Jazz.simpleMode = true;
 	Jazz.disableZoom = false;
-	
+	Jazz.enableHelperArrows = true;
 	var FIRST=0, SECOND=1, THIRD=2, FOURTH=3;
 
 }).call(this);

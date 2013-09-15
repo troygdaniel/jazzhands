@@ -2,13 +2,20 @@ $(function() {
 
 	Jazz.init({
 		fillStyle: "black",
-		fingerWaitTimer: 1200,
 		enableHelperArrows: true,
-		disableZoom: true
+		fingersHoverText: ["One finger", "Two fingers!?"],
+		fingerWaitTimer: 600,
+		disableZoom: false
 	});
 
 	Jazz.on("finger", function(fingers) {
-		console.log("on fingers = " + fingers)
+		console.log("fingers = " + fingers);
+		// if (fingers === 1) {
+		// 	go("welcome-1");
+		// }
+		// else if (fingers === 2) {
+		// 	go("implement-1");
+		// }
 	});
 
 	Jazz.on("navigation", function(nav) {
@@ -23,52 +30,40 @@ $(function() {
 		// Navigation from Welcome slides
 		if (activeId === "welcome-1") {
 			goRight(nav, "welcome-2");
-			goDown(nav, "TOC");
-			goUp(nav, "TOC");
 		}
 		
 		if (activeId === "welcome-2") {
 			goRight(nav, "welcome-3");
 			goLeft(nav,  "welcome-1");
-			goDown(nav, "TOC");
-			goUp(nav, "TOC");
 		}
 		if (activeId === "welcome-3") {
 			goRight(nav,"TOC");
 			goLeft(nav, "welcome-2");
-			goDown(nav, "TOC");
-			goUp(nav, "TOC");
 		}
 		if (activeId === "TOC") {
 			goLeft(nav, "welcome-3");
-			goIn(nav, "welcome-1");
 			goUp(nav, "welcome-1");
 			goDown(nav, "implement-1");
 		}
 		if (activeId === "implement-1") {
 			goLeft(nav, "TOC");
-			goUp(nav, "TOC");
 			goRight(nav, "implement-2");
 		}
 		if (activeId === "implement-2") {
 			goLeft(nav, "implement-1");
-			goUp(nav, "TOC");
 			goRight(nav, "implement-3");
-			goUp(nav, "TOC");
 		}
 		if (activeId === "implement-3") {
 			goLeft(nav, "implement-2");
 			goRight(nav, "implement-4");
-			goUp(nav, "TOC");
 		}
 		if (activeId === "implement-4") {
 			goLeft(nav, "implement-3");
-			goUp(nav, "TOC");
 			goRight(nav, "TOC");
 		}
 
 		// Global zoom out to TOC
-		// goOut(nav,"TOC");
+		goOut(nav,"TOC");
 	});
 
 	impress().init();
