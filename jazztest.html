@@ -6,14 +6,23 @@
 
 <body>
 <h1>jz hands test harness</h1>
+Hands:
+<div id="hands" style="border-style:dashed;border-width:1px">
+	
+</div>
+<br/><br/><br/>
+Fingers:
+<div id="fingers" style="border-style:dashed;border-width:1px">
+	
+</div>
 </body></html>
 
 <script>
 
 Jazz.init({
 	fillStyle: "black",
-    fingersHoverText: ["One?","Two!","Three!?"],
-    disableZoom: true
+    fingersHoverText: ["One?","Two!"],
+    disableZoom: false
 
 });
 
@@ -30,9 +39,24 @@ Jazz.on("gestures", function (gestures) {
 });
 
 
-Jazz.on("frames", function (frames) {
+Jazz.on("frames", function (frame) {
 	// Performance degrades if logging all frames to the console
- 	// console.log(frames);
+ 	//console.log(frames);
+ 	if (Jazz.hands.length > 0 ) {
+	 	var pp = Jazz.hands[0].palmPosition;
+	 	if (pp) 
+	 		$("#hands").html(""+parseInt(pp[0])+", "+parseInt(pp[1])+", "+parseInt(pp[2]));
+ 	}
+ 	if (frame.pointablesMap ) {
+		var fing;
+		for (var i in frame.pointablesMap) {
+			fing = frame.pointablesMap[i].tipPosition;
+		}
+
+	 	if (fing) 
+	 		$("#fingers").html(""+parseInt(fing[0])+", "+parseInt(fing[1])+", "+parseInt(fing[2]));
+ 	}
+
 });
 
 </script>

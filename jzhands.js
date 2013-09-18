@@ -114,13 +114,16 @@
 
 			var isLastFinger = (++fIndex === Jazz.lastFrame.fingers.length);
 			var canDrawFingerText = (Jazz.timerPercentage > 10 && isLastFinger);
+			var circleCoords = getFinger(i).tipPosition;
+			if (Jazz.simpleMode === true && Jazz.hands.length > 0)
+				circleCoords = Jazz.hands[0].palmPosition;
 
-			drawFinger(getFinger(i).tipPosition);
+			drawFinger(circleCoords);
 
 			if (Jazz.enableHelperArrows === true)
 				drawHelperArrows();
 
-			drawTimerArc(getFinger(i).tipPosition, Jazz.timerPercentage);
+			drawTimerArc(circleCoords, Jazz.timerPercentage);
 
 			if (canDrawFingerText) 
 				drawFingerText();
@@ -390,7 +393,7 @@
 		canvas.height = document.body.clientHeight;
 		if (canvas.height > 500)
 			canvas.height=500;		
-		getContext().translate(canvas.width,canvas.height);
+		getContext().translate(canvas.width*1.2,canvas.height);
 	    getContext().globalAlpha = Jazz.opacity;	    
 	}
 
@@ -399,7 +402,7 @@
 	 **/
 	var clearCanvas = function() {
 		var canvas = Jazz.canvas;
-		getContext().clearRect(-canvas.width,-canvas.height,canvas.width,canvas.height);
+		getContext().clearRect(-canvas.width*1.2,-canvas.height,canvas.width*1.2,canvas.height);
 	}
 
 	/**
@@ -513,16 +516,10 @@
 		else if (direction === "right")
 			return 150;
 		else if (direction === "zoomIn") {
-			if (Jazz.simpleMode)
-				return 0;
-			else
-				return 25;
+			return -10;
 		}
 		else if (direction === "zoomOut") {
-			if (Jazz.simpleMode)
-				return 100;
-			else
-				return 160;
+			return 140;
 		}
 	}
 
@@ -595,10 +592,13 @@
 		}
 	}
 	var getHandPos = function(indx) {
+		if ( Jazz.hands.length <= 0)
+			return;
+
 		if (indx === 0)
-			return getXforFinger(getFirstFingerPos());
+			return getXforFinger(Jazz.hands[0].palmPosition);
 		else
-			return getYForFinger(getFirstFingerPos());
+			return getYForFinger(Jazz.hands[0].palmPosition);
 	}
 	var getHandPosX = function() {
 		return getHandPos(0);
@@ -693,7 +693,9 @@
 	var appendCanvasToDOM = function (){
 		var canvas = document.createElement("canvas");
 		canvas.setAttribute("id", "jazz-fingers");
-		canvas.setAttribute("style","position:absolute;top:100px;left:0px");
+		canvas.setAttribute("style","position:absolute;top:50px;left:0px");
+		canvas.setAttribute("margin-left", "auto");
+		canvas.setAttribute("margin-right", "auto");
 		canvas.setAttribute("height", document.height);
 		canvas.setAttribute("width", document.width);
 		document.body.appendChild(canvas);
