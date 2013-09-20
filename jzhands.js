@@ -158,12 +158,15 @@
 				else {
 					setTimeout(function() {
 						setTimeoutForMotion();
-					},700);
+					},500);
 				}
 			}
 
-			if (getDetectedNav() === false)
+			if (getDetectedNav() === false) {
 			 	clearTimeoutForNav();
+ 				Jazz.handNavigation = null;
+
+			}
 
 			Jazz.handNavigation = getDetectedNav();
 			Jazz.lastHandId = Jazz.hands[0].id;
@@ -235,14 +238,15 @@
 	var getDetectedNav = function () {
 		var detectedNav = false;
 
-		if (canDrawHandUp())
-			detectedNav = "up";
-		else if (canDrawHandDown())
-			detectedNav = "down";
-		else if (canDrawHandLeft())
+		if (canDrawHandLeft())
 			detectedNav = "left";
 		else if (canDrawHandRight())
 			detectedNav = "right";
+		else if (canDrawHandUp())
+			detectedNav = "up";
+		else if (canDrawHandDown())
+			detectedNav = "down";
+
 		else if (canDrawZoomIn())
 			detectedNav = "zoomIn";
 		else if (canDrawZoomOut())
@@ -370,7 +374,7 @@
 					Jazz.repeatNavInterval = setTimeout(function() {
 						clearTimeoutForNav();
 						clearTimeout(Jazz.repeatNavInterval);
-					}, 850);
+					}, 900);
 				}
 			}
 	    }, Jazz.WAIT_INTERVAL_TIMER);
@@ -526,13 +530,13 @@
 		else if (direction === "zoomOut")
 			return 110;
 		else if (direction === "up")
-			return 180;
+			return 190;
 		else if (direction === "down")
 			return 80;
 		else if (direction === "left")
-			return -80;
+			return -90;
 		else if (direction === "right")
-			return 80;
+			return 90;
 	}
 
 	/**
@@ -705,7 +709,7 @@
 	var appendCanvasToDOM = function (){
 		var canvas = document.createElement("canvas");
 		canvas.setAttribute("id", "jazz-fingers");
-		canvas.setAttribute("style","position:absolute;top:50px;left:0px");
+		canvas.setAttribute("style","position:absolute;top:50px;left:200px");
 		canvas.setAttribute("margin-left", "auto");
 		canvas.setAttribute("margin-right", "auto");
 		canvas.setAttribute("height", document.height);

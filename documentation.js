@@ -11,20 +11,28 @@ $(function() {
 			zoomIn: "user-1"
 		},
 		"user-1": {
+			up: "user-home",
+			down: "api-home",
 			zoomOut: "user-home",
 			right: "user-2"
 		},
 		"user-2": {
+			up: "user-home",
+			down: "api-home",
 			zoomOut: "user-home",
 			left: "user-1",
 			right: "user-3"
 		},
 		"user-3": {
+			up: "user-home",
+			down: "api-home",
 			zoomOut: "user-home",
 			left: "user-2",
 			right: "user-4"
 		},
 		"user-4": {
+			up: "user-home",
+			down: "api-home",
 			zoomOut: "user-home",
 			left: "user-3"
 		},
@@ -34,20 +42,28 @@ $(function() {
 			zoomIn: "api-1"
 		},
 		"api-1": {
+			up: "api-home",
+			down: "arch-home",
 			zoomOut: "api-home",
 			right: "api-2"
 		},
 		"api-2": {
+			up: "api-home",
+			down: "arch-home",
 			zoomOut: "api-home",
 			left: "api-1",
 			right: "api-3"
 		},
 		"api-3": {
+			up: "api-home",
+			down: "arch-home",
 			zoomOut: "api-home",
 			left: "api-2",
 			right: "api-4"
 		},
 		"api-4": {
+			up: "api-home",
+			down: "arch-home",
 			zoomOut: "api-home",
 			left: "api-3"
 		},
@@ -57,20 +73,28 @@ $(function() {
 			zoomIn: "arch-1"
 		},
 		"arch-1": {
+			up: "arch-home",
+			down: "future-home",
 			zoomOut: "arch-home",
 			right: "arch-2"
 		},
 		"arch-2": {
+			up: "arch-home",
+			down: "future-home",
 			zoomOut: "arch-home",
 			left: "arch-1",
 			right: "arch-3"
 		},
 		"arch-3": {
+			up: "arch-home",
+			down: "future-home",
 			zoomOut: "arch-home",
 			left: "arch-2",
 			right: "arch-4"
 		},
 		"arch-4": {
+			up: "arch-home",
+			down: "future-home",
 			zoomOut: "arch-home",
 			left: "arch-3"
 		},
@@ -80,27 +104,36 @@ $(function() {
 			down: "main"
 		},
 		"future-1": {
+			up: "arch-home",
+			down: "main",
+			zoomIn: "future-1",
 			zoomOut: "future-home",
 			right: "future-2"
 		},
 		"future-2": {
+			up: "arch-home",
+			down: "main",
 			zoomOut: "future-home",
 			left: "future-1",
 			right: "future-3"
 		},		
 		"future-3": {
+			up: "arch-home",
+			down: "main",
 			zoomOut: "future-home",
 			left: "future-2",
 			right: "future-4"
 		},		
 		"future-4": {
+			up: "arch-home",
+			down: "main",
 			zoomOut: "future-home",
 			left: "future-3"
 		}
 	};
 
 	Jazz.init({
-		fingerWaitTimer: 350,
+		fingerWaitTimer: 450,
 		disableZoom: false
 		// fingersHoverText: ["Select", "Back"]
 	});

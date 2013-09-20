@@ -205,7 +205,7 @@
         
         perspective: 1000,
         
-        transitionDuration: 1000
+        transitionDuration: 450
     };
     
     // it's just an empty function ... and a useless comment.
@@ -472,7 +472,6 @@
             
             duration = toNumber(duration, config.transitionDuration);
             var delay = (duration / 2);
-            
             // if the same step is re-selected, force computing window scaling,
             // because it is likely to be caused by window resize
             if (el === activeStep) {
