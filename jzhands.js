@@ -20,7 +20,7 @@
 	 * 
 	 * Initialize all that Jazz 
 	 */
-	Jazz.init = function (options, callback) {		
+	Jazz.init = function (options, callback) {
 		Jazz.leapController = new Leap.Controller({enableGestures: true}); 
 		Jazz.canvas = appendCanvasToDOM(); //document.getElementById(options.canvas);
 		configureFromOptions(options);
@@ -38,7 +38,7 @@
 	 * Jazz overrides the Leap event loop, and is internally referenced.
 	 * This method is automatically initiated by Jazz.init()
 	 */
-	Jazz.loop = function (frame) {	
+	Jazz.loop = function (frame) {
 
 		Jazz.lastFrame = frame;
 		Jazz.hands = frame.hands;
@@ -56,13 +56,12 @@
 		// are we holding up more than last_valid fingers?
 		if (Jazz.frameDigitCount >= Jazz.LAST_VALID_FINGER)
 			Jazz.simpleMode = true;
-		else
+		else {
 			Jazz.simpleMode = false;
+			handleFingers();
+		}
 
-		if (Jazz.simpleMode===false)
-			handleCapturedFingers();
-
-		handleCapturedNavigation();
+		handleNavigation();
 		handleGestureEvents();
 
 		Jazz.event["frames"](Jazz.lastFrame);
@@ -115,8 +114,10 @@
 			var isLastFinger = (++fIndex === Jazz.lastFrame.fingers.length);
 			var canDrawFingerText = (Jazz.timerPercentage > 10 && isLastFinger);
 			var circleCoords = getFinger(i).tipPosition;
-			if (Jazz.simpleMode === true && Jazz.hands.length > 0)
+
+			if (Jazz.simpleMode === true && Jazz.hands.length > 0) {
 				circleCoords = Jazz.hands[0].palmPosition;
+			}
 
 			drawFinger(circleCoords);
 
@@ -134,7 +135,7 @@
 	}
 
 	/**
-	 * handleCapturedNavigation()
+	 * handleNavigation()
 	 *
 	 * Initate a timer and eventually trigger the "navigation" event.
 	 * Event callbacks are bound by Jazz.on("navigation") 
@@ -143,32 +144,45 @@
 	 * and reset or start a timer before calling the bound callback method.
 	 *	 
 	 **/
-	var handleCapturedNavigation = function () {
+	var handleNavigation = function () {
 
 		if (getCapturedDigits() < Jazz.LAST_VALID_FINGER)
 			return false;
 
 		if (hasDetectedHand() === true) {
-			if (isNewHandMotion() === true)
-				setTimeoutForMotion();
+
+			if (isNewHandMotion() === true) {
+				if (isNewHand()) {
+					setTimeoutForMotion();
+				}
+				else {
+					setTimeout(function() {
+						setTimeoutForMotion();
+					},700);
+				}
+			}
 
 			if (getDetectedNav() === false)
 			 	clearTimeoutForNav();
 
 			Jazz.handNavigation = getDetectedNav();
+			Jazz.lastHandId = Jazz.hands[0].id;
 		}
 	}
 
+	var isNewHand = function() {
+		return Jazz.lastHandId == Jazz.hands[0].id;
+	}
 	/**
-	 * handleCapturedFingers()
+	 * handleFingers()
 	 *
-	 * Initate a timer and eventually trigger the "finger" event.
-	 * Event callbacks are bound by Jazz.on("finger") 
+	 * Initate a timer and eventually trigger the "fingers" event.
+	 * Event callbacks are bound by Jazz.on("fingers") 
 	 *
 	 * Determine if a new finger count is found, 
 	 * and reset or start the timer for the fingers being held.
 	 **/
-	var handleCapturedFingers = function () {
+	var handleFingers = function () {
 
 		if (isNewFingerCount()) 
 			clearTimeoutForDigits();
@@ -295,7 +309,7 @@
 	/**
 	 * 	clearTimeoutForDigits()
 	 *
-	 * 	Reset the timer, cancelling all upcoming "finger" events
+	 * 	Reset the timer, cancelling all upcoming "fingers" events
 	 **/
 	var clearTimeoutForDigits = function () {
 
@@ -308,7 +322,7 @@
 	/**
 	 * 	setTimeoutForDigits()
 	 *
-	 *	Set the timer for an upcoming "finger" event
+	 *	Set the timer for an upcoming "fingers" event
 	 **/	
 	var setTimeoutForDigits = function () {
 	    clearTimeoutForDigits();
@@ -320,17 +334,17 @@
 	        if (getTimerPercentage() > 100) {
 	        	clearTimeout(Jazz.intervalTimer);
 		        if (Jazz.hands.length > 0 && Jazz.lastDigitsFound < Jazz.LAST_VALID_FINGER) {
-		        	Jazz.event["finger"](getCapturedDigits());
+		        	Jazz.event["fingers"](getCapturedDigits());
 		        }
 	        }
 
-	    }, Jazz.WAIT_INTERVAL_TIMER);		
+	    }, Jazz.WAIT_INTERVAL_TIMER);
 	}
 
 	/**
 	 * 	clearTimeoutForNav()
 	 *
-	 *	Reset the timer, cancelling all upcoming "navigtation" events
+	 *	Reset the timer, cancelling all upcoming "navigation" events
 	 **/
 	var clearTimeoutForNav = function () {
 		clearTimeout(Jazz.intervalTimer);
@@ -353,10 +367,10 @@
 				if (Jazz.hands.length > 0) {
 		        	Jazz.event["navigation"](Jazz.handNavigation);
 
-					Jazz.repeatNavInterval = setInterval(function() {
+					Jazz.repeatNavInterval = setTimeout(function() {
 						clearTimeoutForNav();
 						clearTimeout(Jazz.repeatNavInterval);
-					}, 800);
+					}, 850);
 				}
 			}
 	    }, Jazz.WAIT_INTERVAL_TIMER);
@@ -372,7 +386,7 @@
 			getContext().clearRect(0,0,Jazz.canvas.width, Jazz.canvas.height);
 			getContext().font='bold 22pt Arial';
 		    
-		    getContext().fillStyle = Jazz.fillStyle;		 
+		    getContext().fillStyle = Jazz.fillStyle;
 			getContext().strokeStyle = 'white';
 			getContext().fillText(txt, x, y-30);
 		    // getContext().strokeText(txt, x, y-30);
@@ -507,20 +521,18 @@
 	 *	threshold()
 	 */
 	var threshold = function (direction) {
-		if (direction === "up") 
-			return 300;
+		if (direction === "zoomIn")
+			return -20;
+		else if (direction === "zoomOut")
+			return 110;
+		else if (direction === "up")
+			return 180;
 		else if (direction === "down")
-			return 100;
+			return 80;
 		else if (direction === "left")
-			return  -100;
+			return -80;
 		else if (direction === "right")
-			return 150;
-		else if (direction === "zoomIn") {
-			return -10;
-		}
-		else if (direction === "zoomOut") {
-			return 140;
-		}
+			return 80;
 	}
 
 	/**
@@ -616,9 +628,9 @@
 		 	return hand.palmPosition[2];
 	}
 	var drawHelperArrows = function () {
-		getContext().drawImage(Jazz.upHelperArrow, getHandPosX()-17, -500);
-		getContext().drawImage(Jazz.rightHelperArrow, -670, getHandPosY()-15);
-		getContext().drawImage(Jazz.leftHelperArrow, -1170, getHandPosY()-15);
+		getContext().drawImage(Jazz.upHelperArrow, getHandPosX()-17, -400);
+		getContext().drawImage(Jazz.rightHelperArrow, -750, getHandPosY()-15);
+		getContext().drawImage(Jazz.leftHelperArrow, -1100, getHandPosY()-15);
 		getContext().drawImage(Jazz.downHelperArrow, getHandPosX()-17, -100);
 
 	}
@@ -645,7 +657,7 @@
 			drawUpArrow();
 			return true;
 		} else
-			return false
+			return false;
 	}
 	var canDrawHandDown = function () {
 		if (palm("vertical") < threshold("down")) {
@@ -720,7 +732,7 @@
 	Jazz.LAST_VALID_FINGER = 2;
 	Jazz.WAIT_INTERVAL_TIMER = 40;
 	Jazz.CIRCLE_RADIUS = .8;
-	Jazz.opacity = .65;
+	Jazz.opacity = .45;
 	Jazz.fingersHoverText = [];
 	Jazz.arrowColor = "black"
 	Jazz.incr=0;

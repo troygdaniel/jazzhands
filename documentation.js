@@ -2,7 +2,8 @@ $(function() {
 
 	var navigationMap = {
 		main: {
-			down: "user-home"
+			down: "user-home",
+			up: "future-home"
 		},
 		"user-home": {
 			up: "main",
@@ -76,7 +77,7 @@ $(function() {
 		"future-home": {
 			up: "arch-home",
 			zoomIn: "future-1",
-			down: "user-home"
+			down: "main"
 		},
 		"future-1": {
 			zoomOut: "future-home",
@@ -95,13 +96,13 @@ $(function() {
 		"future-4": {
 			zoomOut: "future-home",
 			left: "future-3"
-
-		},		
+		}
 	};
 
 	Jazz.init({
-		fingerWaitTimer: 600,
+		fingerWaitTimer: 350,
 		disableZoom: false
+		// fingersHoverText: ["Select", "Back"]
 	});
 
 	Jazz.on("navigation", function(nav) {
@@ -109,6 +110,16 @@ $(function() {
 
 		if (navigationMap[activeId]) 
 			go(navigationMap[activeId][nav])
+	});
+
+	Jazz.on("fingers", function(f) {
+		var activeId = $(".active").attr("id");
+
+		if (f === 1 && navigationMap[activeId])
+			go(navigationMap[activeId]["zoomIn"])
+		if (f === 2 && navigationMap[activeId])
+			go(navigationMap[activeId]["zoomOut"])
+
 	});
 
 	impress().init();
