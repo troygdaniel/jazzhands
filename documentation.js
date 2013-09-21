@@ -42,27 +42,27 @@ $(function() {
 			zoomIn: "api-1"
 		},
 		"api-1": {
-			up: "api-home",
+			up: "user-home",
 			down: "arch-home",
 			zoomOut: "api-home",
 			right: "api-2"
 		},
 		"api-2": {
-			up: "api-home",
+			up: "user-home",
 			down: "arch-home",
 			zoomOut: "api-home",
 			left: "api-1",
 			right: "api-3"
 		},
 		"api-3": {
-			up: "api-home",
+			up: "user-home",
 			down: "arch-home",
 			zoomOut: "api-home",
 			left: "api-2",
 			right: "api-4"
 		},
 		"api-4": {
-			up: "api-home",
+			up: "user-home",
 			down: "arch-home",
 			zoomOut: "api-home",
 			left: "api-3"
@@ -73,27 +73,27 @@ $(function() {
 			zoomIn: "arch-1"
 		},
 		"arch-1": {
-			up: "arch-home",
+			up: "api-home",
 			down: "future-home",
 			zoomOut: "arch-home",
 			right: "arch-2"
 		},
 		"arch-2": {
-			up: "arch-home",
+			up: "api-home",
 			down: "future-home",
 			zoomOut: "arch-home",
 			left: "arch-1",
 			right: "arch-3"
 		},
 		"arch-3": {
-			up: "arch-home",
+			up: "api-home",
 			down: "future-home",
 			zoomOut: "arch-home",
 			left: "arch-2",
 			right: "arch-4"
 		},
 		"arch-4": {
-			up: "arch-home",
+			up: "api-home",
 			down: "future-home",
 			zoomOut: "arch-home",
 			left: "arch-3"

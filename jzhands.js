@@ -216,10 +216,11 @@
 					validGesture = false;
 
 				if (validGesture === true) {
+					// TODO: slim down this HACKy method
 					// console.log(g.type+", "+Jazz.hands[0].id+", "+Jazz.lastHandId);
 					// JAZZ Hands bypass
 					Jazz.event["gestures"](Jazz.lastGesture);
-					if (g.type != "swipe" && Jazz.hands[0] && Jazz.hands[0].id !== Jazz.lastHandId) {
+					if (Jazz.hands[0] && Jazz.hands[0].id !== Jazz.lastHandId) {
 						Jazz.event["navigation"](Jazz.handNavigation);
 						Jazz.handNavigation = null;
 						Jazz.lastHandId = Jazz.hands[0].id;
