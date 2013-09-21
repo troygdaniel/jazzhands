@@ -152,14 +152,7 @@
 		if (hasDetectedHand() === true) {
 
 			if (isNewHandMotion() === true) {
-				if (isNewHand()) {
-					setTimeoutForMotion();
-				}
-				else {
-					setTimeout(function() {
-						setTimeoutForMotion();
-					},500);
-				}
+				setTimeoutForMotion();
 			}
 
 			if (getDetectedNav() === false) {
@@ -169,7 +162,7 @@
 			}
 
 			Jazz.handNavigation = getDetectedNav();
-			Jazz.lastHandId = Jazz.hands[0].id;
+			// Jazz.lastHandId = Jazz.hands[0].id;
 		}
 	}
 
@@ -209,9 +202,9 @@
 		if (getCapturedDigits() > 0 && gestures.length > 0) {
 			for (var indx=0; indx < gestures.length; indx++) {
 				var g = gestures[indx];
-				if (g.type !== "swipe") {
+				// if (g.type !== "swipe") {
 					Jazz.lastGesture = g;
-				}
+				// }
 			}
 		}
 		else {
@@ -222,8 +215,22 @@
 				if (g.type === "circle" && g.radius < 100)
 					validGesture = false;
 
-				if (validGesture === true)
+				if (validGesture === true) {
+					// console.log(g.type+", "+Jazz.hands[0].id+", "+Jazz.lastHandId);
+					// JAZZ Hands bypass
 					Jazz.event["gestures"](Jazz.lastGesture);
+					if (g.type != "swipe" && Jazz.hands[0] && Jazz.hands[0].id !== Jazz.lastHandId) {
+						Jazz.event["navigation"](Jazz.handNavigation);
+						Jazz.handNavigation = null;
+						Jazz.lastHandId = Jazz.hands[0].id;
+						clearTimeoutForNav();
+						// Delay next gesture, to ignore natural hand movements away from controller
+						Jazz.delayGestureTimeout = setTimeout(function(){
+							Jazz.lastHandId = null;
+							clearTimeout(Jazz.delayGestureTimeout);
+						},Jazz.WAIT_FINGER_MS);
+					}
+				}
 
 				Jazz.lastGesture = false;
 			}
@@ -534,9 +541,9 @@
 		else if (direction === "down")
 			return 80;
 		else if (direction === "left")
-			return -90;
+			return -80;
 		else if (direction === "right")
-			return 90;
+			return 80;
 	}
 
 	/**
@@ -732,7 +739,7 @@
 	}
 	Jazz.lastDigitsFound = 0;
 	Jazz.handNavigation = "";
-	Jazz.WAIT_FINGER_MS = 500;
+	Jazz.WAIT_FINGER_MS = 900;
 	Jazz.LAST_VALID_FINGER = 2;
 	Jazz.WAIT_INTERVAL_TIMER = 40;
 	Jazz.CIRCLE_RADIUS = .8;

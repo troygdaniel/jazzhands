@@ -133,7 +133,6 @@ $(function() {
 	};
 
 	Jazz.init({
-		fingerWaitTimer: 450,
 		disableZoom: false
 		// fingersHoverText: ["Select", "Back"]
 	});
