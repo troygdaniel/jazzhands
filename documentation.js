@@ -133,8 +133,8 @@ $(function() {
 	};
 
 	Jazz.init({
-		disableZoom: false
-		// fingersHoverText: ["Select", "Back"]
+		disableZoom: false,
+		disableHelper: true
 	});
 
 	Jazz.on("navigation", function(nav) {
@@ -151,7 +151,6 @@ $(function() {
 			go(navigationMap[activeId]["zoomIn"])
 		if (f === 2 && navigationMap[activeId])
 			go(navigationMap[activeId]["zoomOut"])
-
 	});
 
 	impress().init();

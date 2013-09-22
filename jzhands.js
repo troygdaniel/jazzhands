@@ -45,8 +45,10 @@
 
 		if (Jazz.hands.length > 0)
 			showCanvas();
-		else
+		else {
 			hideCanvas();
+			Jazz.handNavigation = null;
+		}
 
 		Jazz.frameDigitCount = frame.pointables.length;
 
@@ -121,7 +123,7 @@
 
 			drawFinger(circleCoords);
 
-			if (Jazz.enableHelperArrows === true)
+			if (Jazz.disableHelper === false)
 				drawHelperArrows();
 
 			drawTimerArc(circleCoords, Jazz.timerPercentage);
@@ -152,13 +154,13 @@
 		if (hasDetectedHand() === true) {
 
 			if (isNewHandMotion() === true) {
-				setTimeoutForMotion();
+				clearTimeoutForNav();
+				setTimeoutForNav();
 			}
 
 			if (getDetectedNav() === false) {
 			 	clearTimeoutForNav();
  				Jazz.handNavigation = null;
-
 			}
 
 			Jazz.handNavigation = getDetectedNav();
@@ -202,9 +204,7 @@
 		if (getCapturedDigits() > 0 && gestures.length > 0) {
 			for (var indx=0; indx < gestures.length; indx++) {
 				var g = gestures[indx];
-				// if (g.type !== "swipe") {
-					Jazz.lastGesture = g;
-				// }
+				Jazz.lastGesture = g;
 			}
 		}
 		else {
@@ -215,25 +215,8 @@
 				if (g.type === "circle" && g.radius < 100)
 					validGesture = false;
 
-				if (validGesture === true) {
-					// TODO: slim down this HACKy method
-					// console.log(g.type+", "+Jazz.hands[0].id+", "+Jazz.lastHandId);
-					// JAZZ Hands bypass
+				if (validGesture === true) 
 					Jazz.event["gestures"](Jazz.lastGesture);
-					if (Jazz.hands[0] && Jazz.hands[0].id !== Jazz.lastHandId) {
-						Jazz.event["navigation"](Jazz.handNavigation);
-						Jazz.handNavigation = null;
-						Jazz.lastHandId = Jazz.hands[0].id;
-						clearTimeoutForNav();
-						// Delay next gesture, to ignore natural hand movements away from controller
-						Jazz.delayGestureTimeout = setTimeout(function(){
-							Jazz.lastHandId = null;
-							clearTimeout(Jazz.delayGestureTimeout);
-						},Jazz.WAIT_FINGER_MS);
-					}
-				}
-
-				Jazz.lastGesture = false;
 			}
 		}
 	 }
@@ -312,7 +295,7 @@
 		radius = (percentage*0.01*2)*Math.PI;
 
 		getContext().beginPath();
-		getContext().arc(getXforFinger(fingerPos), getYForFinger(fingerPos), 30, 0, radius);
+		getContext().arc(getXForCoords(fingerPos), getYForCoords(fingerPos), 30, 0, radius);
 		getContext().lineWidth=10;
 		getContext().strokeStyle="green";
 		getContext().stroke();
@@ -364,11 +347,11 @@
 	}
 
 	/**
-	 * setTimeoutForMotion()
+	 * setTimeoutForNav()
 	 *
 	 *	Set the timer for an upcoming "navigation" event
 	 **/	
-	var setTimeoutForMotion = function () {
+	var setTimeoutForNav = function () {
 	    clearTimeoutForNav();
 	    
 	    Jazz.intervalTimer = setInterval(function() {
@@ -378,10 +361,12 @@
 	        	clearTimeout(Jazz.intervalTimer);
 				if (Jazz.hands.length > 0) {
 		        	Jazz.event["navigation"](Jazz.handNavigation);
-
+		        	Jazz.lastHand = Jazz.handNavigation;
 					Jazz.repeatNavInterval = setTimeout(function() {
-						clearTimeoutForNav();
-						clearTimeout(Jazz.repeatNavInterval);
+						if (Jazz.handNavigation === Jazz.lastHand) {						
+							clearTimeoutForNav();
+							clearTimeout(Jazz.repeatNavInterval);
+						}
 					}, 900);
 				}
 			}
@@ -415,12 +400,12 @@
 	var createFingerCanvas  = function () {
 		var canvas = Jazz.canvas;
 
-		canvas.width = document.body.clientWidth;
-		canvas.height = document.body.clientHeight;
-		if (canvas.height > 500)
-			canvas.height=500;		
+		// canvas.width = document.body.clientWidth;
+		// canvas.height = document.body.clientHeight;
+		// if (canvas.height > 500)
+		// 	canvas.height=500;
 		getContext().translate(canvas.width*1.2,canvas.height);
-	    getContext().globalAlpha = Jazz.opacity;	    
+	    getContext().globalAlpha = Jazz.opacity;
 	}
 
 	/**
@@ -477,13 +462,14 @@
 			Jazz.simpleMode = false;
 		else {
 			Jazz.simpleMode=true;
-			Jazz.CIRCLE_RADIUS=1;
+			// Jazz.CIRCLE_RADIUS=1;
 		}
-		if (options.disableZoom)
-			Jazz.disableZoom = options.disableZoom;
 
-		if (options.enableHelperArrows === false)
-			Jazz.enableHelperArrows = false;
+		if (options.disableZoom != undefined && options.disableZoom != Jazz.disableZoom)
+			Jazz.disableZoom = options.disableZoom;
+		console.log(Jazz.disableZoom);
+		if (options.disableHelper != undefined && options.disableHelper != Jazz.disableHelper)
+			Jazz.disableHelper = options.disableHelper;
 
 		if (options.opacity)
 			Jazz.opacity = options.opacity;
@@ -534,13 +520,13 @@
 	 */
 	var threshold = function (direction) {
 		if (direction === "zoomIn")
-			return -20;
+			return -10;
 		else if (direction === "zoomOut")
 			return 110;
 		else if (direction === "up")
 			return 190;
 		else if (direction === "down")
-			return 80;
+			return 85;
 		else if (direction === "left")
 			return -80;
 		else if (direction === "right")
@@ -572,22 +558,20 @@
 	var getFinger = function (key) {
 		return getFingersMap(key);
 	}
-	var getRadiusForFinger = function (fingerPos) {
-		return Math.min(600/Math.abs(fingerPos[2]),20) * Jazz.CIRCLE_RADIUS;
+	// TODO: rename methods since this is no longer for finger, but hand pos AND finger
+	var getRadiusForFinger = function (coords) {
+		return Math.min(600/Math.abs(coords[2]),20) * Jazz.CIRCLE_RADIUS;
 	}
-	var getYForFinger = function (fingerPos) {
-		return parseInt((-fingerPos[1]-100)-getRadiusForFinger(fingerPos)/2);
+	var getYForCoords = function (coords) {
+		return (-coords[1]-120)-getRadiusForFinger(coords)/2;
 	}
-	var getXforFinger = function (fingerPos) {
-		return parseInt((fingerPos[0]-900)-getRadiusForFinger(fingerPos)/2);
+	var getXForCoords = function (coords) {
+		return parseInt((coords[0]-900)-getRadiusForFinger(coords)/2);
 	}
-	var drawCircle = function(fingerPos) {
+	var drawCircle = function(coords) {
 		getContext().beginPath();
-		getContext().arc(getXforFinger(fingerPos), getYForFinger(fingerPos), getRadiusForFinger(fingerPos), 0, 2*Math.PI);
+		getContext().arc(getXForCoords(coords), getYForCoords(coords), getRadiusForFinger(coords), 0, 2*Math.PI);
 		getContext().fill();		
-	}
-	var getYForFinger = function(fingerPos) {
-		return (-fingerPos[1]-100)-getRadiusForFinger(fingerPos)/2;
 	}
 	var getCapturedDigits = function() {
 		return Jazz.frameDigitCount;
@@ -620,9 +604,9 @@
 			return;
 
 		if (indx === 0)
-			return getXforFinger(Jazz.hands[0].palmPosition);
+			return getXForCoords(Jazz.hands[0].palmPosition);
 		else
-			return getYForFinger(Jazz.hands[0].palmPosition);
+			return getYForCoords(Jazz.hands[0].palmPosition);
 	}
 	var getHandPosX = function() {
 		return getHandPos(0);
@@ -715,21 +699,40 @@
 		return Jazz.timerPercentage;
 	}
 	var appendCanvasToDOM = function (){
+		var blurCanvas = document.createElement("canvas");
 		var canvas = document.createElement("canvas");
+		var calculatedWidth = document.body.clientWidth*.9;
+
+		blurCanvas.setAttribute("id", "jazz-fingers-blur");
+		blurCanvas.setAttribute("style","position:absolute;top:0px;left:5px;background-color:gray;opacity:0.4;border-style:solid;border-color:gray;border-width:1px;"+blurStyle());
+		blurCanvas.setAttribute("width", document.body.clientWidth);
+		blurCanvas.setAttribute("height", document.body.clientHeight);
+		document.body.appendChild(blurCanvas);
+
 		canvas.setAttribute("id", "jazz-fingers");
-		canvas.setAttribute("style","position:absolute;top:50px;left:200px");
-		canvas.setAttribute("margin-left", "auto");
-		canvas.setAttribute("margin-right", "auto");
-		canvas.setAttribute("height", document.height);
-		canvas.setAttribute("width", document.width);
+		canvas.setAttribute("style","position:absolute;top:105px;left:-25px;"+blurStyle());
+
+		if (calculatedWidth < 1000)
+			calculatedWidth = 1050;
+
+		console.log(document.body.clientWidth);
+		canvas.setAttribute("width", calculatedWidth+"px");
+
+		canvas.setAttribute("height", "410px");		
 		document.body.appendChild(canvas);
+
 		return canvas;
+	}
+	var blurStyle = function () {
+		return "-webkit-filter: blur(0.5px);-moz-filter: blur(0.5px);-o-filter: blur(0.5px);-ms-filter: blur(0.5px)filter: blur(0.5px);";
 	}
 	var showCanvas = function () {
 		document.getElementById("jazz-fingers").style.display = 'block';
+		document.getElementById("jazz-fingers-blur").style.display = 'block';
 	}
 	var hideCanvas = function () {
 		document.getElementById("jazz-fingers").style.display = 'none';
+		document.getElementById("jazz-fingers-blur").style.display = 'none';
 	}
 
 	Jazz.event = {
@@ -740,10 +743,10 @@
 	}
 	Jazz.lastDigitsFound = 0;
 	Jazz.handNavigation = "";
-	Jazz.WAIT_FINGER_MS = 900;
+	Jazz.WAIT_FINGER_MS = 700;
 	Jazz.LAST_VALID_FINGER = 2;
 	Jazz.WAIT_INTERVAL_TIMER = 40;
-	Jazz.CIRCLE_RADIUS = .8;
+	Jazz.CIRCLE_RADIUS = 1.6;
 	Jazz.opacity = .45;
 	Jazz.fingersHoverText = [];
 	Jazz.arrowColor = "black"
@@ -753,7 +756,7 @@
 	Jazz.timerPercentage = 0;
 	Jazz.simpleMode = true;
 	Jazz.disableZoom = false;
-	Jazz.enableHelperArrows = true;
+	Jazz.disableHelper = true;
 	var FIRST=0, SECOND=1, THIRD=2, FOURTH=3;
 
 }).call(this);
