@@ -257,6 +257,7 @@
 		return detectedNav;
 	}
 
+	// TODO: Add zooming percentages and clean method up
 	var handleProgressNav = function(detectedNav) {
 		var verticalDistance = threshold("up") - threshold("down");
 		var upProgress = (palm("vertical") -  threshold("down")) / verticalDistance;
