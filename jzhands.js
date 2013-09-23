@@ -21,9 +21,9 @@
 	 * Initialize all that Jazz 
 	 */
 	Jazz.init = function (options, callback) {
+		configureFromOptions(options);
 		Jazz.leapController = new Leap.Controller({enableGestures: true}); 
 		Jazz.canvas = appendCanvasToDOM(); //document.getElementById(options.canvas);
-		configureFromOptions(options);
 		createFingerCanvas();
 
 		Jazz.leapController.loop(function(frame) { Jazz.loop(frame); })
@@ -68,6 +68,13 @@
 
 		Jazz.event["frames"](Jazz.lastFrame);
 	}
+	// TODO: document these functions
+	Jazz.show = function () {
+		Jazz.showUI = true;
+	}
+	Jazz.hide = function () {
+		Jazz.showUI = false;
+	}
 
 	/** 
 	 *	Jazz.on()
@@ -109,7 +116,7 @@
 
 		clearCanvas();
 		var fIndex=0;
-
+		// Build a grid for the jazz-hands canvas
 		// render circles based on pointable positions
 		for (var i in getFingersMap()) {
 
@@ -126,7 +133,8 @@
 			if (Jazz.disableHelper === false)
 				drawHelperArrows();
 
-			drawTimerArc(circleCoords, Jazz.timerPercentage);
+			if (Jazz.disableTimer === false)
+				drawTimerArc(circleCoords, Jazz.timerPercentage);
 
 			if (canDrawFingerText) 
 				drawFingerText();
@@ -134,6 +142,7 @@
 			if (Jazz.simpleMode === true)
 				return;
 		}
+
 	}
 
 	/**
@@ -217,6 +226,7 @@
 
 				if (validGesture === true) 
 					Jazz.event["gestures"](Jazz.lastGesture);
+				Jazz.lastGesture = null;
 			}
 		}
 	 }
@@ -237,13 +247,35 @@
 			detectedNav = "up";
 		else if (canDrawHandDown())
 			detectedNav = "down";
-
 		else if (canDrawZoomIn())
 			detectedNav = "zoomIn";
 		else if (canDrawZoomOut())
 			detectedNav = "zoomOut";
 
+		handleProgressNav();
+
 		return detectedNav;
+	}
+
+	var handleProgressNav = function(detectedNav) {
+		var verticalDistance = threshold("up") - threshold("down");
+		var upProgress = (palm("vertical") -  threshold("down")) / verticalDistance;
+		if (upProgress > 1) upProgress = 1;
+		if (upProgress < 0) upProgress = 0;
+		var downProgress = 1-upProgress;
+		var horizontalDistance = threshold("right") - threshold("left");
+		var rightProgress = (palm("horizontal") -  threshold("left")) / horizontalDistance;
+		if (rightProgress > 1) rightProgress = 1;
+		if (rightProgress < 0) rightProgress = 0;
+		var leftProgress = 1-rightProgress;
+
+		var navProgress = {
+			"up": parseInt(upProgress*100),
+			"down": parseInt(downProgress*100),
+			"right": parseInt(rightProgress*100),
+			"left": parseInt(leftProgress*100)
+		}
+		Jazz.event["progress"](navProgress);
 	}
 
 	/**
@@ -421,7 +453,7 @@
 	 *
 	 * 	Available options:
 	 *
-	 *	fingerWaitTimer:
+	 *	waitTimer:
 	 *	Time in milliseconds for timer before firing event:
 	 * 
 	 * 	fillStyle:
@@ -433,12 +465,13 @@
 	 *
 	 *	Example usage during Jazz.init:
 	 *	Jazz.init({
-	 *		fingerWaitTimer:  100,
+	 *		waitTimer:  100,
 	 *		fillStyle: "black",
 	 *		fingersHoverText: ["finger one", "finger two"]	 
 	 * 	})
-	 *		
 	 *	
+	 * TODO: document all available options	
+	 *
 	 **/
 	var configureFromOptions = function(options) {
 		Jazz.fillStyle = "black";
@@ -451,8 +484,8 @@
 		if (options.fillStyle) {
 			Jazz.arrowColor = Jazz.fillStyle = options.fillStyle;
 		}
-		if (options.fingerWaitTimer) 
-			Jazz.WAIT_FINGER_MS = options.fingerWaitTimer;
+		if (options.waitTimer)
+			Jazz.WAIT_FINGER_MS = options.waitTimer;
 		
 		if (options.fingersHoverText) {
 			Jazz.fingersHoverText = Jazz.fingersHoverText.concat(options.fingersHoverText);
@@ -462,12 +495,17 @@
 			Jazz.simpleMode = false;
 		else {
 			Jazz.simpleMode=true;
-			// Jazz.CIRCLE_RADIUS=1;
 		}
+
+		if (options.blurEffect != undefined && options.blurEffect != Jazz.blurEffect)
+			Jazz.blurEffect = options.blurEffect;
+
+		if (options.disableTimer != undefined && options.disableTimer != Jazz.disableTimer)
+			Jazz.disableTimer = options.disableTimer;
 
 		if (options.disableZoom != undefined && options.disableZoom != Jazz.disableZoom)
 			Jazz.disableZoom = options.disableZoom;
-		console.log(Jazz.disableZoom);
+
 		if (options.disableHelper != undefined && options.disableHelper != Jazz.disableHelper)
 			Jazz.disableHelper = options.disableHelper;
 
@@ -524,9 +562,9 @@
 		else if (direction === "zoomOut")
 			return 110;
 		else if (direction === "up")
-			return 190;
+			return 225;
 		else if (direction === "down")
-			return 85;
+			return 90;
 		else if (direction === "left")
 			return -80;
 		else if (direction === "right")
@@ -624,10 +662,10 @@
 		 	return hand.palmPosition[2];
 	}
 	var drawHelperArrows = function () {
-		getContext().drawImage(Jazz.upHelperArrow, getHandPosX()-17, -400);
-		getContext().drawImage(Jazz.rightHelperArrow, -750, getHandPosY()-15);
-		getContext().drawImage(Jazz.leftHelperArrow, -1100, getHandPosY()-15);
-		getContext().drawImage(Jazz.downHelperArrow, getHandPosX()-17, -100);
+		getContext().drawImage(Jazz.upHelperArrow, getHandPosX()-17, -390);
+		getContext().drawImage(Jazz.rightHelperArrow, -820, getHandPosY()-15);
+		getContext().drawImage(Jazz.leftHelperArrow, -1030, getHandPosY()-15);
+		getContext().drawImage(Jazz.downHelperArrow, getHandPosX()-17, -215);
 
 	}
 	var drawUpArrow = function () {
@@ -699,47 +737,40 @@
 		return Jazz.timerPercentage;
 	}
 	var appendCanvasToDOM = function (){
-		var blurCanvas = document.createElement("canvas");
 		var canvas = document.createElement("canvas");
 		var calculatedWidth = document.body.clientWidth*.9;
 
-		blurCanvas.setAttribute("id", "jazz-fingers-blur");
-		blurCanvas.setAttribute("style","position:absolute;top:0px;left:5px;background-color:gray;opacity:0.4;border-style:solid;border-color:gray;border-width:1px;"+blurStyle());
-		blurCanvas.setAttribute("width", document.body.clientWidth);
-		blurCanvas.setAttribute("height", document.body.clientHeight);
-		document.body.appendChild(blurCanvas);
-
 		canvas.setAttribute("id", "jazz-fingers");
+
 		canvas.setAttribute("style","position:absolute;top:105px;left:-25px;"+blurStyle());
-
-		if (calculatedWidth < 1000)
-			calculatedWidth = 1050;
-
-		console.log(document.body.clientWidth);
+		if (calculatedWidth < 1000) calculatedWidth = 1050;
 		canvas.setAttribute("width", calculatedWidth+"px");
-
 		canvas.setAttribute("height", "410px");		
 		document.body.appendChild(canvas);
 
 		return canvas;
 	}
+
 	var blurStyle = function () {
-		return "-webkit-filter: blur(0.5px);-moz-filter: blur(0.5px);-o-filter: blur(0.5px);-ms-filter: blur(0.5px)filter: blur(0.5px);";
+		if (Jazz.blurEffect === true)
+			return "-webkit-filter: blur(2px);-moz-filter: blur(2px);-o-filter: blur(2px);-ms-filter: blur(2px)filter: blur(2px);";
+		else 
+			return "";
 	}
 	var showCanvas = function () {
-		document.getElementById("jazz-fingers").style.display = 'block';
-		document.getElementById("jazz-fingers-blur").style.display = 'block';
+		if (Jazz.showUI === true)
+			document.getElementById("jazz-fingers").style.display = 'block';
 	}
 	var hideCanvas = function () {
 		document.getElementById("jazz-fingers").style.display = 'none';
-		document.getElementById("jazz-fingers-blur").style.display = 'none';
 	}
 
 	Jazz.event = {
-		finger: function(n){},
-		navigation: function(n){},
-		gestures: function(n){},
-		frames: function(f){}
+		finger: function(numberOfFingers){},
+		navigation: function(navEvent){},
+		gestures: function(nativeGesture){},
+		frames: function(nativeFrame){},
+		progress: function(navProgress){}
 	}
 	Jazz.lastDigitsFound = 0;
 	Jazz.handNavigation = "";
@@ -756,7 +787,9 @@
 	Jazz.timerPercentage = 0;
 	Jazz.simpleMode = true;
 	Jazz.disableZoom = false;
-	Jazz.disableHelper = true;
+	Jazz.disableHelper = false;
+	Jazz.disableTimer = false;
+	Jazz.showUI = true;
 	var FIRST=0, SECOND=1, THIRD=2, FOURTH=3;
 
 }).call(this);

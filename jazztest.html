@@ -26,8 +26,8 @@ debug
 
 Jazz.init({
 	fillStyle: "black",
-    // fingersHoverText: ["One?","Two!"],
-    disableZoom: false    
+    fingersHoverText: ["One?","Two!"],
+    disableZoom: false,
 });
 
 Jazz.on("fingers", function(fingers) {
@@ -40,6 +40,10 @@ Jazz.on("navigation", function(navEvent) {
 
 Jazz.on("gestures", function (gestures) {
 	console.log(gestures);
+});
+
+Jazz.on("progress", function (navProgress) {
+	console.log(navProgress);
 });
 
 
