@@ -134,6 +134,8 @@ $(function() {
 
 	Jazz.init({
 		disableZoom: false,
+		disableFingers: true,
+		fingersHoverText: ["Zoom out?!","Zoom In!"],
 		waitTimer: 400
 	});
 
@@ -147,10 +149,16 @@ $(function() {
 	Jazz.on("fingers", function(f) {
 		var activeId = $(".active").attr("id");
 
-		if (f === 1 && navigationMap[activeId])
-			go(navigationMap[activeId]["zoomIn"])
-		if (f === 2 && navigationMap[activeId])
-			go(navigationMap[activeId]["zoomOut"])
+		if (Jazz.disableFingers === false && f === 1 && navigationMap[activeId]) {
+			go(navigationMap[activeId]["zoomOut"]);
+		}
+
+		if (Jazz.disableFingers === false && f === 2 && navigationMap[activeId]) {
+			go(navigationMap[activeId]["zoomIn"]);
+			Jazz.disableFingers=true;
+		}
+
+
 	});
 
 	impress().init();

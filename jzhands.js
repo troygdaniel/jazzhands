@@ -61,7 +61,7 @@
 		}
 		else {
 			Jazz.simpleMode = false;
-			handleFingers();
+			if (Jazz.disableFingers === false) handleFingers();
 		}
 
 		handleNavigation();
@@ -139,7 +139,7 @@
 			if (Jazz.disableTimer === false)
 				drawTimerArc(circleCoords, Jazz.timerPercentage);
 
-			if (canDrawFingerText) 
+			if (canDrawFingerText && Jazz.disableFingers === false) 
 				drawFingerText();
 
 			if (Jazz.simpleMode === true)
@@ -259,8 +259,10 @@
 
 	var handleGrabRelease = function() {
 		if (Jazz.hands.length === 0) {
-			if (Jazz.isGrabbing === true) Jazz.event["release"]();
-			Jazz.isGrabbing=false;
+			if (Jazz.isGrabbing === true) {
+				Jazz.isGrabbing=false;
+				Jazz.event["release"]();
+			}
 			return;
 		}
 		// TODO: Surface this HACK (1 finger === grab)
@@ -271,8 +273,10 @@
 
 		} else {
 
-			if (Jazz.isGrabbing == true) Jazz.event["release"]();
-			Jazz.isGrabbing = false;
+			if (Jazz.isGrabbing == true) {
+				Jazz.isGrabbing = false;
+				Jazz.event["release"]();
+			}
 		}
 
 	}
@@ -298,6 +302,8 @@
 			"left": parseInt(leftProgress*100)
 		}
 		Jazz.event["progress"](navProgress);
+
+		return navProgress;
 	}
 
 
@@ -516,6 +522,9 @@
 
 		if (options.disableHelper != undefined && options.disableHelper != Jazz.disableHelper)
 			Jazz.disableHelper = options.disableHelper;
+
+		if (options.disableFingers != undefined && options.disableFingers != Jazz.disableFingers)
+			Jazz.disableFingers = options.disableFingers;
 
 		if (options.opacity)
 			Jazz.opacity = options.opacity;
@@ -833,6 +842,7 @@
 	Jazz.disableZoom = false;
 	Jazz.disableHelper = false;
 	Jazz.disableTimer = false;
+	Jazz.disableFingers = false;
 	Jazz.showUI = true;
 	Jazz.isGrabbing = false;
 	var FIRST=0, SECOND=1, THIRD=2, FOURTH=3;

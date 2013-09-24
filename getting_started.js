@@ -1,104 +1,137 @@
 $(function() {
 
+	var navigationMap = {
+		main: {
+			right: "basic-home",
+			down: "main-home"
+		},
+		"basic-home": {
+			left: "main",
+			right: "full-home",
+			down: "basic-1",
+			zoomIn: "basic-1",
+		},
+		"basic-1": {
+			up: "basic-home",
+			right: "basic-2",
+			zoomOut: "basic-home"
+		},
+		"basic-2": {
+			up: "basic-home",
+			left: "basic-1",
+			right: "basic-3",
+			zoomOut: "basic-home"
+		},
+		"basic-3": {
+			up: "basic-home",
+			left: "basic-2",
+			zoomOut: "basic-home"
+		},
+		"full-home": {
+			left: "basic-home",
+			down: "full-1"
+		},
+		"full-1": {
+			up: "full-home",
+			right: "full-3",
+			zoomOut: "full-home"
+		},
+		"full-2": {
+			up: "full-home",
+			left: "full-1",
+			right: "full-3",			
+			zoomOut: "full-home"
+		},
+		"full-3": {
+			up: "full-home",
+			left: "full-2",
+			right: "full-4",			
+			zoomOut: "full-home"
+		},
+		"full-4": {
+			up: "full-home",
+			left: "full-3",
+			right: "full-5",			
+			zoomOut: "full-home"
+		},
+		"full-5": {
+			up: "full-home",
+			left: "full-4",
+			right: "full-5",			
+			zoomOut: "full-home"
+		},
+		"full-6": {
+			up: "full-home",
+			left: "full-5",
+			zoomOut: "full-home"
+		}
+	};
+
 	Jazz.init({
-		fillStyle: "black",
-		enableHelperArrows: true,
-		fingersHoverText: ["One finger", "Two fingers!?"],
-		fingerWaitTimer: 600,
-		disableZoom: false
+		disableZoom: false,
+		disableFingers: true,
+		// fingersHoverText: ["Zoom out?!","Zoom In!"],
+		waitTimer: 700
 	});
 
-	Jazz.on("finger", function(fingers) {
-		console.log("fingers = " + fingers);
-		// if (fingers === 1) {
-		// 	go("welcome-1");
-		// }
-		// else if (fingers === 2) {
-		// 	go("implement-1");
-		// }
+	Jazz.on("gestures", function (g) {
+		$("#detected-gesture").html(g);
 	});
 
+	Jazz.on("grab", function () {
+		$("#grab-release-detection").html("Grabbing");
+	});
+	Jazz.on("release", function () {
+		$("#grab-release-detection").html("Release");
+	});
+    Jazz.on("progress", function (progress) {
+        $("#progress-detection").html("up = "+progress["up"]+    "%, down = "+progress["down"]+"%, right = "+progress["right"]+"%, left = "+progress["left"]+"%"+"<BR>isGrabbing="+Jazz.isGrabbing);
+    });            
+    Jazz.on("frames", function (f) {
+		if (window.detectFrame === true)
+			$("#frame-detection").html(f);
+    });
 	Jazz.on("navigation", function(nav) {
-		var $active = $(".active");
-		var activeId = $active.attr("id");
+		var activeId = $(".active").attr("id");
+		console.log(activeId+","+nav);
+		if (navigationMap[activeId]) {
+			go(navigationMap[activeId][nav])
+			onTarget(activeId);
+		}
+	});
 
-		console.log("navigation = "+ nav);
-		
+	Jazz.on("fingers", function(f) {
+		var activeId = $(".active").attr("id");
 
-		// TODO: organize the map in a more manageable way
-
-		// Navigation from Welcome slides
-		if (activeId === "welcome-1") {
-			goRight(nav, "welcome-2");
-		}
-		
-		if (activeId === "welcome-2") {
-			goRight(nav, "welcome-3");
-			goLeft(nav,  "welcome-1");
-		}
-		if (activeId === "welcome-3") {
-			goRight(nav,"TOC");
-			goLeft(nav, "welcome-2");
-		}
-		if (activeId === "TOC") {
-			goLeft(nav, "welcome-3");
-			goUp(nav, "welcome-1");
-			goDown(nav, "implement-1");
-		}
-		if (activeId === "implement-1") {
-			goLeft(nav, "TOC");
-			goRight(nav, "implement-2");
-		}
-		if (activeId === "implement-2") {
-			goLeft(nav, "implement-1");
-			goRight(nav, "implement-3");
-		}
-		if (activeId === "implement-3") {
-			goLeft(nav, "implement-2");
-			goRight(nav, "implement-4");
-		}
-		if (activeId === "implement-4") {
-			goLeft(nav, "implement-3");
-			goRight(nav, "TOC");
+		if (Jazz.disableFingers === false && f === 1 && navigationMap[activeId]) {
+			go(navigationMap[activeId]["zoomOut"]);
 		}
 
-		// Global zoom out to TOC
-		goOut(nav,"TOC");
+		if (Jazz.disableFingers === false && f === 2 && navigationMap[activeId]) {
+			go(navigationMap[activeId]["zoomIn"]);
+			Jazz.disableFingers=true;
+			Jazz.LAST_VALID_FINGER = 1;
+		}
+
+
 	});
 
 	impress().init();
-	function goLeft(nav, href) {
-		if (nav === "left") {
-			go(href);
-		}
-	}
-	function goRight(nav, href) {
-		if (nav === "right") {
-			go(href)
-		}
-	}
-	function goUp(nav, href) {
-		if (nav === "up") {
-			go(href);
-		}
-	}
-	function goDown(nav, href) {
-		if (nav === "down") {
-			go(href);
-		}
-	}
-	function goOut(nav, href) {
-		if (nav === "zoomOut") {
-			go(href);
-		}
-	}
-	function goIn(nav, href) {
-		if (nav === "zoomIn") {
-			go(href)
-		}
-	}
+
 	function go(href) {
 		window.location.href="#"+href;
+	}
+
+	function onTarget(href) {
+		console.log("target = " + href);
+		window.detectFrame = false;
+		if (href === "full-1") {
+			Jazz.fingersHoverText = ["Zoom Out?", "Zoom in?"];
+			Jazz.LAST_VALID_FINGER = 3;
+		}
+		if (href === "full-6") {
+			window.detectFrame = true;
+		}
 	}
 
 });
