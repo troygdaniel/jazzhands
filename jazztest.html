@@ -6,19 +6,19 @@
 
 <body>
 <h1>jz hands test harness</h1>
-Hands:
-<div id="hands" style="border-style:dashed;border-width:1px">
+<B>Hands:</B>
+<div id="hands" style="border-style:none;border-width:1px">
 </div>
 
 <br/><br/><br/>
-Fingers:
-<div id="fingers" style="border-style:dashed;border-width:1px">
+<B>Fingers:</B>
+<div id="fingers" style="border-style:none;border-width:1px">
 </div>
 
 
 <br/><br/><br/>
-debug
-<div id="debug" style="border-style:dashed;border-width:1px">
+<B>Debug</B>
+<div id="debug" style="border-style:none;border-width:1px">
 
 </body></html>
 
@@ -42,17 +42,25 @@ Jazz.on("gestures", function (gestures) {
 	console.log(gestures);
 });
 
-Jazz.on("progress", function (navProgress) {
-	console.log(navProgress);
+Jazz.on("grab", function () {
+	console.log("grab");
+});
+
+Jazz.on("release", function () {
+	console.log("release");
+});
+
+Jazz.on("progress", function (npr) {
+	$("#debug").html("up = "+npr["up"]+	"%, down = "+npr["down"]+"%, right = "+npr["right"]+"%, left = "+npr["left"]+"%"+"<BR>isGrabbing="+Jazz.isGrabbing);
 });
 
 
 Jazz.on("frames", function (frame) {
 	// Performance degrades if logging all frames to the console
- 	//console.log(frames);
+ 	// console.log(frames);
  	if (Jazz.hands.length > 0 ) {
 	 	var pp = Jazz.hands[0].palmPosition;
-	 	if (pp) 
+	 	if (pp)
 	 		$("#hands").html(""+parseInt(pp[0])+", "+parseInt(pp[1])+", "+ parseInt(pp[2]));
  	}
  	if (frame.pointablesMap ) {
@@ -64,7 +72,5 @@ Jazz.on("frames", function (frame) {
 	 	if (fing) 
 	 		$("#fingers").html(""+parseInt(fing[0])+", "+parseInt(fing[1])+", "+parseInt(fing[2]));
  	}
-
 });
-
 </script>

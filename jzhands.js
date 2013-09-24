@@ -56,8 +56,9 @@
 
 		// DYNAMICALLY SWITCH from simple mode
 		// are we holding up more than last_valid fingers?
-		if (Jazz.frameDigitCount >= Jazz.LAST_VALID_FINGER)
+		if (Jazz.frameDigitCount >= Jazz.LAST_VALID_FINGER) {
 			Jazz.simpleMode = true;
+		}
 		else {
 			Jazz.simpleMode = false;
 			handleFingers();
@@ -65,6 +66,8 @@
 
 		handleNavigation();
 		handleGestureEvents();
+		handleProgressNav();
+		handleGrabRelease();
 
 		Jazz.event["frames"](Jazz.lastFrame);
 	}
@@ -128,7 +131,7 @@
 				circleCoords = Jazz.hands[0].palmPosition;
 			}
 
-			drawFinger(circleCoords);
+			drawCircle(circleCoords);
 
 			if (Jazz.disableHelper === false)
 				drawHelperArrows();
@@ -161,7 +164,6 @@
 			return false;
 
 		if (hasDetectedHand() === true) {
-
 			if (isNewHandMotion() === true) {
 				clearTimeoutForNav();
 				setTimeoutForNav();
@@ -252,13 +254,32 @@
 		else if (canDrawZoomOut())
 			detectedNav = "zoomOut";
 
-		handleProgressNav();
-
 		return detectedNav;
+	}
+
+	var handleGrabRelease = function() {
+		if (Jazz.hands.length === 0) {
+			if (Jazz.isGrabbing === true) Jazz.event["release"]();
+			Jazz.isGrabbing=false;
+			return;
+		}
+		// TODO: Surface this HACK (1 finger === grab)
+		if (getCapturedDigits() <= 1) {
+			
+			if (Jazz.isGrabbing === false) Jazz.event["grab"]();
+			Jazz.isGrabbing = true;
+
+		} else {
+
+			if (Jazz.isGrabbing == true) Jazz.event["release"]();
+			Jazz.isGrabbing = false;
+		}
+
 	}
 
 	// TODO: Add zooming percentages and clean method up
 	var handleProgressNav = function(detectedNav) {
+		if (Jazz.hands.length === 0) return;
 		var verticalDistance = threshold("up") - threshold("down");
 		var upProgress = (palm("vertical") -  threshold("down")) / verticalDistance;
 		if (upProgress > 1) upProgress = 1;
@@ -279,21 +300,6 @@
 		Jazz.event["progress"](navProgress);
 	}
 
-	/**
-	 * 	drawFinger(fingerPos, isLastFinger)
-	 *
-	 * 	Draw a circle representing captured fingers
-	 **/
-	var drawFinger = function(fingerPos) {
-
-		if (Jazz.timerPercentage > 99) {
-			getContext().fillStyle = "green";
-		}
-		else if (Jazz.timerPercentage === 0) {
-			getContext().fillStyle = Jazz.fillStyle;
-			drawCircle(fingerPos);
-		}
-	}
 
 	/**
 	 * 	drawFingerText()
@@ -332,6 +338,13 @@
 		getContext().lineWidth=10;
 		getContext().strokeStyle="green";
 		getContext().stroke();
+
+		getBlurredContext().beginPath();
+		getBlurredContext().arc(getXForCoords(fingerPos), getYForCoords(fingerPos), 30, 0, radius);
+		getBlurredContext().lineWidth=10;
+		getBlurredContext().strokeStyle="green";
+		getBlurredContext().stroke();
+
 	}
 
 	/**
@@ -419,8 +432,6 @@
 		    getContext().fillStyle = Jazz.fillStyle;
 			getContext().strokeStyle = 'white';
 			getContext().fillText(txt, x, y-30);
-		    // getContext().strokeText(txt, x, y-30);
-
 		}
 	}
 
@@ -432,13 +443,11 @@
 	 **/
 	var createFingerCanvas  = function () {
 		var canvas = Jazz.canvas;
-
-		// canvas.width = document.body.clientWidth;
-		// canvas.height = document.body.clientHeight;
-		// if (canvas.height > 500)
-		// 	canvas.height=500;
 		getContext().translate(canvas.width*1.2,canvas.height);
 	    getContext().globalAlpha = Jazz.opacity;
+		var canvas = Jazz.blurredCanvas;
+		getBlurredContext().translate(canvas.width*1.2,canvas.height);
+	    getBlurredContext().globalAlpha = Jazz.opacity;
 	}
 
 	/**
@@ -447,6 +456,7 @@
 	var clearCanvas = function() {
 		var canvas = Jazz.canvas;
 		getContext().clearRect(-canvas.width*1.2,-canvas.height,canvas.width*1.2,canvas.height);
+		getBlurredContext().clearRect(-canvas.width*1.2,-canvas.height,canvas.width*1.2,canvas.height);
 	}
 
 	/**
@@ -497,9 +507,6 @@
 		else {
 			Jazz.simpleMode=true;
 		}
-
-		if (options.blurEffect != undefined && options.blurEffect != Jazz.blurEffect)
-			Jazz.blurEffect = options.blurEffect;
 
 		if (options.disableTimer != undefined && options.disableTimer != Jazz.disableTimer)
 			Jazz.disableTimer = options.disableTimer;
@@ -575,12 +582,15 @@
 	/**
 	 *	getContext()
 	 **/
-	var getContext = function () {
-		if (Jazz.ctx) 
-			return Jazz.ctx;
-		else
-			Jazz.ctx = Jazz.canvas.getContext("2d");
+	var getContext = function (isBlurred) {
+		if (Jazz.ctx)  return Jazz.ctx;
+		Jazz.ctx = Jazz.canvas.getContext("2d");
 		return Jazz.ctx;
+	}
+	var getBlurredContext = function () {
+		if (Jazz.blurredCtx) return Jazz.blurredCtx;
+		Jazz.blurredCtx = Jazz.blurredCanvas.getContext("2d");
+		return Jazz.blurredCtx;
 	}
 	/**
 	 *	getFingersMap()
@@ -608,10 +618,18 @@
 		return parseInt((coords[0]-900)-getRadiusForFinger(coords)/2);
 	}
 	var drawCircle = function(coords) {
-		getContext().beginPath();
-		getContext().arc(getXForCoords(coords), getYForCoords(coords), getRadiusForFinger(coords), 0, 2*Math.PI);
-		getContext().fill();		
+
+		if (Jazz.timerPercentage === 0){
+			getContext().beginPath();
+			getContext().arc(getXForCoords(coords), getYForCoords(coords), getRadiusForFinger(coords), 0, 2*Math.PI);
+			getContext().fill();
+
+			getBlurredContext().beginPath();
+			getBlurredContext().arc(getXForCoords(coords), getYForCoords(coords), getRadiusForFinger(coords), 0, 2*Math.PI);
+			getBlurredContext().fill();
+		}
 	}
+
 	var getCapturedDigits = function() {
 		return Jazz.frameDigitCount;
 	}
@@ -654,6 +672,7 @@
 		return getHandPos(1);
 	}
 	var palm = function(palmPosition) {
+		if (Jazz.hands.length === 0) return;
 		var hand = Jazz.hands[0];
 		if (palmPosition === "horizontal")
 			return hand.palmPosition[0];
@@ -668,24 +687,34 @@
 		getContext().drawImage(Jazz.leftHelperArrow, -1030, getHandPosY()-15);
 		getContext().drawImage(Jazz.downHelperArrow, getHandPosX()-17, -215);
 
+		getBlurredContext().drawImage(Jazz.upHelperArrow, getHandPosX()-17, -390);
+		getBlurredContext().drawImage(Jazz.rightHelperArrow, -820, getHandPosY()-15);
+		getBlurredContext().drawImage(Jazz.leftHelperArrow, -1030, getHandPosY()-15);
+		getBlurredContext().drawImage(Jazz.downHelperArrow, getHandPosX()-17, -215);
 	}
 	var drawUpArrow = function () {
 		getContext().drawImage(Jazz.upArrow, getHandPosX()-17, getHandPosY()-15);
+		getBlurredContext().drawImage(Jazz.upArrow, getHandPosX()-17, getHandPosY()-15);
 	}
 	var drawDownArrow = function () {
 		getContext().drawImage(Jazz.downArrow, getHandPosX()-17, getHandPosY()-15);
+		getBlurredContext().drawImage(Jazz.downArrow, getHandPosX()-17, getHandPosY()-15);
 	}
 	var drawLeftArrow = function () { 
+		getContext().drawImage(Jazz.leftArrow, getHandPosX()-17, getHandPosY()-15);
 		getContext().drawImage(Jazz.leftArrow, getHandPosX()-17, getHandPosY()-15);
 	}
 	var drawRightArrow = function () {
 		getContext().drawImage(Jazz.rightArrow, getHandPosX()-14, getHandPosY()-15);
+		getBlurredContext().drawImage(Jazz.rightArrow, getHandPosX()-14, getHandPosY()-15);
 	}
 	var drawZoomInIcon = function () {
 		getContext().drawImage(Jazz.zoomIn, getHandPosX()-24, getHandPosY()-20);
+		getBlurredContext().drawImage(Jazz.zoomIn, getHandPosX()-24, getHandPosY()-20);
 	}
 	var drawZoomOutIcon = function () {
 		getContext().drawImage(Jazz.zoomOut, getHandPosX()-19, getHandPosY()-20);
+		getBlurredContext().drawImage(Jazz.zoomOut, getHandPosX()-19, getHandPosY()-20);
 	}
 	var canDrawHandUp = function () {
 		if (palm("vertical") > threshold("up")) {
@@ -737,33 +766,45 @@
 		Jazz.timerPercentage = parseInt ((Jazz.incr / Jazz.WAIT_FINGER_MS) * 100);
 		return Jazz.timerPercentage;
 	}
+
 	var appendCanvasToDOM = function (){
-		var canvas = document.createElement("canvas");
-		var calculatedWidth = document.body.clientWidth*.9;
-
-		canvas.setAttribute("id", "jazz-fingers");
-
-		canvas.setAttribute("style","position:absolute;top:105px;left:-25px;"+blurStyle());
-		if (calculatedWidth < 1000) calculatedWidth = 1050;
-		canvas.setAttribute("width", calculatedWidth+"px");
-		canvas.setAttribute("height", "410px");		
+		var canvas = createBaseCanvas(false,"jazz-fingers");
+		var blurredCanvas = createBaseCanvas(true,"jazz-fingers-shadow");
+		Jazz.blurredCanvas = blurredCanvas;
+		document.body.appendChild(blurredCanvas);
 		document.body.appendChild(canvas);
 
 		return canvas;
 	}
 
+	var createBaseCanvas = function (isBlurred, divId) {
+		var canvas = document.createElement("canvas");
+		var calculatedWidth = document.body.clientWidth*.9;
+		var cssStyle = "position:absolute;top:105px;left:-25px;"
+		if (calculatedWidth < 1000) calculatedWidth = 1050;
+		if (isBlurred) cssStyle+=blurStyle();
+
+		canvas.setAttribute("id", divId);
+		canvas.setAttribute("style",cssStyle);
+
+		canvas.setAttribute("width", calculatedWidth+"px");
+		canvas.setAttribute("height", "410px");
+
+		return canvas;
+	}
+
 	var blurStyle = function () {
-		if (Jazz.blurEffect === true)
-			return "-webkit-filter: blur(2px);-moz-filter: blur(2px);-o-filter: blur(2px);-ms-filter: blur(2px)filter: blur(2px);";
-		else 
-			return "";
+		return "-webkit-filter: blur(10px);-moz-filter: blur(10px);-o-filter: blur(10px);-ms-filter: blur(10px)filter: blur(10px);";
 	}
 	var showCanvas = function () {
-		if (Jazz.showUI === true)
+		if (Jazz.showUI === true) {
 			document.getElementById("jazz-fingers").style.display = 'block';
+			document.getElementById("jazz-fingers-shadow").style.display = 'block';
+		}
 	}
 	var hideCanvas = function () {
 		document.getElementById("jazz-fingers").style.display = 'none';
+		document.getElementById("jazz-fingers-shadow").style.display = 'none';
 	}
 
 	Jazz.event = {
@@ -771,7 +812,9 @@
 		navigation: function(navEvent){},
 		gestures: function(nativeGesture){},
 		frames: function(nativeFrame){},
-		progress: function(navProgress){}
+		progress: function(navProgress){},
+		grab: function(){},
+		release: function(){}
 	}
 	Jazz.lastDigitsFound = 0;
 	Jazz.handNavigation = "";
@@ -791,6 +834,7 @@
 	Jazz.disableHelper = false;
 	Jazz.disableTimer = false;
 	Jazz.showUI = true;
+	Jazz.isGrabbing = false;
 	var FIRST=0, SECOND=1, THIRD=2, FOURTH=3;
 
 }).call(this);

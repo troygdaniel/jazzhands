@@ -134,8 +134,7 @@ $(function() {
 
 	Jazz.init({
 		disableZoom: false,
-		waitTimer: 400,
-		blurEffect: true
+		waitTimer: 400
 	});
 
 	Jazz.on("navigation", function(nav) {
