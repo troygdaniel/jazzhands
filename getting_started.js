@@ -81,7 +81,7 @@ $(function() {
 		disableZoom: false,
 		disableFingers: true,
 		// fingersHoverText: ["Zoom out?!","Zoom In!"],
-		waitTimer: 800
+		waitTimer: 900
 	});
 
 	Jazz.on("gestures", function (g) {
@@ -119,6 +119,17 @@ $(function() {
         	$("#x-axis-hand").show();
         else if (progress["zoomOut"]>70)
         	$("#z-axis-hand").show();
+        
+        if (Jazz.isGrabbing === true && Jazz.frameDigitCount <= 1) {
+	        var $plane = $("#paper-plane");
+	        var leftpx = 60 + (progress["right"] *4);
+	        var toppx = -20 + (progress["down"] * 4);
+	        var widthpx = 220 + (progress["zoomOut"] * 3);
+	        $plane.css("left",leftpx+"px");
+	        $plane.css("top",toppx+"px");
+	        $plane.width(widthpx);
+        }
+
     });            
     Jazz.on("frames", function (f) {
 		if (window.captureFrames === true) {
@@ -171,7 +182,7 @@ $(function() {
 		else {
 			Jazz.clearFingersText();
 			Jazz.disableHelper = false;
-			Jazz.WAIT_FINGER_MS=800;
+			Jazz.WAIT_FINGER_MS=900;
 
 		}
 	}
