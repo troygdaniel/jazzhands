@@ -29,11 +29,14 @@ $(function() {
 		},
 		"full-home": {
 			left: "basic-home",
-			down: "full-1"
+			down: "full-1",
+			zoomIn: "full-1",
+			right: "under-home"
 		},
 		"full-1": {
 			up: "full-home",
-			right: "full-3",
+			left: "full-1",
+			right: "full-2",
 			zoomOut: "full-home"
 		},
 		"full-2": {
@@ -48,22 +51,29 @@ $(function() {
 			right: "full-4",			
 			zoomOut: "full-home"
 		},
-		"full-4": {
-			up: "full-home",
-			left: "full-3",
-			right: "full-5",			
-			zoomOut: "full-home"
+		"under-home": {
+			left: "full-home",
+			right: "main",
+			down: "under-1",
+			zoomIn: "under-1",
 		},
-		"full-5": {
-			up: "full-home",
-			left: "full-4",
-			right: "full-5",			
-			zoomOut: "full-home"
+		"under-1": {
+			up: "under-home",
+			left: "under-1",
+			right: "under-2",
+			zoomOut: "under-home"
 		},
-		"full-6": {
-			up: "full-home",
-			left: "full-5",
-			zoomOut: "full-home"
+		"under-2": {
+			up: "under-home",
+			left: "under-1",
+			right: "under-3",
+			down: "under-2",			
+			zoomOut: "under-home"
+		},
+		"under-3": {
+			up: "under-home",
+			left: "under-2",
+			zoomOut: "under-home"
 		}
 	};
 
@@ -71,38 +81,63 @@ $(function() {
 		disableZoom: false,
 		disableFingers: true,
 		// fingersHoverText: ["Zoom out?!","Zoom In!"],
-		waitTimer: 700
+		waitTimer: 800
 	});
 
 	Jazz.on("gestures", function (g) {
-		$("#detected-gesture").html(g);
+
+		if (g.type === "swipe") 
+			return;
+
+		$("#gesture-debug").html("<B>&gt;</B> "+g.type);
+		var $img = $("#gesture-image");
+		if (g.type === "swipe") 
+			$img.attr("src","tutorial_images/swipe_gesture.png");
+		if (g.type === "keyTap") 
+			$img.attr("src","tutorial_images/tap_gesture.png");
+		if (g.type === "circle") 
+			$img.attr("src","tutorial_images/circle_gesture.png");
+		if (g.type === "screenTap") 
+			$img.attr("src","tutorial_images/screen_tap_gesture.png");
+
 	});
 
 	Jazz.on("grab", function () {
-		$("#grab-release-detection").html("Grabbing");
+		$("#grab-release-debug").html("<B>&gt;</B> Grabbing");
+		$("#grab-release-image").attr("src","tutorial_images/closed_hand.png");
 	});
 	Jazz.on("release", function () {
-		$("#grab-release-detection").html("Release");
+		$("#grab-release-debug").html("<B>&gt;</B> Release");
+		$("#grab-release-image").attr("src","tutorial_images/open_hand.png");
 	});
     Jazz.on("progress", function (progress) {
-        $("#progress-detection").html("up = "+progress["up"]+    "%, down = "+progress["down"]+"%, right = "+progress["right"]+"%, left = "+progress["left"]+"%"+"<BR>isGrabbing="+Jazz.isGrabbing);
+        $("#progress-debug").html("<B>&gt;</B> up = "+progress["up"]+    "%, down = "+progress["down"]+"%, right = "+progress["right"]+"%, left = "+progress["left"]+"%");
+        $(".axis-hand").hide();
+        if (progress["up"]>70)
+        	$("#y-axis-hand").show();
+        else if (progress["right"]>70)
+        	$("#x-axis-hand").show();
+        else if (progress["zoomOut"]>70)
+        	$("#z-axis-hand").show();
     });            
     Jazz.on("frames", function (f) {
-		if (window.detectFrame === true)
-			$("#frame-detection").html(f);
+		if (window.captureFrames === true) {
+			$("#frame-debug").html("<B>&gt;</B> frame rate="+parseInt(f.currentFrameRate)+", hands=" +f.hands.length+", fingers="+f.fingers.length);
+			$("#finger-count-image").attr("src","tutorial_images/"+f.fingers.length+"_finger.png");
+		}
     });
 	Jazz.on("navigation", function(nav) {
 		var activeId = $(".active").attr("id");
-		console.log(activeId+","+nav);
+		$("#navigation-debug").html("<B>&gt;</B> "+nav);
 		if (navigationMap[activeId]) {
 			go(navigationMap[activeId][nav])
-			onTarget(activeId);
+			onTarget(navigationMap[activeId][nav]);
 		}
 	});
 
 	Jazz.on("fingers", function(f) {
 		var activeId = $(".active").attr("id");
-
+		$("#finger-debug").html("<B>&gt;</B> "+f);
 		if (Jazz.disableFingers === false && f === 1 && navigationMap[activeId]) {
 			go(navigationMap[activeId]["zoomOut"]);
 		}
@@ -110,7 +145,7 @@ $(function() {
 		if (Jazz.disableFingers === false && f === 2 && navigationMap[activeId]) {
 			go(navigationMap[activeId]["zoomIn"]);
 			Jazz.disableFingers=true;
-			Jazz.LAST_VALID_FINGER = 1;
+			Jazz.clearFingersText();
 		}
 
 
@@ -123,14 +158,21 @@ $(function() {
 	}
 
 	function onTarget(href) {
-		console.log("target = " + href);
-		window.detectFrame = false;
-		if (href === "full-1") {
-			Jazz.fingersHoverText = ["Zoom Out?", "Zoom in?"];
-			Jazz.LAST_VALID_FINGER = 3;
+		window.captureFrames = false;
+		if (href === "full-1") {			
+			Jazz.setFingersText(["Zoom Out?", "Zoom in?"]);
+			Jazz.disableHelper = true;
+			Jazz.WAIT_FINGER_MS=1200;
+		} else if (href === "under-1") {
+			Jazz.disableHelper = true;
+		} else if (href === "under-2") {
+			window.captureFrames = true;
 		}
-		if (href === "full-6") {
-			window.detectFrame = true;
+		else {
+			Jazz.clearFingersText();
+			Jazz.disableHelper = false;
+			Jazz.WAIT_FINGER_MS=800;
+
 		}
 	}
 

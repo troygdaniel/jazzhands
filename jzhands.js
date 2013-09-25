@@ -78,7 +78,23 @@
 	Jazz.hide = function () {
 		Jazz.showUI = false;
 	}
+	
+	Jazz.clearFingersText = function () {
+		Jazz.fingersText = [];
+		Jazz.disableFingers=false;
+		Jazz.LAST_VALID_FINGER = 1;
+	}
 
+
+	Jazz.setFingersText = function(hoverText) {
+		if (hoverText) {
+			Jazz.fingersText = hoverText;
+			Jazz.disableFingers=false;
+			Jazz.LAST_VALID_FINGER = hoverText.length+1;
+		} else {
+			Jazz.clearFingersText();
+		}
+	}
 	/** 
 	 *	Jazz.on()
 	 *
@@ -289,17 +305,26 @@
 		if (upProgress > 1) upProgress = 1;
 		if (upProgress < 0) upProgress = 0;
 		var downProgress = 1-upProgress;
+
 		var horizontalDistance = threshold("right") - threshold("left");
 		var rightProgress = (palm("horizontal") -  threshold("left")) / horizontalDistance;
 		if (rightProgress > 1) rightProgress = 1;
 		if (rightProgress < 0) rightProgress = 0;
 		var leftProgress = 1-rightProgress;
 
+		var depthDistance = threshold("zoomIn") - threshold("zoomOut");
+		var zoomInProgress = (palm("depth") -  threshold("zoomOut")) / depthDistance;
+		if (zoomInProgress > 1) zoomInProgress = 1;
+		if (zoomInProgress < 0) zoomInProgress = 0;
+		var zoomOutProgress = 1-zoomInProgress;
+
 		var navProgress = {
 			"up": parseInt(upProgress*100),
 			"down": parseInt(downProgress*100),
 			"right": parseInt(rightProgress*100),
-			"left": parseInt(leftProgress*100)
+			"left": parseInt(leftProgress*100),
+			"zoomIn": parseInt(zoomInProgress*100),
+			"zoomOut": parseInt(zoomOutProgress*100),
 		}
 		Jazz.event["progress"](navProgress);
 
@@ -314,16 +339,16 @@
 	 **/
 	var drawFingerText = function () {
 		if (Jazz.frameDigitCount === FIRST+1) {
-			drawText(Jazz.fingersHoverText[FIRST],getHandPosX(), getHandPosY());
+			drawText(Jazz.fingersText[FIRST],getHandPosX(), getHandPosY());
 		}
 		else if (Jazz.frameDigitCount === SECOND+1) {
-			drawText(Jazz.fingersHoverText[SECOND],getHandPosX(), getHandPosY());
+			drawText(Jazz.fingersText[SECOND],getHandPosX(), getHandPosY());
 		}
 		else if (Jazz.frameDigitCount === THIRD+1) {
-			drawText(Jazz.fingersHoverText[THIRD],getHandPosX(), getHandPosY());
+			drawText(Jazz.fingersText[THIRD],getHandPosX(), getHandPosY());
 		}
 		else if (Jazz.frameDigitCount === FOURTH+1) {
-			drawText(Jazz.fingersHoverText[FOURTH],getHandPosX(), getHandPosY());
+			drawText(Jazz.fingersText[FOURTH],getHandPosX(), getHandPosY());
 		}
 	}
 
@@ -438,6 +463,14 @@
 		    getContext().fillStyle = Jazz.fillStyle;
 			getContext().strokeStyle = 'white';
 			getContext().fillText(txt, x, y-30);
+
+
+			getBlurredContext().clearRect(0,0,Jazz.canvas.width, Jazz.canvas.height);
+			getBlurredContext().font='bold 22pt Arial';
+		    
+		    getBlurredContext().fillStyle = Jazz.fillStyle;
+			getBlurredContext().strokeStyle = 'white';
+			getBlurredContext().fillText(txt, x, y-30);
 		}
 	}
 
@@ -476,7 +509,7 @@
 	 * 	fillStyle:
 	 *	Color of the finger circle:
 	 *	
-	 *	fingersHoverText:
+	 *	fingersText:
 	 *	Text to display for each "finger" event
 	 *
 	 *
@@ -484,7 +517,7 @@
 	 *	Jazz.init({
 	 *		waitTimer:  100,
 	 *		fillStyle: "black",
-	 *		fingersHoverText: ["finger one", "finger two"]	 
+	 *		fingersText: ["finger one", "finger two"]	 
 	 * 	})
 	 *	
 	 * TODO: document all available options	
@@ -504,9 +537,9 @@
 		if (options.waitTimer)
 			Jazz.WAIT_FINGER_MS = options.waitTimer;
 		
-		if (options.fingersHoverText) {
-			Jazz.fingersHoverText = Jazz.fingersHoverText.concat(options.fingersHoverText);
-			Jazz.LAST_VALID_FINGER=options.fingersHoverText.length+1;
+		if (options.fingersText) {
+			Jazz.fingersText = Jazz.fingersText.concat(options.fingersText);
+			Jazz.LAST_VALID_FINGER=options.fingersText.length+1;
 		}
 		if (Jazz.LAST_VALID_FINGER > 1)
 			Jazz.simpleMode = false;
@@ -577,7 +610,7 @@
 		if (direction === "zoomIn")
 			return -10;
 		else if (direction === "zoomOut")
-			return 110;
+			return 120;
 		else if (direction === "up")
 			return 225;
 		else if (direction === "down")
@@ -832,7 +865,7 @@
 	Jazz.WAIT_INTERVAL_TIMER = 40;
 	Jazz.CIRCLE_RADIUS = 1.6;
 	Jazz.opacity = .45;
-	Jazz.fingersHoverText = [];
+	Jazz.fingersText = [];
 	Jazz.arrowColor = "black"
 	Jazz.incr=0;
 	Jazz.lastFrame = {};

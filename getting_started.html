@@ -28,22 +28,20 @@
     <!--- MAIN -->
     <div id="main" class="step " data-x="0" data-y="-2900" data-scale="8">
         
-        <q><span style="position:absolute;top:-150px;left:250px;">Jazz hands is a JavaScript library for <span style="position:relative;left:180px;">motion</span><br>controllers. </span>
-        <img src="tutorial_images/leap_logo.png" width="200px" style="position:absolute;top:-65px;left:460px"/>
+        <q><span style="position:absolute;top:-150px;left:0px;"><B>Jazz hands JS Library</B>  
         </q>
 
-        <p style="font-size:34px;font-style:normal;position:relative;top:40px;left:-100px;height:240px"> 
+        <p style="font-size:34px;font-style:normal;position:relative;top:-100px;left:-40px;height:240px"> 
 
-        Lorem epsum
-        <br/> <br/> 
-
-        <B>To begin</b>, hold a single hand to the right of the controller.  <br/> 
-
+        Jazz Hands is a JavaScript library for <span style="position:relative;left:180px;">motion</span><br>controllers.
+        <img src="tutorial_images/leap_logo.png" width="200px" style="position:absolute;top:0px;left:540px"/>
+        <br/><br/>
+        <B>To begin</b>, hold a single hand<BR/> to the right of the controller.  <br/> 
         </p>
         <!-- helping hand images -->
-        <img src="tutorial_images/leap_axis.png" width="300" style="position:absolute;left:-100px;top:-100px">
-        <img src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:-23px;left:145px;opacity:0.5"/>
-        <img src="tutorial_images/right_timer.png" width="120px" style="position:absolute;top:-53px;left:140px;opacity:.7"/>
+        <img src="tutorial_images/leap_axis.png" width="300" style="position:absolute;left:490px;top:30px">
+        <img src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:83px;left:745px;opacity:0.5"/>
+        <img src="tutorial_images/right_timer.png" width="120px" style="position:absolute;top:53px;left:740px;opacity:.7"/>
 
     </div>
 
@@ -52,41 +50,57 @@
             *** BASIC HOME ***
     -->
      <div id="basic-home" class="step" data-x="9000" data-y="-2900" data-scale="8">     
-        <q>Basic Implementation</q>
+        <q><B>Basic Implementation</B></q>
         <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
         Single handed indication of up, down, left, right.. zoom in and out. <br/>
         </p> 
 
         <img src="tutorial_images/leap_axis.png" width="300" style="position:absolute;left:470px;top:250px">
         <img src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:280px;left:670px;opacity:0.3"/>
-        <img src="tutorial_images/right_timer.png" width="120px" style="position:absolute;top:220px;left:630px;opacity:.7"/>
+        <img src="tutorial_images/zoom_in_timer.png" width="120px" style="position:absolute;top:220px;left:630px;opacity:.7"/>
 
     </div>
         <!-- BASIC SLIDES -->
         <div id="basic-1" class="step slide" data-x="6200" data-y="-3000" data-scale="1">
             <q style="font-weight:bold">Starting in neutral</q>
             <br/>
-            A neutral position with Jazz hands is the position where no navigation event is triggered.  Keeping your hand in one of the six "zones" triggers a timer-based event to fire.
-            <br>
-            <B>To continue</b>, hold a single hand to the behind the controller, towards the screen.<br/> 
+            A neutral position with Jazz hands is the position where no navigation event is triggered.
+            <br><br>
+            <B>To continue</b>, hold a single hand to the right of the controller.<br/> 
+            <img src="tutorial_images/neutral.png" style="position:relative;top:10px;left:520px"/>
             <!-- use the leap and hand images to visualize -->
         </div>
         <div id="basic-2" class="step slide" data-x="7200" data-y="-3000" data-scale="1">
             <q style="font-weight:bold">Navigation zones</q>
             <br/>
             Moving along the X, Y and Z axis allows for 6-degrees of movement.
+            <BR/><BR/>
+            Keeping your hand in one of the six "zones" triggers a timer-based event to fire.
             <!-- use the leap and hand images to visualize -->
+            <img src="tutorial_images/leap_axis.png" width="300" style="position:absolute;left:490px;top:500px">
+            <img id="y-axis-hand" class="axis-hand" src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:470px;left:620px;opacity:0.3;display:none"/>
+            <img id="x-axis-hand" class="axis-hand" src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:580px;left:760px;opacity:0.3;display:none"/>
+            <img id="z-axis-hand" class="axis-hand" src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:620px;left:510px;opacity:0.3;display:none"/>            
+
         </div>
         <div id="basic-3" class="step slide" data-x="8200" data-y="-3000" data-scale="1">
             <q style="font-weight:bold">Implementation</q>
             <br/>
             A basic implementation just an init and a binding to navigation.  The source is <a href="https://github.com/troygdaniel/jazzhands">available on github</a>.
+            <br/><br/>
 
-            <pre>Jazz.init()
-            Jazz.on('navigation', function(n) {
-                console.log(n);
-            });
-            </pre>
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+<pre>
+Jazz.init()
+Jazz.on('navigation', function(n) {
+    console.log(n);
+});
+</pre>
+<br/>
+
+            <div id="navigation-debug"><B>&gt;</B></div>
+            </div><br/>
+
             <!-- display the triggered navigation events on this slide -->
         </div>
 
@@ -96,59 +110,62 @@
         *** FULL CONTROL HOME *** 
     -->
      <div id="full-home" class="step" data-x="18000" data-y="-2900" data-scale="8">     
-        <q>Full Control</q>
+        <q style="position:relative;left:0px"><B>Jazz Hands Events</B></q>
         <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
-        There are 6 additional events you can listen for (fingers, gestures, progress, grab/release, hide/show, frames)
+        There are 3 additional jazz hands events you can listen for (fingers, grab/release, progress)
         </p> 
+        <img src="tutorial_images/right_hand.png" width="120px" style="position:absolute;top:240px;left:460px;"/>
+
     </div>
 
         <!-- FULL CONTROL SLIDES -->
         <div id="full-1" class="step slide" data-x="15200" data-y="-3000" data-scale="1">
-            <q style="font-weight:bold">Fingers</q>
+            <q style="font-weight:bold">Fingers Event</q>
             <br/>
-            lorem
-            <pre>            
-            Jazz.init({
-                fingersHoverText: ["Zoom Out?","Zoom in!"]
-            });
-            Jazz.on("fingers", function(fingers) {
-                console.log("on fingers = " + fingers);
-            });            
-            </pre>     
+            The fingers event is triggered when initializing<br/> with a fingersText array.  Element order = finger #.
+            <br/><br/>
+            <img src="tutorial_images/one_finger.png" style="position:absolute;left:710px;top:-20px" width="160px"/>
+
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+            <pre>
+Jazz.init({
+    fingersText: ["Zoom Out?","Zoom in!"]
+});
+Jazz.on("fingers", function(fingers) {
+    console.log("on fingers = " + fingers);
+});            
+            </pre>
+            <div id="finger-debug"><B>&gt;</B></div>
+            </div>
             <!-- visualize by enabling fingersHoverText and LAST_VALID_FINGER  -->
 
         </div>
-        <div id="full-2" class="step slide" data-x="16200" data-y="-3000" data-scale="1">
-            <q style="font-weight:bold">Gestures</q>
-            <br/>
-            Detected Gesture =  <span id="detected-gesture"/>
-            <br/>
-<pre>
-// g = CircleGesture, KeyTapGesture, ScreenTapGesture
-Jazz.on("gestures", function (g) { console.log(g); });            
-</pre>
-
-            <!-- visualize by displaying swipe like images -->            
-        </div>
-        <div id="full-3" class="step slide" data-x="17200" data-y="-3000" data-scale="1">
+        <div id="full-2" class="step slide" data-x="16200" data-y="-3000" data-scale="1">       
             <q style="font-weight:bold">Grab/Release</q>
-            <br/>
-            <span id="grab-release-detection"/>
-<pre>
-    Jazz.on("grab", function () {
-        console.log("grab");
-    });
-
-    Jazz.on("release", function (progress) {
-        console.log("release");
-    });            
-</pre>
+            A "grab" event is triggered when a fist is clenched.  "release" is called once the fist is unclenched.
+            <br/><br/>
+            <img id="grab-release-image" src="tutorial_images/open_hand.png" style="position:absolute;left:650px;top:20px"/>
             <!-- visualize by having 2 images appear - closed fist / open fist) darth? -->
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+
+<pre>
+Jazz.on("grab", function () {
+    console.log("Grabbing");
+});
+
+Jazz.on("release", function (progress) {
+    console.log("Release");
+});            
+        </pre>
+            <div id="grab-release-debug"><B>&gt;</B></div>
+            </div>
         </div>
-        <div id="full-4" class="step slide" data-x="18200" data-y="-3000" data-scale="1">
+
+        <div id="full-3" class="step slide" data-x="17200" data-y="-3000" data-scale="1">
             <q style="font-weight:bold">Progress</q>
-            <br/>
-            <span id="progress-detection"/>
+            The "progress" event gives constant feedback on the movement of the hand, as it relates to a navigation motion.
+            <br/><br/>
+            <div style="border-style:dashed;border-width:2px;padding:2px">
 <pre>
 Jazz.on("progress", function (progress) {
     var upPercent = progress["up"];
@@ -157,20 +174,83 @@ Jazz.on("progress", function (progress) {
     var leftPercent = progress["left"];
 });            
 </pre>
+<br/>
+            <div id="progress-debug"><B>&gt;</B></div>
+            </div>
             <!-- visualize by having bar chart for up, down, right, left -->
         </div>
-        <div id="full-5" class="step slide" data-x="19200" data-y="-3000" data-scale="1">
-            <q style="font-weight:bold">Hide/Show</q>
+
+
+
+        <!-- 
+            *** UNDER THE HOOD ***
+        -->
+     <div id="under-home" class="step" data-x="27000" data-y="-2900" data-scale="8">     
+        <q style="position:relative;left:0px"><B>Under the hood</B></q>
+        <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
+        Additionally, you can access the raw gestures and frames, and some other minor options.
+        </p> 
+        <img src="tutorial_images/example_hands_alpha.png" width="90px" style="position:absolute;top:240px;left:460px;"/>
+
+    </div>
+
+ <!-- FULL CONTROL SLIDES -->
+        <div id="under-1" class="step slide" data-x="24200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">Gestures</q>
+            Simplifed gestures are available on the "gestures" event.
+            <br/><br/>
+            These native gestures have been simplified to a single gesture, instead of an array of possibilities.
+            <br/><br/>
+            <img id="gesture-image" src="tutorial_images/swipe_gesture.png" style="position:absolute;left:710px;top:0px" width="160px"/>
+
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+<pre>
+// g = CircleGesture, KeyTapGesture, ScreenTapGesture
+Jazz.on("gestures", function (g) { 
+    console.log(g.type);
+}); 
+</pre>
             <br/>
-            Hide or show the UI using Jazz.hide() or Jazz.show()
-            <!-- grab toggles hide of UI -->
+            <div id="gesture-debug"><B>&gt;</B></div>
+            </div>
+
+            <br/>
+            <!-- visualize by displaying swipe like images -->            
         </div>
-        <div id="full-6" class="step slide" data-x="20200" data-y="-3000" data-scale="1">
+        <div id="under-2" class="step slide" data-x="25200" data-y="-3000" data-scale="1">
             <q style="font-weight:bold">Frames</q>
-            <span id="frame-detection"/>
+            Frame data is available from the Jazz.on("frames") event.
+            <br/><br/>
+            You can evaluate the frame object and have access to all the captured event data from leap JS.
+            <br/><br/>
+            <img id="finger-count-image" src="tutorial_images/5_finger.png" style="position:absolute;left:710px;top:0px" width="120px"/>
+
+            <div style="border-style:dashed;border-width:2px;padding:2px">       
+<pre>
+Jazz.on("frames", function (f) {
+    console.log(f.currentFrameRate+","
+                +hands.length+","
+                +f.fingers.length);
+});
+</pre>      <br/>      
+            <div id="frame-debug"><B>&gt;</B></div>
+            </div>
             <br/>
             <!-- dump out all the frame activity when on this slide -->
         </div>
+        <div id="under-3" class="step slide" data-x="26200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">Other options</q>
+            <br/>
+            Hide or show the UI using <B>Jazz.hide()</B> or <B>Jazz.show()</B>
+            <br/><br/>
+            Toggle the "helper arrows" by setting &nbsp;<B>Jazz.disableHelper</B>.
+            <br/><br/>
+            Toggle the "timer" by setting &nbsp;<B>Jazz.disableTimer</B>.
+            <br/><br/>
+            During run-time setup finger events using <B>Jazz.setFingersText(["one","two"])</B>.<br/><br/>
+            Clear the finger event bindings using <B>Jazz.clearFingersText()</B>.
+            <!-- grab toggles hide of UI -->
+        </div>        
 
 </div>
 

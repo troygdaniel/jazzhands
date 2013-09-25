@@ -26,7 +26,7 @@
 
 Jazz.init({
 	fillStyle: "black",
-    fingersHoverText: ["One?","Two!"],
+    fingersText: ["One?","Two!"],
     disableZoom: false,
 });
 
@@ -46,14 +46,20 @@ Jazz.on("grab", function () {
 	console.log("grab");
 });
 
-Jazz.on("release", function (progress) {
+Jazz.on("release", function () {
 	console.log("release");
 	$("#debug").html("isGrabbing="+Jazz.isGrabbing);
 
 });
 
-Jazz.on("progress", function (progress) {
-	$("#debug").html("up = "+progress["up"]+	"%, down = "+progress["down"]+"%, right = "+progress["right"]+"%, left = "+progress["left"]+"%"+"<BR>isGrabbing="+Jazz.isGrabbing);
+Jazz.on("progress", function (p) {
+	$("#debug").html("up = "+p["up"]
+		+"%, down = "+p["down"]
+		+"%, right = "+p["right"]
+		+"%, left = "+p["left"]
+		+"%, in = "+p["zoomIn"]
+		+"%, out = "+p["zoomOut"]+"%"
+		+"<BR>isGrabbing="+Jazz.isGrabbing);
 });
 
 
