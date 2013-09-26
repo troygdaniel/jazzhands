@@ -1,24 +1,33 @@
 $(function() {
 
 	var navigationMap = {
+		start: {
+			down: "main",
+			zoomIn: "main",
+			zoomOut: "start"
+		},
 		main: {
 			right: "basic-home",
-			down: "main-home"
+			down: "main-home",
+			zoomOut: "start"
 		},
 		"basic-home": {
 			left: "main",
 			right: "full-home",
 			down: "basic-1",
 			zoomIn: "basic-1",
+			zoomOut: "start"
 		},
 		"basic-1": {
 			up: "basic-home",
+			left: "basic-3",
 			right: "basic-2",
 			zoomOut: "basic-home"
 		},
 		"basic-2": {
 			up: "basic-home",
 			left: "basic-1",
+			down: "basic-2",
 			right: "basic-3",
 			zoomOut: "basic-home"
 		},
@@ -31,7 +40,8 @@ $(function() {
 			left: "basic-home",
 			down: "full-1",
 			zoomIn: "full-1",
-			right: "under-home"
+			right: "under-home",
+			zoomOut: "start"
 		},
 		"full-1": {
 			up: "full-home",
@@ -48,7 +58,8 @@ $(function() {
 		"full-3": {
 			up: "full-home",
 			left: "full-2",
-			right: "full-4",			
+			right: "full-4",
+			down: "full-3",			
 			zoomOut: "full-home"
 		},
 		"under-home": {
@@ -56,6 +67,7 @@ $(function() {
 			right: "main",
 			down: "under-1",
 			zoomIn: "under-1",
+			zoomOut: "start"
 		},
 		"under-1": {
 			up: "under-home",
@@ -81,7 +93,7 @@ $(function() {
 		disableZoom: false,
 		disableFingers: true,
 		// fingersHoverText: ["Zoom out?!","Zoom In!"],
-		waitTimer: 900
+		waitTimer: 750
 	});
 
 	Jazz.on("gestures", function (g) {
@@ -150,7 +162,8 @@ $(function() {
 		var activeId = $(".active").attr("id");
 		$("#finger-debug").html("<B>&gt;</B> "+f);
 		if (Jazz.disableFingers === false && f === 1 && navigationMap[activeId]) {
-			go(navigationMap[activeId]["zoomOut"]);
+			if (typeof(navigationMap[activeId]["zoomOut"]) !== undefined)
+				go(navigationMap[activeId]["zoomOut"]);
 		}
 
 		if (Jazz.disableFingers === false && f === 2 && navigationMap[activeId]) {
@@ -163,9 +176,30 @@ $(function() {
 	});
 
 	impress().init();
+	console.log("??")
+	$(document).keypress(function(e) { 
+		console.log(""+e.which);
+		console.log(e);
+	    if (e.which == 49) { 
+	    	window.location.href="#main";
+	    }
+	    if (e.which == 50) { 
+	    	window.location.href="#basic-home";
+	    }
+	    if (e.which == 51) {
+	    	window.location.href="#full-home";
+	    }
+	    if (e.which == 52) {
+	    	window.location.href="#under-home";
+	    }
+	    if (e.which == 32 ) {
+	    	window.location.href="#start"; 
+	 	}  // esc   (does not work)
+	});
 
 	function go(href) {
-		window.location.href="#"+href;
+		if (href+"" != "undefined")
+			window.location.href="#"+href;
 	}
 
 	function onTarget(href) {
@@ -173,17 +207,20 @@ $(function() {
 		if (href === "full-1") {			
 			Jazz.setFingersText(["Zoom Out?", "Zoom in?"]);
 			Jazz.disableHelper = true;
-			Jazz.WAIT_FINGER_MS=1200;
+			Jazz.WAIT_FINGER_MS=1800;
+		} else if (href === "basic-2") {
+			Jazz.WAIT_FINGER_MS=1800;
 		} else if (href === "under-1") {
 			Jazz.disableHelper = true;
 		} else if (href === "under-2") {
 			window.captureFrames = true;
+		} else if (href === "full-3") {			
+			Jazz.disableHelper=true;
 		}
 		else {
 			Jazz.clearFingersText();
 			Jazz.disableHelper = false;
-			Jazz.WAIT_FINGER_MS=900;
-
+			Jazz.WAIT_FINGER_MS=750;
 		}
 	}
 

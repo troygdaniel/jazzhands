@@ -24,24 +24,38 @@
   
 <div id="impress" style="background-image:'tutorial_images/stars-background.jpg'">
 
-    
     <!--- MAIN -->
+    <div id="start" class="step " data-x="14000" data-y="0" data-scale="30">
+        <q><span style="position:absolute;top:-280px;"><B>Getting started with Jazz hands JS</B>
+        </q>
+        <P style="font-size:28px;position:absolute;top:-210px;left:140px">Hit the &lt; space bar &gt;  at any time to return here.</P>
+        <P style="font-size:28px;position:absolute;top:40px;left:60px">This presentation is also a working demo of Jazz Hands.</P>
+        <P style="font-size:28px;position:absolute;top:90px;left:40px">
+                Watch this quick tutorial on <a href="http://youtu.be/tVUWmfwo_Hk">http://youtu.be/tVUWmfwo_Hk</a><br/> <br/> 
+                <img src="tutorial_images/youtube.png" width="200px" style="position:absolute;top:55px;left:280px"/>
+
+
+        </P>
+
+    </div>
     <div id="main" class="step " data-x="0" data-y="-2900" data-scale="8">
         
-        <q><span style="position:absolute;top:-150px;left:0px;"><B>Jazz hands JS Library</B>  
+        <q><span style="position:absolute;top:-150px;left:0px;"><B>1. Jazz hands JS Library</B>  
         </q>
 
         <p style="font-size:34px;font-style:normal;position:relative;top:-100px;left:-40px;height:240px"> 
 
-        Jazz Hands is a JavaScript library for <span style="position:relative;left:180px;">motion</span><br>controllers.
+        Jazz hands is a JavaScript library for <span style="position:relative;left:180px;">motion</span><br>controllers.
         <img src="tutorial_images/leap_logo.png" width="200px" style="position:absolute;top:0px;left:540px"/>
+        <br/><br/>
+        Jazz hands was created for leap two reasons.<br/>1 - A simple and forgiving UI. <br/>2 - A simple and easy API.
         <br/><br/>
         <B>To begin</b>, hold a single hand<BR/> to the right of the controller.  <br/> 
         </p>
         <!-- helping hand images -->
-        <img src="tutorial_images/leap_axis.png" width="300" style="position:absolute;left:490px;top:30px">
-        <img src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:83px;left:745px;opacity:0.5"/>
-        <img src="tutorial_images/right_timer.png" width="120px" style="position:absolute;top:53px;left:740px;opacity:.7"/>
+        <img src="tutorial_images/leap_axis.png" width="300" style="position:absolute;left:490px;top:230px">
+        <img src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:283px;left:745px;opacity:0.5"/>
+        <img src="tutorial_images/right_timer.png" width="120px" style="position:absolute;top:253px;left:740px;opacity:.7"/>
 
     </div>
 
@@ -50,15 +64,19 @@
             *** BASIC HOME ***
     -->
      <div id="basic-home" class="step" data-x="9000" data-y="-2900" data-scale="8">     
-        <q><B>Basic Implementation</B></q>
+        <q><B>2. Basic Implementation</B></q>
         <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
-        Single handed indication of up, down, left, right.. zoom in and out. <br/>
+        A basic implementation requires just a few lines of code.
         </p> 
-
+        <span style="position:absolute;font-size:14px;top:290px;left:45px;"><I>Neutral</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:172px;"><I>Navigation</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:297px;"><I>Code</I></span>
         <img src="tutorial_images/leap_axis.png" width="300" style="position:absolute;left:470px;top:250px">
         <img src="tutorial_images/hand_out.png" width="50px" style="position:absolute;top:280px;left:670px;opacity:0.3"/>
         <img src="tutorial_images/zoom_in_timer.png" width="120px" style="position:absolute;top:220px;left:630px;opacity:.7"/>
-
+        <p style="font-size:34px;font-style:normal;position:absolute;top:430px;height:550px"> 
+        By default, a UI gives you single handed indication of up, down, left, right.. zoom in and out. 
+        </p>
     </div>
         <!-- BASIC SLIDES -->
         <div id="basic-1" class="step slide" data-x="6200" data-y="-3000" data-scale="1">
@@ -110,11 +128,18 @@ Jazz.on('navigation', function(n) {
         *** FULL CONTROL HOME *** 
     -->
      <div id="full-home" class="step" data-x="18000" data-y="-2900" data-scale="8">     
-        <q style="position:relative;left:0px"><B>Jazz Hands Events</B></q>
+        <q style="position:relative;left:0px"><B>3. Jazz Hands Events</B></q>
         <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
         There are 3 additional jazz hands events you can listen for (fingers, grab/release, progress)
         </p> 
+        <span style="position:absolute;font-size:14px;top:290px;left:45px;"><I>Fingers</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:172px;"><I>Grab</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:297px;"><I>Progress</I></span>
+
         <img src="tutorial_images/right_hand.png" width="120px" style="position:absolute;top:240px;left:460px;"/>
+        <p style="font-size:34px;font-style:normal;position:absolute;top:430px;height:550px"> 
+        "Fingers" informs how many fingers are being held up.  "Grab/release" informs you when a fist is open or closed.  "Progress" is the relative location of your hand.
+        </p>
 
     </div>
 
@@ -188,11 +213,18 @@ Jazz.on("progress", function (progress) {
             *** UNDER THE HOOD ***
         -->
      <div id="under-home" class="step" data-x="27000" data-y="-2900" data-scale="8">     
-        <q style="position:relative;left:0px"><B>Under the hood</B></q>
+        <q style="position:relative;left:0px"><B>4. Under the hood</B></q>
         <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
         Additionally, you can access the raw gestures and frames, and some other minor options.
         </p> 
+        <span style="position:absolute;font-size:14px;top:290px;left:45px;"><I>Gestures</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:172px;"><I>Frames</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:297px;"><I>More</I></span>
+
         <img src="tutorial_images/example_hands_alpha.png" width="90px" style="position:absolute;top:240px;left:460px;"/>
+        <p style="font-size:34px;font-style:normal;position:absolute;top:430px;height:550px"> 
+        "Gestures and Frames" gives you access to native gestures and frames. You can also customize the timer and the display of the UI.
+        </p>
 
     </div>
 
@@ -241,12 +273,13 @@ Jazz.on("frames", function (f) {
             <!-- dump out all the frame activity when on this slide -->
         </div>
         <div id="under-3" class="step slide" data-x="26200" data-y="-3000" data-scale="1">
-            <q style="font-weight:bold">Other options</q>
-            <br/>
+            <q style="font-weight:bold">Other options</q>            
+            The wait timer is configurable <B>Jazz.WAIT_FINGER_MS=900;</B>
+            <br/><br/>
             Hide or show the UI using <B>Jazz.hide()</B> or <B>Jazz.show()</B>
             <br/><br/>
             Toggle the "helper arrows" by setting &nbsp;<B>Jazz.disableHelper</B>.
-            <br/><br/>
+            <br/>
             Toggle the "timer" by setting &nbsp;<B>Jazz.disableTimer</B>.
             <br/><br/>
             During run-time setup finger events using <B>Jazz.setFingersText(["one","two"])</B>.<br/><br/>

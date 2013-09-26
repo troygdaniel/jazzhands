@@ -149,8 +149,9 @@
 
 			drawCircle(circleCoords);
 
-			if (Jazz.disableHelper === false)
+			if (Jazz.disableHelper === false) {
 				drawHelperArrows();
+			}
 
 			if (Jazz.disableTimer === false)
 				drawTimerArc(circleCoords, Jazz.timerPercentage);
