@@ -8,7 +8,8 @@ Documentation can be found here:
 http://troygdaniel.com/jazz/documentation.html
 
 ## Getting started
-Clone repository locally (https://github.com/troygdaniel/jazzhands.git)
+Clone repository locally 
+https://github.com/troygdaniel/jazzhands.git
 
 ## Basic implementation
 ~~~javascript
