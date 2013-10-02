@@ -2,7 +2,7 @@ jazzhands.js
 ============
 
 Javascript library for simplified LEAP motion gesture binding.  5 minute youtube video demo found here:
-http://youtu.be/tVUWmfwo_Hk
+http://youtu.be/ZWs0Gteocl8
 
 Interactive leap motion documentation can be found here:
 http://troygdaniel.com/jazz/documentation.html
