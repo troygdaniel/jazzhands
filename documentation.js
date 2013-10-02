@@ -136,7 +136,7 @@ $(function() {
 		disableZoom: false,
 		disableFingers: true,
 		fingersHoverText: ["Zoom out?!","Zoom In!"],
-		waitTimer: 400
+		waitTimer: 650
 	});
 
 	Jazz.on("navigation", function(nav) {

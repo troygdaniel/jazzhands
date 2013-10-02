@@ -93,7 +93,7 @@ $(function() {
 		disableZoom: false,
 		disableFingers: true,
 		// fingersHoverText: ["Zoom out?!","Zoom In!"],
-		waitTimer: 750
+		waitTimer: 450
 	});
 
 	Jazz.on("gestures", function (g) {
@@ -176,10 +176,8 @@ $(function() {
 	});
 
 	impress().init();
-	console.log("??")
+
 	$(document).keypress(function(e) { 
-		console.log(""+e.which);
-		console.log(e);
 	    if (e.which == 49) { 
 	    	window.location.href="#main";
 	    }
@@ -193,7 +191,13 @@ $(function() {
 	    	window.location.href="#under-home";
 	    }
 	    if (e.which == 32 ) {
-	    	window.location.href="#start"; 
+	    	var isMainTopic = ($(".active").attr("id").indexOf("home") >= 0 || $(".active").attr("id").indexOf("main") >= 0);
+	    	var currentTopic = $(".active").attr("id").substring(0,$(".active").attr("id").indexOf("-"));
+	    	
+	    	if (isMainTopic === true)
+	    		window.location.href="#start"; 
+	    	else
+	    		window.location.href="#"+currentTopic+"-home";
 	 	}  // esc   (does not work)
 	});
 
@@ -207,9 +211,7 @@ $(function() {
 		if (href === "full-1") {			
 			Jazz.setFingersText(["Zoom Out?", "Zoom in?"]);
 			Jazz.disableHelper = true;
-			Jazz.WAIT_FINGER_MS=1800;
-		} else if (href === "basic-2") {
-			Jazz.WAIT_FINGER_MS=1800;
+			// Jazz.WAIT_FINGER_MS=1800;
 		} else if (href === "under-1") {
 			Jazz.disableHelper = true;
 		} else if (href === "under-2") {
@@ -220,7 +222,6 @@ $(function() {
 		else {
 			Jazz.clearFingersText();
 			Jazz.disableHelper = false;
-			Jazz.WAIT_FINGER_MS=750;
 		}
 	}
 

@@ -31,23 +31,23 @@ Jazz.init({
 });
 
 Jazz.on("fingers", function(fingers) {
-	console.log("on fingers = " + fingers);
+	// console.log("on fingers = " + fingers);
 });
 
 Jazz.on("navigation", function(navEvent) {
-	console.log("navigation = "+ navEvent);
+	// console.log("navigation = "+ navEvent);
 });
 
 Jazz.on("gestures", function (gestures) {
-	console.log(gestures);
+	// console.log(gestures);
 });
 
 Jazz.on("grab", function () {
-	console.log("grab");
+	// console.log("grab");
 });
 
 Jazz.on("release", function () {
-	console.log("release");
+	// console.log("release");
 	$("#debug").html("isGrabbing="+Jazz.isGrabbing);
 
 });
@@ -65,11 +65,16 @@ Jazz.on("progress", function (p) {
 
 Jazz.on("frames", function (frame) {
 	// Performance degrades if logging all frames to the console
- 	// console.log(frames);
+ 	if (Jazz.isGrabbing === true) {
+ 		frame.hands.map(function(d){window.lastHand = d;})
+ 		// console.log(frame);
+ 	}
  	if (Jazz.hands.length > 0 ) {
 	 	var pp = Jazz.hands[0].palmPosition;
-	 	if (pp)
+	 	if (pp) {
 	 		$("#hands").html(""+parseInt(pp[0])+", "+parseInt(pp[1])+", "+ parseInt(pp[2]));
+ 			$("#debug").html("pitch="+rIt(frame.hands[0].pitch())+", roll="+rIt(frame.hands[0].roll())+", yaw="+rIt(frame.hands[0].yaw()));
+	 	}
  	}
  	if (frame.pointablesMap ) {
 		var fing;
@@ -81,4 +86,7 @@ Jazz.on("frames", function (frame) {
 	 		$("#fingers").html(""+parseInt(fing[0])+", "+parseInt(fing[1])+", "+parseInt(fing[2]));
  	}
 });
+function rIt(r) {
+	return parseInt(r*10);
+}
 </script>

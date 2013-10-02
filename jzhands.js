@@ -64,7 +64,8 @@
 			if (Jazz.disableFingers === false) handleFingers();
 		}
 
-		handleNavigation();
+		if (Jazz.isGrabbing===false && isHoldingValidFinger() === false)
+			handleNavigation();
 		handleGestureEvents();
 		handleProgressNav();
 		handleGrabRelease();
