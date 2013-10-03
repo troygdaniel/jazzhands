@@ -1,14 +1,8 @@
 (function(){
 
-	// Save a reference to the global object
 	var root = this;
-	var JazzHands;
-	if (typeof exports !== 'undefined') { JazzHands = exports; } else { JazzHands = root.JazzHands = {}; }
-	console.log("Loaded JazzHands.")
+	var JazzHands = root.JazzHands = {};
 
-	/**
-	 *	JazzHands.getFingersMap()
-	 **/
 	JazzHands.getFingersMap = function (key) {
 		if (Jazz.lastFrame.pointablesMap) {
 			if (key)
@@ -21,7 +15,6 @@
 	JazzHands.getFinger = function (key) {
 		return JazzHands.getFingersMap(key);
 	}
-	// TODO: rename methods since this is no longer for finger, but hand pos AND finger
 	JazzHands.getRadiusForFinger = function (coords) {
 		return Math.min(600/Math.abs(coords[2]),20) * Jazz.CIRCLE_RADIUS;
 	}
@@ -83,10 +76,7 @@
 		else if (palmPosition === "depth")
 		 	return hand.palmPosition[2];
 	}
-
 	JazzHands.isNewHand = function() {
 		return Jazz.lastHandId == Jazz.hands[0].id;
 	}
-
-
-})();
+}).call(this);

@@ -1,35 +1,8 @@
 (function(){
 
-	// Save a reference to the global object
 	var root = this;
-	var JazzConfig;
-	if (typeof exports !== 'undefined') { JazzConfig = exports; } else { JazzConfig = root.JazzConfig = {}; }
-	console.log("Loaded JazzConfig.")
+	var JazzConfig = root.JazzConfig = {};
 
-	/**
-	 *	configureFromOptions()
-	 *
-	 * 	Available options:
-	 *
-	 *	waitTimer:
-	 *	Time in milliseconds for timer before firing event:
-	 * 
-	 * 	fillStyle:
-	 *	Color of the finger circle:
-	 *	
-	 *	fingersText:
-	 *	Text to display for each "finger" event
-	 *
-	 *
-	 *	Example usage during Jazz.init:
-	 *	Jazz.init({
-	 *		waitTimer:  100,
-	 *		fingersText: ["finger one", "finger two"]	 
-	 * 	})
-	 *	
-	 * TODO: document all available options	
-	 *
-	 **/
 	JazzConfig.configureFromOptions = function(options) {
 		Jazz.fillStyle = "black";
 		Jazz.LAST_VALID_FINGER=1;
@@ -71,9 +44,6 @@
 		
 	}
 
-	/**
-	 *	setupImages()
-	 **/
 	JazzConfig.setupImages = function () {
 		// A bit experimental
 		var jsFileLocation = $('script[src*=jazz]').attr('src');
@@ -95,6 +65,7 @@
 
 		JazzConfig.setupHelperImages();
 	}
+
 	JazzConfig.setupHelperImages = function () {
 		// A bit experimental
 		var jsFileLocation = $('script[src*=jazz]').attr('src');
@@ -111,9 +82,6 @@
 		Jazz.leftHelperArrow.src = filePath+"gray_left_arrow.png"
 	}
 
-	/**
-	 *	threshold()
-	 */
 	JazzConfig.threshold = function (direction) {
 		if (direction === "zoomIn")
 			return -10;

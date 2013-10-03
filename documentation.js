@@ -1,5 +1,7 @@
 $(function() {
 
+	impress().init();
+
 	var navigationMap = {
 		start: {
 			down: "main",
@@ -174,8 +176,6 @@ $(function() {
 
 
 	});
-
-	impress().init();
 
 	$(document).keypress(function(e) { 
 	    if (e.which == 49) { 
