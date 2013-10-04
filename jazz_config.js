@@ -40,7 +40,6 @@ function JazzConfig() {
 			Jazz.opacity = options.opacity;
 		
 	}
-
 	this.setupImages = function () {
 		// A bit experimental
 		var jsFileLocation = $('script[src*=jazz]').attr('src');
@@ -63,7 +62,6 @@ function JazzConfig() {
 
 		this.setupHelperImages();
 	}
-
 	this.setupHelperImages = function () {
 		// A bit experimental
 		var jsFileLocation = $('script[src*=jazz]').attr('src');
@@ -80,7 +78,6 @@ function JazzConfig() {
 		Jazz.leftHelperArrow = new Image();
 		Jazz.leftHelperArrow.src = filePath+"gray_left_arrow.png"
 	}
-
 	this.threshold = function (direction) {
 		if (direction === "zoomIn")
 			return -10;
@@ -95,7 +92,6 @@ function JazzConfig() {
 		else if (direction === "right")
 			return 80;
 	}
-
 	Jazz.event = {
 		finger: function(numberOfFingers){},
 		navigation: function(navEvent){},
@@ -105,7 +101,6 @@ function JazzConfig() {
 		grab: function(){},
 		release: function(){}
 	}
-
 	Jazz.lastDigitsFound = 0;
 	Jazz.handNavigation = "";
 	Jazz.WAIT_FINGER_MS = 700;

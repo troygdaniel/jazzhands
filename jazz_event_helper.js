@@ -24,7 +24,6 @@ function JazzEventHelper() {
 			// Jazz.lastHandId = Jazz.hands[0].id;
 		}
 	}
-
 	this.handleGrabRelease = function() {
 		if (Jazz.hands.length === 0) {
 			if (Jazz.isGrabbing === true) {
@@ -48,7 +47,6 @@ function JazzEventHelper() {
 		}
 
 	}
-
 	this.handleProgressNav = function(detectedNav) {
 		if (Jazz.hands.length === 0) return;
 		var verticalDistance = config.threshold("up") - config.threshold("down");
@@ -81,7 +79,6 @@ function JazzEventHelper() {
 
 		return navProgress;
 	}
-
 	// Determine if a new finger count is found, 
 	// and reset or start the timer for the fingers being held.
 	this.handleFingers = function () {
@@ -94,10 +91,9 @@ function JazzEventHelper() {
 		
 		Jazz.lastDigitsFound = jzHands.getCapturedDigits();
 	}
-
-	 //  Allow binding to the Jazz.on("gesture") event
-	 //  to simplify the callback for LEAP generated gestures.
-	 this.handleGestureEvents = function () {
+	//  Allow binding to the Jazz.on("gesture") event
+	//  to simplify the callback for LEAP generated gestures.
+	this.handleGestureEvents = function () {
 		var gestures = Jazz.lastFrame.gestures;
 		if (jzHands.getCapturedDigits() > 0 && gestures.length > 0) {
 			for (var indx=0; indx < gestures.length; indx++) {
@@ -118,9 +114,7 @@ function JazzEventHelper() {
 				Jazz.lastGesture = null;
 			}
 		}
-	 }
-
-
+	}
 	// Reset the timer, cancelling all upcoming "fingers" events
 	this.clearTimeoutForDigits = function () {
 
@@ -129,7 +123,6 @@ function JazzEventHelper() {
 			Jazz.lastDigitsFound = Jazz.incr = Jazz.timerPercentage = 0;
 		}
 	}
-
 	// Set the timer for an upcoming "fingers" event
 	this.setTimeoutForDigits = function () {
 	    this.clearTimeoutForDigits();
@@ -147,13 +140,11 @@ function JazzEventHelper() {
 
 	    }, Jazz.WAIT_INTERVAL_TIMER);
 	}
-
 	// Reset the timer, cancelling all upcoming "navigation" events
 	this.clearTimeoutForNav = function () {
 		clearTimeout(Jazz.intervalTimer);
 		Jazz.handNavigation = Jazz.incr = Jazz.timerPercentage = 0;
 	}
-
 	// Set the timer for an upcoming "navigation" event
 	this.setTimeoutForNav = function () {
 	    var that = this;

@@ -12,7 +12,6 @@ function JazzUI() {
 			ctx.globalAlpha = Jazz.opacity;
 		});
 	}
-
 	this.show = function () {
 		Jazz.showUI = true;
 	}
@@ -34,7 +33,6 @@ function JazzUI() {
 		document.getElementById("jazz-fingers").style.display = 'none';
 		document.getElementById("jazz-fingers-shadow").style.display = 'none';
 	}
-
 	 // Update the canvas with the fingers and timer circles
 	this.updateCanvas = function () {
 
@@ -69,7 +67,6 @@ function JazzUI() {
 		}
 
 	}
-
 	this.setFingersText = function(hoverText) {
 		if (hoverText) {
 			Jazz.fingersText = hoverText;
@@ -79,14 +76,12 @@ function JazzUI() {
 			Jazz.clearFingersText();
 		}
 	}
-	
 	this.clearCanvas = function() {
 		var canvas = Jazz.canvas;
 		helper.evalCtx(function(ctx) {
 			ctx.clearRect(-canvas.width*1.2,-canvas.height,canvas.width*1.2,canvas.height);
 		});	
 	}
-
 	this.appendCanvasToDOM = function (){
 		var canvas = helper.createBaseCanvas(false,"jazz-fingers");
 		var blurredCanvas = helper.createBaseCanvas(true,"jazz-fingers-shadow");
@@ -96,13 +91,10 @@ function JazzUI() {
 
 		return canvas;
 	}
-
 	this.getTimerPercentage = function() {
 		Jazz.timerPercentage = parseInt ((Jazz.incr / Jazz.WAIT_FINGER_MS) * 100);
 		return Jazz.timerPercentage;
 	}
-
-	
 	//  Determine hand position and capture timed navigation event
 	this.getDetectedNav = function () {
 		var detectedNav = false;
@@ -122,5 +114,4 @@ function JazzUI() {
 
 		return detectedNav;
 	}
-
 }

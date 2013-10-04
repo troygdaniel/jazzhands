@@ -17,7 +17,7 @@
 
 		Jazz.jzConfig.configureFromOptions(options);
 		Jazz.leapController = new Leap.Controller({enableGestures: true}); 
-		Jazz.canvas = Jazz.jzUI.appendCanvasToDOM(); //document.getElementById(options.canvas);
+		Jazz.canvas = Jazz.jzUI.appendCanvasToDOM();
 		Jazz.jzUI.createFingerCanvas();
 
 		Jazz.leapController.loop(function(frame) { Jazz.jzEvents.loop(frame); })

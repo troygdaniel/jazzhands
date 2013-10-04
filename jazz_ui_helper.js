@@ -16,7 +16,6 @@ function JazzUIHelper() {
 			this.drawText(Jazz.fingersText[Jazz.FOURTH],jzHands.getHandPosX(), jzHands.getHandPosY());
 		}
 	}
-
 	this.drawTimerArc = function(fingerPos, percentage) {
 		if (percentage < 5) return;
 
@@ -49,7 +48,6 @@ function JazzUIHelper() {
 		    callback(ctx);
 		});
 	}
-
 	this.createBaseCanvas = function (isBlurred, divId) {
 		var canvas = document.createElement("canvas");
 		var calculatedWidth = document.body.clientWidth*.9;
@@ -65,7 +63,6 @@ function JazzUIHelper() {
 
 		return canvas;
 	}
-
 	this.drawCircle = function(coords) {
 
 		if (Jazz.timerPercentage === 0){

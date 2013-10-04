@@ -45,7 +45,6 @@ function JazzEvents() {
 
 		Jazz.event["frames"](Jazz.lastFrame);
 	}
-
 	this.getFingersMap = function (key) {
 		if (Jazz.lastFrame.pointablesMap) {
 			if (key)
@@ -55,5 +54,4 @@ function JazzEvents() {
 		}
 		return undefined;
 	}
-
 }
