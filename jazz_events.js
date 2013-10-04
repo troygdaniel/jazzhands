@@ -1,30 +1,31 @@
-(function(){
+function JazzEvents() {
 
-	var root = this;
-	var JazzEvents = root.JazzEvents = {};
+	var jzUI = Jazz.jzUI;
+	var jzHands = Jazz.jzHands;
+	var helper = new JazzEventHelper();
 
 	/** 
-	 * JazzEvents.loop() 
+	 * this.loop() 
 	 *
 	 * Jazz overrides the Leap event loop, and is internally referenced.
 	 * This method is automatically initiated by Jazz.init()
 	 */
-	JazzEvents.loop = function (frame) {
+	this.loop = function (frame) {
 
 		Jazz.lastFrame = frame;
 		Jazz.hands = frame.hands;
 
 		if (Jazz.hands.length > 0)
 			// TODO: move show/hide canvas to UI
-			JazzUI.showCanvas();
+			jzUI.showCanvas();
 		else {
-			JazzUI.hideCanvas();
+			jzUI.hideCanvas();
 			Jazz.handNavigation = null;
 		}
 
 		Jazz.frameDigitCount = frame.pointables.length;
 
-		JazzUI.updateCanvas();
+		jzUI.updateCanvas();
 
 		// DYNAMICALLY SWITCH from simple mode
 		// are we holding up more than last_valid fingers?
@@ -33,19 +34,19 @@
 		}
 		else {
 			Jazz.simpleMode = false;
-			if (Jazz.disableFingers === false) JzEventHelp.handleFingers();
+			if (Jazz.disableFingers === false) helper.handleFingers();
 		}
 
-		if (Jazz.isGrabbing===false && JazzHands.isHoldingValidFinger() === false)
-			JzEventHelp.handleNavigation();
-		JzEventHelp.handleGestureEvents();
-		JzEventHelp.handleProgressNav();
-		JzEventHelp.handleGrabRelease();
+		if (Jazz.isGrabbing===false && jzHands.isHoldingValidFinger() === false)
+			helper.handleNavigation();
+		helper.handleGestureEvents();
+		helper.handleProgressNav();
+		helper.handleGrabRelease();
 
 		Jazz.event["frames"](Jazz.lastFrame);
 	}
 
-	JazzEvents.getFingersMap = function (key) {
+	this.getFingersMap = function (key) {
 		if (Jazz.lastFrame.pointablesMap) {
 			if (key)
 				return Jazz.lastFrame.pointablesMap[key];
@@ -55,4 +56,4 @@
 		return undefined;
 	}
 
-}).call(this);
+}

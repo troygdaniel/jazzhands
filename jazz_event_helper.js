@@ -1,32 +1,31 @@
-(function(){
-
-	var root = this;
-	var JzEventHelp = root.JzEventHelp = {};
+function JazzEventHelper() {
+	var jzHands = Jazz.jzHands;
+	var config = Jazz.jzConfig;
 
 	 // Initate a timer and eventually trigger the "navigation" event.
 	 // Event callbacks are bound by Jazz.on("navigation") 
-	JzEventHelp.handleNavigation = function () {
+	this.handleNavigation = function () {
 
-		if (JazzHands.getCapturedDigits() < Jazz.LAST_VALID_FINGER)
+		if (jzHands.getCapturedDigits() < Jazz.LAST_VALID_FINGER)
 			return false;
 
-		if (JazzHands.hasDetectedHand() === true) {
-			if (JazzHands.isNewHandMotion() === true) {
-				JzEventHelp.clearTimeoutForNav();
-				JzEventHelp.setTimeoutForNav();
+		if (jzHands.hasDetectedHand() === true) {
+			if (jzHands.isNewHandMotion() === true) {
+				this.clearTimeoutForNav();
+				this.setTimeoutForNav();
 			}
 
-			if (JazzUI.getDetectedNav() === false) {
-			 	JzEventHelp.clearTimeoutForNav();
+			if (Jazz.jzUI.getDetectedNav() === false) {
+			 	this.clearTimeoutForNav();
  				Jazz.handNavigation = null;
 			}
 
-			Jazz.handNavigation = JazzUI.getDetectedNav();
+			Jazz.handNavigation = Jazz.jzUI.getDetectedNav();
 			// Jazz.lastHandId = Jazz.hands[0].id;
 		}
 	}
 
-	JzEventHelp.handleGrabRelease = function() {
+	this.handleGrabRelease = function() {
 		if (Jazz.hands.length === 0) {
 			if (Jazz.isGrabbing === true) {
 				Jazz.isGrabbing=false;
@@ -35,7 +34,7 @@
 			return;
 		}
 		// TODO: Surface this HACK (1 finger === grab)
-		if (JazzHands.getCapturedDigits() <= 1) {
+		if (jzHands.getCapturedDigits() <= 1) {
 			
 			if (Jazz.isGrabbing === false) Jazz.event["grab"]();
 			Jazz.isGrabbing = true;
@@ -50,22 +49,22 @@
 
 	}
 
-	JzEventHelp.handleProgressNav = function(detectedNav) {
+	this.handleProgressNav = function(detectedNav) {
 		if (Jazz.hands.length === 0) return;
-		var verticalDistance = JazzConfig.threshold("up") - JazzConfig.threshold("down");
-		var upProgress = (JazzHands.palm("vertical") -  JazzConfig.threshold("down")) / verticalDistance;
+		var verticalDistance = config.threshold("up") - config.threshold("down");
+		var upProgress = (jzHands.palm("vertical") -  config.threshold("down")) / verticalDistance;
 		if (upProgress > 1) upProgress = 1;
 		if (upProgress < 0) upProgress = 0;
 		var downProgress = 1-upProgress;
 
-		var horizontalDistance = JazzConfig.threshold("right") - JazzConfig.threshold("left");
-		var rightProgress = (JazzHands.palm("horizontal") -  JazzConfig.threshold("left")) / horizontalDistance;
+		var horizontalDistance = config.threshold("right") - config.threshold("left");
+		var rightProgress = (jzHands.palm("horizontal") -  config.threshold("left")) / horizontalDistance;
 		if (rightProgress > 1) rightProgress = 1;
 		if (rightProgress < 0) rightProgress = 0;
 		var leftProgress = 1-rightProgress;
 
-		var depthDistance = JazzConfig.threshold("zoomIn") - JazzConfig.threshold("zoomOut");
-		var zoomInProgress = (JazzHands.palm("depth") -  JazzConfig.threshold("zoomOut")) / depthDistance;
+		var depthDistance = config.threshold("zoomIn") - config.threshold("zoomOut");
+		var zoomInProgress = (jzHands.palm("depth") -  config.threshold("zoomOut")) / depthDistance;
 		if (zoomInProgress > 1) zoomInProgress = 1;
 		if (zoomInProgress < 0) zoomInProgress = 0;
 		var zoomOutProgress = 1-zoomInProgress;
@@ -85,22 +84,22 @@
 
 	// Determine if a new finger count is found, 
 	// and reset or start the timer for the fingers being held.
-	JzEventHelp.handleFingers = function () {
+	this.handleFingers = function () {
 
-		if (JazzHands.isNewFingerCount()) 
-			JzEventHelp.clearTimeoutForDigits();
+		if (jzHands.isNewFingerCount()) 
+			this.clearTimeoutForDigits();
 		
-		if (JazzHands.isHoldingValidFinger()) 
-			JzEventHelp.setTimeoutForDigits();
+		if (jzHands.isHoldingValidFinger()) 
+			this.setTimeoutForDigits();
 		
-		Jazz.lastDigitsFound = JazzHands.getCapturedDigits();
+		Jazz.lastDigitsFound = jzHands.getCapturedDigits();
 	}
 
 	 //  Allow binding to the Jazz.on("gesture") event
 	 //  to simplify the callback for LEAP generated gestures.
-	 JzEventHelp.handleGestureEvents = function () {
+	 this.handleGestureEvents = function () {
 		var gestures = Jazz.lastFrame.gestures;
-		if (JazzHands.getCapturedDigits() > 0 && gestures.length > 0) {
+		if (jzHands.getCapturedDigits() > 0 && gestures.length > 0) {
 			for (var indx=0; indx < gestures.length; indx++) {
 				var g = gestures[indx];
 				Jazz.lastGesture = g;
@@ -123,7 +122,7 @@
 
 
 	// Reset the timer, cancelling all upcoming "fingers" events
-	JzEventHelp.clearTimeoutForDigits = function () {
+	this.clearTimeoutForDigits = function () {
 
 		if (Jazz.frameDigitCount > 0) {
 			clearTimeout(Jazz.intervalTimer);
@@ -132,17 +131,17 @@
 	}
 
 	// Set the timer for an upcoming "fingers" event
-	JzEventHelp.setTimeoutForDigits = function () {
-	    JzEventHelp.clearTimeoutForDigits();
+	this.setTimeoutForDigits = function () {
+	    this.clearTimeoutForDigits();
 	    
 	    Jazz.intervalTimer = setInterval(function() {
 
 	        Jazz.incr += Jazz.WAIT_INTERVAL_TIMER;
 
-	        if (JazzUI.getTimerPercentage() > 100) {
+	        if (Jazz.jzUI.getTimerPercentage() > 100) {
 	        	clearTimeout(Jazz.intervalTimer);
 		        if (Jazz.hands.length > 0 && Jazz.lastDigitsFound < Jazz.LAST_VALID_FINGER) {
-		        	Jazz.event["fingers"](JazzHands.getCapturedDigits());
+		        	Jazz.event["fingers"](jzHands.getCapturedDigits());
 		        }
 	        }
 
@@ -150,26 +149,27 @@
 	}
 
 	// Reset the timer, cancelling all upcoming "navigation" events
-	JzEventHelp.clearTimeoutForNav = function () {
+	this.clearTimeoutForNav = function () {
 		clearTimeout(Jazz.intervalTimer);
 		Jazz.handNavigation = Jazz.incr = Jazz.timerPercentage = 0;
 	}
 
 	// Set the timer for an upcoming "navigation" event
-	JzEventHelp.setTimeoutForNav = function () {
-	    JzEventHelp.clearTimeoutForNav();
+	this.setTimeoutForNav = function () {
+	    var that = this;
+	    this.clearTimeoutForNav();
 	    
 	    Jazz.intervalTimer = setInterval(function() {
 	        Jazz.incr += Jazz.WAIT_INTERVAL_TIMER;
 
-	        if (JazzUI.getTimerPercentage() > 100) {
+	        if (Jazz.jzUI.getTimerPercentage() > 100) {
 	        	clearTimeout(Jazz.intervalTimer);
 				if (Jazz.hands.length > 0) {
 		        	Jazz.event["navigation"](Jazz.handNavigation);
 		        	Jazz.lastHand = Jazz.handNavigation;
 					Jazz.repeatNavInterval = setTimeout(function() {
 						if (Jazz.handNavigation === Jazz.lastHand) {						
-							JzEventHelp.clearTimeoutForNav();
+							that.clearTimeoutForNav();
 							clearTimeout(Jazz.repeatNavInterval);
 						}
 					}, 900);
@@ -177,4 +177,4 @@
 			}
 	    }, Jazz.WAIT_INTERVAL_TIMER);
 	}
-})();
+}

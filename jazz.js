@@ -4,32 +4,34 @@
 
 (function(){
 
-	var root = this;
-	var Jazz = root.Jazz = {}
-	Jazz.$ = root.jQuery;
+	var Jazz = this.Jazz = {}
+	Jazz.jzHands = new JazzHands();
+	Jazz.jzUI = new JazzUI();
+	Jazz.jzConfig = new JazzConfig();
+	Jazz.jzEvents = new JazzEvents();
+
+	Jazz.$ = this.jQuery;
 	Jazz.VERSION = '0.5';
 
 	Jazz.init = function (options, callback) {
 
-		JazzConfig.configureFromOptions(options);
+		Jazz.jzConfig.configureFromOptions(options);
 		Jazz.leapController = new Leap.Controller({enableGestures: true}); 
-		Jazz.canvas = JazzUI.appendCanvasToDOM(); //document.getElementById(options.canvas);
-		JazzUI.createFingerCanvas();
+		Jazz.canvas = Jazz.jzUI.appendCanvasToDOM(); //document.getElementById(options.canvas);
+		Jazz.jzUI.createFingerCanvas();
 
-		Jazz.leapController.loop(function(frame) { JazzEvents.loop(frame); })
+		Jazz.leapController.loop(function(frame) { Jazz.jzEvents.loop(frame); })
 
 		// optional callback
 		if (callback) callback();
 
 	};
 
-	Jazz.show = function () { JazzUI.show();};
-	Jazz.hide = function () { JazzUI.showUI = false;}
-	Jazz.clearFingersText = function () { JazzUI.clearFingersText();};
-	Jazz.setFingersText = function(hoverText) { JazzUI.setFingersText(hoverText); };
+	Jazz.show = function () { Jazz.jzUI.show();};
+	Jazz.hide = function () { Jazz.jzUI.showUI = false;}
+	Jazz.clearFingersText = function () { Jazz.jzUI.clearFingersText();};
+	Jazz.setFingersText = function(hoverText) { Jazz.jzUI.setFingersText(hoverText); };
 	Jazz.on = function (event, callback) {
 		Jazz.event[event] = callback;
 	}
-
-
 }).call(this);

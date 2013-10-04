@@ -1,12 +1,9 @@
-(function(){
+function JazzConfig() {
 
-	var root = this;
-	var JazzConfig = root.JazzConfig = {};
-
-	JazzConfig.configureFromOptions = function(options) {
+	this.configureFromOptions = function(options) {
 		Jazz.fillStyle = "black";
 		Jazz.LAST_VALID_FINGER=1;
-		JazzConfig.setupImages();
+		this.setupImages();
 
 		if (!options)
 			return;
@@ -44,11 +41,12 @@
 		
 	}
 
-	JazzConfig.setupImages = function () {
+	this.setupImages = function () {
 		// A bit experimental
 		var jsFileLocation = $('script[src*=jazz]').attr('src');
 		jsFileLocation = jsFileLocation.replace('jazz.js', ''); 
-		var filePath = Jazz.filePath = jsFileLocation + "images/";
+		var jsPath = jsFileLocation.substring(0,jsFileLocation.indexOf("jazz"))
+		var filePath = Jazz.filePath = jsPath + "images/";
 
 		Jazz.upArrow = new Image();
 		Jazz.upArrow.src = filePath+Jazz.arrowColor+"_up_arrow.png"
@@ -63,14 +61,15 @@
 		Jazz.zoomOut = new Image();
 		Jazz.zoomOut.src = filePath+Jazz.arrowColor+"_zoom_out.png"
 
-		JazzConfig.setupHelperImages();
+		this.setupHelperImages();
 	}
 
-	JazzConfig.setupHelperImages = function () {
+	this.setupHelperImages = function () {
 		// A bit experimental
 		var jsFileLocation = $('script[src*=jazz]').attr('src');
 		jsFileLocation = jsFileLocation.replace('jazz.js', ''); 
-		var filePath = Jazz.filePath = jsFileLocation + "images/";
+		var jsPath = jsFileLocation.substring(0,jsFileLocation.indexOf("jazz"))
+		var filePath = Jazz.filePath = jsPath + "images/";
 
 		Jazz.upHelperArrow = new Image();
 		Jazz.upHelperArrow.src = filePath+"gray_up_arrow.png"
@@ -82,7 +81,7 @@
 		Jazz.leftHelperArrow.src = filePath+"gray_left_arrow.png"
 	}
 
-	JazzConfig.threshold = function (direction) {
+	this.threshold = function (direction) {
 		if (direction === "zoomIn")
 			return -10;
 		else if (direction === "zoomOut")
@@ -130,4 +129,4 @@
 	Jazz.isReady = false;
 	Jazz.FIRST=0, Jazz.SECOND=1, Jazz.THIRD=2, Jazz.FOURTH=3;
 
-})();
+}
