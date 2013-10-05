@@ -75,8 +75,8 @@ Jazz.on("frames", function (frame) {
  		frame.hands.map(function(d){window.lastHand = d;})
  		// console.log(frame);
  	}
- 	if (Jazz.hands.length > 0 ) {
-	 	var pp = Jazz.hands[0].palmPosition;
+ 	if (Jazz.handsArray.length > 0 ) {
+	 	var pp = Jazz.handsArray[0].palmPosition;
 	 	if (pp) {
 	 		$("#hands").html(""+parseInt(pp[0])+", "+parseInt(pp[1])+", "+ parseInt(pp[2]));
  			$("#debug").html("pitch="+rIt(frame.hands[0].pitch())+", roll="+rIt(frame.hands[0].roll())+", yaw="+rIt(frame.hands[0].yaw()));

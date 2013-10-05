@@ -112,7 +112,7 @@ function JazzConfig() {
 	Jazz.arrowColor = "black"
 	Jazz.incr=0;
 	Jazz.lastFrame = {};
-	Jazz.hands = [];
+	Jazz.handsArray = [];
 	Jazz.timerPercentage = 0;
 	Jazz.simpleMode = true;
 	Jazz.disableZoom = false;

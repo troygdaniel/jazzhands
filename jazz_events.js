@@ -1,7 +1,7 @@
 function JazzEvents() {
 
-	var jzUI = Jazz.jzUI;
-	var jzHands = Jazz.jzHands;
+	var ui = Jazz.ui;
+	var hands = Jazz.hands;
 	var helper = new JazzEventHelper();
 
 	/** 
@@ -13,19 +13,19 @@ function JazzEvents() {
 	this.loop = function (frame) {
 
 		Jazz.lastFrame = frame;
-		Jazz.hands = frame.hands;
+		Jazz.handsArray = frame.hands;
 
-		if (Jazz.hands.length > 0)
+		if (Jazz.handsArray.length > 0)
 			// TODO: move show/hide canvas to UI
-			jzUI.showCanvas();
+			ui.showCanvas();
 		else {
-			jzUI.hideCanvas();
+			ui.hideCanvas();
 			Jazz.handNavigation = null;
 		}
 
 		Jazz.frameDigitCount = frame.pointables.length;
 
-		jzUI.updateCanvas();
+		ui.updateCanvas();
 
 		// DYNAMICALLY SWITCH from simple mode
 		// are we holding up more than last_valid fingers?
@@ -37,7 +37,7 @@ function JazzEvents() {
 			if (Jazz.disableFingers === false) helper.handleFingers();
 		}
 
-		if (Jazz.isGrabbing===false && jzHands.isHoldingValidFinger() === false)
+		if (Jazz.isGrabbing===false && hands.isHoldingValidFinger() === false)
 			helper.handleNavigation();
 		helper.handleGestureEvents();
 		helper.handleProgressNav();

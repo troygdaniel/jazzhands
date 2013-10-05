@@ -1,19 +1,19 @@
 function JazzUIHelper() {
-	var jzHands = Jazz.jzHands;
+	var hands = Jazz.hands;
 
 	 // Render a configured hoverText for a given finger
 	this.drawFingerText = function () {
 		if (Jazz.frameDigitCount === Jazz.FIRST+1) {
-			this.drawText(Jazz.fingersText[Jazz.FIRST],jzHands.getHandPosX(), jzHands.getHandPosY());
+			this.drawText(Jazz.fingersText[Jazz.FIRST],hands.getHandPosX(), hands.getHandPosY());
 		}
 		else if (Jazz.frameDigitCount === Jazz.SECOND+1) {
-			this.drawText(Jazz.fingersText[Jazz.SECOND],jzHands.getHandPosX(), jzHands.getHandPosY());
+			this.drawText(Jazz.fingersText[Jazz.SECOND],hands.getHandPosX(), hands.getHandPosY());
 		}
 		else if (Jazz.frameDigitCount === Jazz.THIRD+1) {
-			this.drawText(Jazz.fingersText[Jazz.THIRD],jzHands.getHandPosX(), jzHands.getHandPosY());
+			this.drawText(Jazz.fingersText[Jazz.THIRD],hands.getHandPosX(), hands.getHandPosY());
 		}
 		else if (Jazz.frameDigitCount === Jazz.FOURTH+1) {
-			this.drawText(Jazz.fingersText[Jazz.FOURTH],jzHands.getHandPosX(), jzHands.getHandPosY());
+			this.drawText(Jazz.fingersText[Jazz.FOURTH],hands.getHandPosX(), hands.getHandPosY());
 		}
 	}
 	this.drawTimerArc = function(fingerPos, percentage) {
@@ -23,7 +23,7 @@ function JazzUIHelper() {
 
 		this.evalCtx(function(ctx) {
 			ctx.beginPath();
-			ctx.arc(jzHands.getXForCoords(fingerPos), jzHands.getYForCoords(fingerPos), 30, 0, radius);
+			ctx.arc(hands.getXForCoords(fingerPos), hands.getYForCoords(fingerPos), 30, 0, radius);
 			ctx.lineWidth=10;
 			ctx.strokeStyle="green";
 			ctx.stroke();
@@ -68,7 +68,7 @@ function JazzUIHelper() {
 		if (Jazz.timerPercentage === 0){
 			this.evalCtx(function(ctx) {
 				ctx.beginPath();
-				ctx.arc(jzHands.getXForCoords(coords), jzHands.getYForCoords(coords), jzHands.getRadiusForFinger(coords), 0, 2*Math.PI);
+				ctx.arc(hands.getXForCoords(coords), hands.getYForCoords(coords), hands.getRadiusForFinger(coords), 0, 2*Math.PI);
 				ctx.fill();
 			});	
 		}
@@ -91,72 +91,72 @@ function JazzUIHelper() {
 	}
 	this.drawHelperArrows = function () {
 		this.evalCtx(function(ctx) {
-			ctx.drawImage(Jazz.upHelperArrow, jzHands.getHandPosX()-17, -390);
-			ctx.drawImage(Jazz.rightHelperArrow, -820, jzHands.getHandPosY()-15);
-			ctx.drawImage(Jazz.leftHelperArrow, -1030, jzHands.getHandPosY()-15);
-			ctx.drawImage(Jazz.downHelperArrow, jzHands.getHandPosX()-17, -215);
+			ctx.drawImage(Jazz.upHelperArrow, hands.getHandPosX()-17, -390);
+			ctx.drawImage(Jazz.rightHelperArrow, -820, hands.getHandPosY()-15);
+			ctx.drawImage(Jazz.leftHelperArrow, -1030, hands.getHandPosY()-15);
+			ctx.drawImage(Jazz.downHelperArrow, hands.getHandPosX()-17, -215);
 		});	
 	}
 	this.drawUpArrow = function () {
 		this.evalCtx(function(ctx) {
-			ctx.drawImage(Jazz.upArrow, jzHands.getHandPosX()-17, jzHands.getHandPosY()-15);
+			ctx.drawImage(Jazz.upArrow, hands.getHandPosX()-17, hands.getHandPosY()-15);
 		});
 	}
 	this.drawDownArrow = function () {
 		this.evalCtx(function(ctx) {
-			ctx.drawImage(Jazz.downArrow, jzHands.getHandPosX()-17, jzHands.getHandPosY()-15);
+			ctx.drawImage(Jazz.downArrow, hands.getHandPosX()-17, hands.getHandPosY()-15);
 		});
 	}
 	this.drawLeftArrow = function () { 
 		this.evalCtx(function(ctx) {
-			ctx.drawImage(Jazz.leftArrow, jzHands.getHandPosX()-17, jzHands.getHandPosY()-15);
+			ctx.drawImage(Jazz.leftArrow, hands.getHandPosX()-17, hands.getHandPosY()-15);
 		});
 	}
 	this.drawRightArrow = function () {
 		this.evalCtx(function(ctx) {
-			ctx.drawImage(Jazz.rightArrow, jzHands.getHandPosX()-14, jzHands.getHandPosY()-15);
+			ctx.drawImage(Jazz.rightArrow, hands.getHandPosX()-14, hands.getHandPosY()-15);
 		});
 	}
 	this.drawZoomInIcon = function () {
 		this.evalCtx(function(ctx) {
-			ctx.drawImage(Jazz.zoomIn, jzHands.getHandPosX()-24, jzHands.getHandPosY()-20);
+			ctx.drawImage(Jazz.zoomIn, hands.getHandPosX()-24, hands.getHandPosY()-20);
 		});
 	}
 	this.drawZoomOutIcon = function () {
 		this.evalCtx(function(ctx) {
-			ctx.drawImage(Jazz.zoomOut, jzHands.getHandPosX()-19, jzHands.getHandPosY()-20);
+			ctx.drawImage(Jazz.zoomOut, hands.getHandPosX()-19, hands.getHandPosY()-20);
 		});
 	}
 	this.canDrawHandUp = function () {
-		if (jzHands.palm("vertical") > Jazz.jzConfig.threshold("up")) {
+		if (hands.palm("vertical") > Jazz.config.threshold("up")) {
 			this.drawUpArrow();
 			return true;
 		} else
 			return false;
 	}
 	this.canDrawHandDown = function () {
-		if (jzHands.palm("vertical") < Jazz.jzConfig.threshold("down")) {
+		if (hands.palm("vertical") < Jazz.config.threshold("down")) {
 			this.drawDownArrow();
 			return true;
 		} else
 			return false;
 	}
 	this.canDrawHandLeft = function () {
-		if (jzHands.palm("horizontal") < Jazz.jzConfig.threshold("left")) {
+		if (hands.palm("horizontal") < Jazz.config.threshold("left")) {
 			this.drawLeftArrow();
 			return true;
 		} else
 			return false;
 	}
 	this.canDrawHandRight = function() {
-		if (jzHands.palm("horizontal") > Jazz.jzConfig.threshold("right")) {
+		if (hands.palm("horizontal") > Jazz.config.threshold("right")) {
 			this.drawRightArrow();
 			return true;
 		} else
 			return false;
 	}
 	this.canDrawZoomIn = function() {
-		if (jzHands.palm("depth") < Jazz.jzConfig.threshold("zoomIn")) {
+		if (hands.palm("depth") < Jazz.config.threshold("zoomIn")) {
 			if (Jazz.disableZoom === false) {
 				this.drawZoomInIcon();
 				return true;
@@ -165,7 +165,7 @@ function JazzUIHelper() {
 		return false;
 	}
 	this.canDrawZoomOut = function() {
-		if (jzHands.palm("depth") > Jazz.jzConfig.threshold("zoomOut")) {
+		if (hands.palm("depth") > Jazz.config.threshold("zoomOut")) {
 			if (Jazz.disableZoom === false) {
 				this.drawZoomOutIcon();
 				return true;

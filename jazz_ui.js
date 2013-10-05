@@ -1,14 +1,14 @@
 function JazzUI() {
 
 	var helper = new JazzUIHelper();
-	var jzHands = Jazz.jzHands;
+	var hands = Jazz.hands;
 
 	 // Create the canvas for rendering fingers and timers
 	this.createFingerCanvas  = function () {
-		var canvas = Jazz.canvas;
+		Jazz.canvas = this.appendCanvasToDOM();
 
 		helper.evalCtx(function(ctx) {
-		    ctx.translate(canvas.width*1.2,canvas.height);
+		    ctx.translate(Jazz.canvas.width*1.2,Jazz.canvas.height);
 			ctx.globalAlpha = Jazz.opacity;
 		});
 	}
@@ -40,14 +40,14 @@ function JazzUI() {
 		var fIndex=0;
 		// Build a grid for the jazz-hands canvas
 		// render circles based on pointable positions
-		for (var i in jzHands.getFingersMap()) {
+		for (var i in hands.getFingersMap()) {
 
 			var isLastFinger = (++fIndex === Jazz.lastFrame.fingers.length);
 			var canDrawFingerText = (Jazz.timerPercentage > 10 && isLastFinger);
-			var circleCoords = jzHands.getFinger(i).tipPosition;
+			var circleCoords = hands.getFinger(i).tipPosition;
 
-			if (Jazz.simpleMode === true && Jazz.hands.length > 0) {
-				circleCoords = Jazz.hands[0].palmPosition;
+			if (Jazz.simpleMode === true && Jazz.handsArray.length > 0) {
+				circleCoords = Jazz.handsArray[0].palmPosition;
 			}
 
 			helper.drawCircle(circleCoords);

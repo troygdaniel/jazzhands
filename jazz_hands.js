@@ -1,5 +1,5 @@
 function JazzHands(){
-	var ui = Jazz.jzUI;
+	var ui = Jazz.ui;
 
 	this.getFingersMap = function (key) {
 		if (Jazz.lastFrame.pointablesMap) {
@@ -39,10 +39,10 @@ function JazzHands(){
 		return (this.isHoldingFinger() && this.isValidFinger()) === true;
 	}
 	this.hasDetectedHand = function() {
-		return Jazz.hands.length > 0;
+		return Jazz.handsArray.length > 0;
 	}
 	this.isNewHandMotion = function () {
-		return (Jazz.handNavigation !== Jazz.jzUI.getDetectedNav());
+		return (Jazz.handNavigation !== Jazz.ui.getDetectedNav());
 	}
 	this.getFirstFingerPos = function() {
 		for (var i in this.getFingersMap()) {
@@ -50,13 +50,13 @@ function JazzHands(){
 		}
 	}
 	this.getHandPos = function(indx) {
-		if ( Jazz.hands.length <= 0)
+		if ( Jazz.handsArray.length <= 0)
 			return;
 
 		if (indx === 0)
-			return this.getXForCoords(Jazz.hands[0].palmPosition);
+			return this.getXForCoords(Jazz.handsArray[0].palmPosition);
 		else
-			return this.getYForCoords(Jazz.hands[0].palmPosition);
+			return this.getYForCoords(Jazz.handsArray[0].palmPosition);
 	}
 	this.getHandPosX = function() {
 		return this.getHandPos(0);
@@ -65,8 +65,8 @@ function JazzHands(){
 		return this.getHandPos(1);
 	}
 	this.palm = function(palmPosition) {
-		if (Jazz.hands.length === 0) return;
-		var hand = Jazz.hands[0];
+		if (Jazz.handsArray.length === 0) return;
+		var hand = Jazz.handsArray[0];
 		if (palmPosition === "horizontal")
 			return hand.palmPosition[0];
 		else if (palmPosition === "vertical")
@@ -75,6 +75,6 @@ function JazzHands(){
 		 	return hand.palmPosition[2];
 	}
 	this.isNewHand = function() {
-		return Jazz.lastHandId == Jazz.hands[0].id;
+		return Jazz.lastHandId == Jazz.handsArray[0].id;
 	}
 }
