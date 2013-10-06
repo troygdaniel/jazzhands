@@ -81,14 +81,15 @@ Jazz.on("release", function (progress) {
     console.log("Release");
 });
 
-// The user has moved their hand left, right, down, up, zoomIn, zoomOut
+// The user has moved their hand movements, tilts, pitch and yaw
 // The movements are measured in % relative progressions
 Jazz.on("progress", function (progress) {
-    var upPercent = progress["up"];
-    var downPercent = progress["down"];
-    var rightPercent = progress["right"];
-    var leftPercent = progress["left"];
-});
+    var upPercent = progress["up"]; // ... down, up, left, right
+    var zoomOut = progress["zoomOut"]; // ... zoomIn
+    var rollRight = progress["rollRight"]; // ... rollLeft
+    var yawRight = progress["yawRight"]; // ... yawLeft
+});            
+
 ~~~
 
 ### Native leapJS event access
