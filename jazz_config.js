@@ -42,32 +42,30 @@ function JazzConfig() {
 	}
 	this.setupImages = function () {
 		// A bit experimental
-		var jsFileLocation = $('script[src*=jazz]').attr('src');
-		jsFileLocation = jsFileLocation.replace('jazz.js', ''); 
-		var jsPath = jsFileLocation.substring(0,jsFileLocation.indexOf("jazz"))
-		var filePath = Jazz.filePath = jsPath + "images/";
+		var jsFileLocation = $('script[src*=leap]').attr('src');
+		jsFileLocation = jsFileLocation.replace('leap.min.js', ''); 
+		var filePath = Jazz.filePath = jsFileLocation + "images/";
 
 		Jazz.upArrow = new Image();
-		Jazz.upArrow.src = filePath+Jazz.arrowColor+"_up_arrow.png"
+		Jazz.upArrow.src = filePath+"gray_up_arrow.png"
 		Jazz.downArrow = new Image();
-		Jazz.downArrow.src = filePath+Jazz.arrowColor+"_down_arrow.png"
+		Jazz.downArrow.src = filePath+"gray_down_arrow.png"
 		Jazz.rightArrow = new Image();
-		Jazz.rightArrow.src = filePath+Jazz.arrowColor+"_right_arrow.png"
+		Jazz.rightArrow.src = filePath+"gray_right_arrow.png"
 		Jazz.leftArrow = new Image();
-		Jazz.leftArrow.src = filePath+Jazz.arrowColor+"_left_arrow.png"
+		Jazz.leftArrow.src = filePath+"gray_left_arrow.png"
 		Jazz.zoomIn = new Image();
-		Jazz.zoomIn.src = filePath+Jazz.arrowColor+"_zoom_in.png"
+		Jazz.zoomIn.src = filePath+"gray_zoom_in.png"
 		Jazz.zoomOut = new Image();
-		Jazz.zoomOut.src = filePath+Jazz.arrowColor+"_zoom_out.png"
+		Jazz.zoomOut.src = filePath+"gray_zoom_out.png"
 
 		this.setupHelperImages();
 	}
 	this.setupHelperImages = function () {
 		// A bit experimental
-		var jsFileLocation = $('script[src*=jazz]').attr('src');
-		jsFileLocation = jsFileLocation.replace('jazz.js', ''); 
-		var jsPath = jsFileLocation.substring(0,jsFileLocation.indexOf("jazz"))
-		var filePath = Jazz.filePath = jsPath + "images/";
+		var jsFileLocation = $('script[src*=leap]').attr('src');
+		jsFileLocation = jsFileLocation.replace('leap.min.js', ''); 
+		var filePath = Jazz.filePath = jsFileLocation + "images/";
 
 		Jazz.upHelperArrow = new Image();
 		Jazz.upHelperArrow.src = filePath+"gray_up_arrow.png"

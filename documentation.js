@@ -134,7 +134,7 @@ $(function() {
         else if (progress["zoomOut"]>70)
         	$("#z-axis-hand").show();
         
-        if (Jazz.isGrabbing === true && Jazz.frameDigitCount <= 1) {
+        if (Jazz.isGrabbing === true) {
 	        var $plane = $("#paper-plane");
 	        var leftpx = 60 + (progress["right"] *4);
 	        var toppx = -20 + (progress["down"] * 4);

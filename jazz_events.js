@@ -23,7 +23,7 @@ function JazzEvents() {
 			Jazz.handNavigation = null;
 		}
 
-		Jazz.frameDigitCount = frame.pointables.length;
+		Jazz.fingers = Jazz.frameDigitCount = frame.pointables.length;
 
 		ui.updateCanvas();
 
@@ -40,8 +40,8 @@ function JazzEvents() {
 		if (Jazz.isGrabbing===false && hands.isHoldingValidFinger() === false)
 			helper.handleNavigation();
 		helper.handleGestureEvents();
-		helper.handleProgressNav();
 		helper.handleGrabRelease();
+		helper.handleProgressNav();
 
 		Jazz.event["frames"](Jazz.lastFrame);
 	}

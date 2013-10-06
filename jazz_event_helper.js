@@ -1,6 +1,7 @@
 function JazzEventHelper() {
 	var hands = Jazz.hands;
 	var config = Jazz.config;
+	var movingQuicklyThreshold = 200;
 
 	 // Initate a timer and eventually trigger the "navigation" event.
 	 // Event callbacks are bound by Jazz.on("navigation") 
@@ -23,8 +24,39 @@ function JazzEventHelper() {
 			Jazz.handNavigation = Jazz.ui.getDetectedNav();
 		}
 	}
+	this.isHandMovingQuickly = function() {
+		return (this.isHandMovingOutQuickly() || this.isHandMovingInQuickly());
+	}
+	this.isHandMovingOutQuickly = function () {		
+
+		if (Jazz.handsArray.length > 0) {
+			var x = Jazz.handsArray[0].palmVelocity[0];
+			var y = Jazz.handsArray[0].palmVelocity[1];
+			var z = Jazz.handsArray[0].palmVelocity[2];
+			if (x<-1*movingQuicklyThreshold || y < -1*movingQuicklyThreshold || z < -1*movingQuicklyThreshold) {
+				return true;
+			}
+			else
+				return false;
+		} else
+			return false;
+	}
+	this.isHandMovingInQuickly = function () {
+		if (Jazz.handsArray.length > 0) {
+			var x = Jazz.handsArray[0].palmVelocity[0];
+			var y = Jazz.handsArray[0].palmVelocity[1];
+			var z = Jazz.handsArray[0].palmVelocity[2];
+			if (x>movingQuicklyThreshold || y>movingQuicklyThreshold || z>movingQuicklyThreshold) {
+				return true;
+			}
+			else
+				return false;
+		} else
+			return false;
+	}
 	this.handleGrabRelease = function() {
-		if (Jazz.handsArray.length === 0) {
+
+		if (this.isHandMovingOutQuickly() === false && Jazz.handsArray.length === 0) {
 			if (Jazz.isGrabbing === true) {
 				Jazz.isGrabbing=false;
 				Jazz.event["release"]();
@@ -32,14 +64,15 @@ function JazzEventHelper() {
 			return;
 		}
 		// TODO: Surface this HACK (1 finger === grab)
-		if (hands.getCapturedDigits() <= 1) {
-			
-			if (Jazz.isGrabbing === false) Jazz.event["grab"]();
+		if (hands.getCapturedDigits() <= 1) {			
+			if (this.isHandMovingOutQuickly() === false && Jazz.isGrabbing === false) {
+				Jazz.event["grab"]();
+			}
 			Jazz.isGrabbing = true;
 
 		} else {
 
-			if (Jazz.isGrabbing == true) {
+			if (this.isHandMovingOutQuickly() === false && Jazz.isGrabbing == true) {
 				Jazz.isGrabbing = false;
 				Jazz.event["release"]();
 			}
@@ -47,7 +80,39 @@ function JazzEventHelper() {
 
 	}
 	this.handleProgressNav = function(detectedNav) {
-		if (Jazz.handsArray.length === 0) return;
+		if (Jazz.handsArray.length > 0 ) {
+			var roll = parseInt(Jazz.handsArray[0].roll() * 100);
+			var pitch = parseInt(Jazz.handsArray[0].pitch() * 100) - 40;
+			var yaw = parseInt(Jazz.handsArray[0].yaw() * 100) + 10;
+			var yawLeft = yawRight = pitchUp = pitchDown = rollRight = rollLeft  = 0;
+
+			if (roll > 0 ) {
+				rollLeft = roll;
+				if (rollLeft > 100) rollLeft = 100;
+			}
+			else if (roll < 0 ) {
+				rollRight = (-1*roll);
+				if (rollRight > 100) rollRight = 100;
+			}
+			if (pitch > 0 ) {
+				pitchUp = pitch;
+				if (pitchUp > 100) pitchUp = 100;
+			}
+			else if (pitch < 0 ) {
+				pitchDown = (-1*pitch);
+				if (pitchDown > 100) pitchDown = 100;
+			}
+			if (yaw > 0 ) {
+				yawRight = (yaw);
+				if (yawRight > 100) yawRight = 100;
+			}
+			else if (yaw < 0 ) {
+				yawLeft = -1*yaw;
+				if (yawLeft > 100) yawLeft = 100;
+			}	
+		}
+
+		if (this.isHandMovingQuickly() === true || Jazz.handsArray.length === 0) return;
 		var verticalDistance = config.threshold("up") - config.threshold("down");
 		var upProgress = (hands.palm("vertical") -  config.threshold("down")) / verticalDistance;
 		if (upProgress > 1) upProgress = 1;
@@ -73,6 +138,12 @@ function JazzEventHelper() {
 			"left": parseInt(leftProgress*100),
 			"zoomIn": parseInt(zoomInProgress*100),
 			"zoomOut": parseInt(zoomOutProgress*100),
+			"pitchUp": pitchUp,
+			"pitchDown": pitchDown,
+			"rollRight": rollRight,
+			"rollLeft": rollLeft,
+			"yawRight": yawRight,
+			"yawLeft": yawLeft
 		}
 		Jazz.event["progress"](navProgress);
 
