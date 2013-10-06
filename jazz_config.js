@@ -42,8 +42,8 @@ function JazzConfig() {
 	}
 	this.setupImages = function () {
 		// A bit experimental
-		var jsFileLocation = $('script[src*=leap]').attr('src');
-		jsFileLocation = jsFileLocation.replace('leap.min.js', ''); 
+		var jsFileLocation = Jazz.$('script[src*=jazz]').attr('src');
+		jsFileLocation = jsFileLocation.substring(0,jsFileLocation.lastIndexOf("/")+1);
 		var filePath = Jazz.filePath = jsFileLocation + "images/";
 
 		Jazz.upArrow = new Image();
@@ -63,8 +63,8 @@ function JazzConfig() {
 	}
 	this.setupHelperImages = function () {
 		// A bit experimental
-		var jsFileLocation = $('script[src*=leap]').attr('src');
-		jsFileLocation = jsFileLocation.replace('leap.min.js', ''); 
+		var jsFileLocation = Jazz.$('script[src*=jazz]').attr('src');
+		jsFileLocation = jsFileLocation.substring(0,jsFileLocation.lastIndexOf("/")+1);
 		var filePath = Jazz.filePath = jsFileLocation + "images/";
 
 		Jazz.upHelperArrow = new Image();

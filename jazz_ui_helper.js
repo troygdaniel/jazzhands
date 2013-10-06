@@ -44,7 +44,7 @@ function JazzUIHelper() {
 	}
 	// Execute block on both blurred and normal canvas
 	this.evalCtx = function(callback) {
-		$.each(this.getContexts(), function(i, ctx) {
+		Jazz.$.each(this.getContexts(), function(i, ctx) {
 		    callback(ctx);
 		});
 	}

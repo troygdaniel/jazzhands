@@ -4,21 +4,17 @@ $(function() {
 
 	var navigationMap = {
 		start: {
-			down: "main",
-			zoomIn: "main",
-			zoomOut: "start"
-		},
-		main: {
-			right: "basic-home",
-			down: "main-home",
+			down: "basic-home",
+			zoomIn: "basic-home",
 			zoomOut: "start"
 		},
 		"basic-home": {
-			left: "main",
+			left: "basic-home",
 			right: "full-home",
 			down: "basic-1",
 			zoomIn: "basic-1",
-			zoomOut: "start"
+			zoomOut: "start",
+			up: "start"
 		},
 		"basic-1": {
 			up: "basic-home",
@@ -43,7 +39,8 @@ $(function() {
 			down: "full-1",
 			zoomIn: "full-1",
 			right: "under-home",
-			zoomOut: "start"
+			zoomOut: "start",
+			up: "start"
 		},
 		"full-1": {
 			up: "full-home",
@@ -66,10 +63,10 @@ $(function() {
 		},
 		"under-home": {
 			left: "full-home",
-			right: "main",
 			down: "under-1",
 			zoomIn: "under-1",
-			zoomOut: "start"
+			zoomOut: "start",
+			up: "start"
 		},
 		"under-1": {
 			up: "under-home",
@@ -87,7 +84,8 @@ $(function() {
 		"under-3": {
 			up: "under-home",
 			left: "under-2",
-			zoomOut: "under-home"
+			zoomOut: "under-home",
+			up: "under-home"
 		}
 	};
 
@@ -179,15 +177,12 @@ $(function() {
 
 	$(document).keypress(function(e) { 
 	    if (e.which == 49) { 
-	    	window.location.href="#main";
-	    }
-	    if (e.which == 50) { 
 	    	window.location.href="#basic-home";
 	    }
-	    if (e.which == 51) {
+	    if (e.which == 50) {
 	    	window.location.href="#full-home";
 	    }
-	    if (e.which == 52) {
+	    if (e.which == 51) {
 	    	window.location.href="#under-home";
 	    }
 	    if (e.which == 32 ) {

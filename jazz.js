@@ -9,7 +9,6 @@
 	Jazz.ui = new JazzUI();
 	Jazz.config = new JazzConfig();
 	Jazz.events = new JazzEvents();
-
 	Jazz.$ = this.jQuery;
 	Jazz.VERSION = '0.5';
 

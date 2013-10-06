@@ -77,8 +77,8 @@ function JazzEventHelper() {
 				Jazz.event["release"]();
 			}
 		}
-
 	}
+	// TODO: Cleanup and shorten up this method
 	this.handleProgressNav = function(detectedNav) {
 		if (Jazz.handsArray.length > 0 ) {
 			var roll = parseInt(Jazz.handsArray[0].roll() * 100);
