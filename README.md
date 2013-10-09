@@ -1,16 +1,23 @@
 jazzhands.js
 ============
 
-Javascript library for simplified LEAP motion gesture binding.  2 minute youtube video demo found here:
-http://youtu.be/kW1VjxEqcCM
+Javascript library for simplified LEAP motion gesture binding.  Please note, this library is still in Alpha.  Version 1.0 is planned to retain the existing event bindings, but have a more maintainable code-base.
 
-Interactive leap motion documentation can be found here:
-http://troygdaniel.com/jazz/documentation.html
-
-Please note, this library is still in Alpha.  Version 1.0 is planned to retain the existing event bindings, but have a more maintainable code-base.
 ## Getting started
 Clone repository locally 
 https://github.com/troygdaniel/jazzhands.git
+## Demos
+Interactive documentation:
+http://troygdaniel.com/jazz/documentation.html#/start
+
+Three.js Lensflare demo:
+http://troygdaniel.com/threejs/examples/webgl_lensflares.html
+
+Three.js Orbiting Earth demo:
+http://troygdaniel.com/threejs/examples/misc_controls_fly.html
+
+2 minute youtube video demo:
+http://youtu.be/kW1VjxEqcCM
 
 ## Basic implementation
 ~~~javascript
