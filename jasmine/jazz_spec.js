@@ -16,7 +16,7 @@ describe("Jazz hands tests for Alpha version 0.5", function() {
     // TODO organize expectations into related tests
   describe("Prerequisite libraries loaded successfully.", function() {
     it("should have LEAP.js as a prerequisite library", function() {
-      expect(jQuery).toBeDefined();
+      expect(Jazz.$).toBeDefined();
     });
     it("should have jQuery as a prerequisite library", function() {
       expect(jQuery).toBeDefined();
