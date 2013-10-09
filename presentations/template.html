@@ -1,0 +1,226 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Jazz hands - a Javascript library to simplify LEAP motion controller events and interaction</title>
+    
+    <meta name="description" content="impress.js is a presentation tool based on the power of CSS3 transforms and transitions in modern browsers and inspired by the idea behind prezi.com." />
+    <meta name="author" content="Bartek Szopka" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
+
+    
+    <link href="../impressjs/css/impress-demo.css" rel="stylesheet" />
+    
+    <link rel="shortcut icon" href="favicon.png" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+</head>
+
+ 
+<body class="impress-not-supported">
+  
+<div id="impress" style="background-image:'tutorial_images/stars-background.jpg'">
+
+    <!--- MAIN -->
+    <div id="start" class="step " data-x="14000" data-y="0" data-scale="30">
+        <q><span style="position:absolute;top:-290px;"><B>Getting started with Jazz hands JS</B>
+        </q>
+        <P style="font-size:28px;position:absolute;top:-210px;left:85px">
+        Jazz hands is a JavaScript library for motion controllers
+        </P>
+        <P style="font-size:24px;position:absolute;top:25px;left:80px">
+        <B>To begin</b>, hold a single hand behind the controller, toward the 
+        screen.
+        </p>
+        
+ </P> 
+    </div> 
+
+
+    <!--- 
+            *** BASIC HOME ***
+    -->
+     <div id="first-home" class="step" data-x="4000" data-y="-2900" data-scale="8">     
+        <q><B>1. First topic</B></q>
+        <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
+        A basic implementation requires just a few lines of code.
+        </p> 
+        <span style="position:absolute;font-size:14px;top:290px;left:45px;"><I>First-1-title</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:172px;"><I>First-2-title</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:297px;"><I>First-3-title</I></span>
+        <p style="font-size:34px;font-style:normal;position:absolute;top:430px;height:550px"> 
+        By default, a UI gives you single handed indication of up, down, left, right.. zoom in and out. 
+        </p>
+    </div>
+        <!-- BASIC SLIDES -->
+        <div id="first-1" class="step slide" data-x="1200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">First-1-title</q>
+            <br/>
+            A neutral position with Jazz hands is the position where no navigation event is triggered.
+            <br><br>
+            <B>To continue</b>, hold a single hand to the right of the controller.<br/>             
+            <!-- use the leap and hand images to visualize -->
+        </div>
+        <div id="first-2" class="step slide" data-x="2200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">First-2-title</q>
+            <br/>
+            Moving along the X, Y and Z axis allows for 6-degrees of movement.
+            <BR/><BR/>
+            Keeping your hand in one of the six "zones" triggers a timer-based event to fire.
+            <!-- use the leap and hand images to visualize -->            
+        </div>
+        <div id="first-3" class="step slide" data-x="3200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">First-3-title</q>
+            <br/>
+            A basic implementation just an init and a binding to navigation.  The source is <a href="https://github.com/troygdaniel/jazzhands">available on github</a>.
+            <br/><br/>
+
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+
+            <div id="navigation-debug"><B>&gt;</B></div>
+            </div><br/>
+
+            <!-- display the triggered navigation events on this slide -->
+        </div>
+
+
+
+    <!-- 
+        *** FULL CONTROL HOME *** 
+    -->
+     <div id="second-home" class="step" data-x="14000" data-y="-2900" data-scale="8">     
+        <q style="position:relative;left:0px"><B>2. Second topic</B></q>
+        <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
+        There are 3 additional jazz hands events you can listen for (fingers, grab/release, progress)
+        </p> 
+        <span style="position:absolute;font-size:14px;top:290px;left:45px;"><I>Second-1-title</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:172px;"><I>Second-2-title</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:297px;"><I>Second-3-title</I></span>
+
+        <p style="font-size:34px;font-style:normal;position:absolute;top:430px;height:550px"> 
+        "Fingers" informs how many fingers are being held up.  "Grab/release" informs you when a fist is open or closed.  "Progress" is the relative location of your hand.
+        </p>
+
+    </div>
+
+        <!-- FULL CONTROL SLIDES -->
+        <div id="second-1" class="step slide" data-x="11200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">Second-1-title</q>
+            <br/>
+            The fingers event is triggered when initializing<br/> with a fingersText array.  Element order = finger #.
+            <br/><br/>
+            
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+            <div id="finger-debug"><B>&gt;</B></div>
+            </div>
+            <!-- visualize by enabling fingersHoverText and LAST_VALID_FINGER  -->
+
+        </div>
+        <div id="second-2" class="step slide" data-x="12200" data-y="-3000" data-scale="1">       
+            <q style="font-weight:bold">Second-2-title</q>
+            A "grab" event is triggered when a fist is clenched.  "release" is called once the fist is unclenched.
+            <br/><br/>
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+
+            <div id="grab-release-debug"><B>&gt;</B></div>
+            </div>
+        </div>
+
+        <div id="second-3" class="step slide" data-x="13200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">Second-3-title</q>
+            The "progress" event gives constant feedback on the movement of the hand, as it relates to a navigation motion.
+            <br/><br/>
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+            <div id="progress-debug"><B>&gt;</B></div>
+            </div>
+            <a href="/threejs/examples/misc_controls_fly.html"><p style="position:absolute;top:0px;left:800px;font-size:12px;"><U>three.js demo</U></p></a>
+            <!-- visualize by having bar chart for up, down, right, left -->
+        </div>
+
+
+
+        <!-- 
+            *** UNDER THE HOOD ***
+        -->
+     <div id="third-home" class="step" data-x="24000" data-y="-2900" data-scale="8">     
+        <q style="position:relative;left:0px"><B>3. Third topic</B></q>
+        <p style="font-size:34px;font-style:normal;position:relative;top:30px;height:550px"> 
+        Additionally, you can access the raw gestures and frames, and some other minor options.
+        </p> 
+        <span style="position:absolute;font-size:14px;top:290px;left:45px;"><I>Third-1-title</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:172px;"><I>Third-2-title</I></span>
+        <span style="position:absolute;font-size:14px;top:290px;left:297px;"><I>Third-3-title</I></span>
+
+        <p style="font-size:34px;font-style:normal;position:absolute;top:430px;height:550px"> 
+        "Gestures and Frames" gives you access to native gestures and frames. You can also customize the timer and the display of the UI.
+        </p>
+
+    </div>
+
+ <!-- FULL CONTROL SLIDES -->
+        <div id="third-1" class="step slide" data-x="21200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">Third-1-title</q>
+            Simplifed gestures are available on the "gestures" event.
+            <br/><br/>
+            These native gestures have been simplified to a single gesture, instead of an array of possibilities.
+            <br/><br/>
+            
+            <div style="border-style:dashed;border-width:2px;padding:2px">
+            <br/>
+            <div id="gesture-debug"><B>&gt;</B></div>
+            </div>
+
+            <br/>
+            <!-- visualize by displaying swipe like images -->            
+        </div>
+        <div id="third-2" class="step slide" data-x="22200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">Third-2-title</q>
+            Frame data is available from the Jazz.on("frames") event.
+            <br/><br/>
+            You can evaluate the frame object and have access to all the captured event data from leap JS.
+            <br/><br/>
+            
+            <div style="border-style:dashed;border-width:2px;padding:2px">       
+            <div id="frame-debug"><B>&gt;</B></div>
+            </div>
+            <br/>
+            <!-- dump out all the frame activity when on this slide -->
+        </div>
+        <div id="third-3" class="step slide" data-x="23200" data-y="-3000" data-scale="1">
+            <q style="font-weight:bold">Third-3-title</q>            
+            The wait timer is configurable <B>Jazz.WAIT_FINGER_MS=900;</B>
+            <br/><br/>
+            Hide or show the UI using <B>Jazz.hide()</B> or <B>Jazz.show()</B>
+            <br/><br/>
+            Toggle the "helper arrows" by setting &nbsp;<B>Jazz.disableHelper</B>.
+            <br/>
+            Toggle the "timer" by setting &nbsp;<B>Jazz.disableTimer</B>.
+            <br/><br/>
+            During run-time setup finger events using <B>Jazz.setFingersText(["one","two"])</B>.<br/><br/>
+            Clear the finger event bindings using <B>Jazz.clearFingersText()</B>.
+            <!-- grab toggles hide of UI -->
+        </div>        
+
+</div>
+
+
+<script src="../leap.min.js"></script>
+<!-- <script src="./jazz.min.js"></script> -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/jazz/jazz_hands.js"></script>
+<script src="/jazz/jazz_events.js"></script>
+<script src="/jazz/jazz_config.js"></script>
+<script src="/jazz/jazz_event_helper.js"></script>
+<script src="/jazz/jazz_ui_helper.js"></script>
+<script src="/jazz/jazz_ui.js"></script>
+<script src="/jazz/jazz.js"></script>
+
+<script src="../impressjs/js/impress.js"></script>
+<script src="template.js"></script>
+
+
+</body>
+</html>
