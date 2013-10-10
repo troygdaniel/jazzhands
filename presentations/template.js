@@ -53,7 +53,13 @@ $(function() {
     };
 
     loadUI();
-
+    var store = new Lawnchair({name:'jazz'}, function(store) {
+        var me = {key:'presentation',value:window.presentation};
+        store.save(me);
+        store.get('presentation', function(me) {
+            console.log(me.value);
+        });
+    });
     function loadUI(){
         var p = window.presentation;
 
