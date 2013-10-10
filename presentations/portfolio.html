@@ -13,7 +13,7 @@
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
 
     
-    <link href="../impressjs/css/impress-demo.css" rel="stylesheet" />
+    <link href="impress_jazz.css" rel="stylesheet" />
     
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -206,7 +206,99 @@
 
 </div>
 
-
+<script>
+// hardcoding the map
+    var navigationMap = {
+        start: {
+            down: "first-home",
+            zoomIn: "first-home",
+            zoomOut: "start"
+        },
+        "first-home": {
+            left: "third-home",
+            right: "second-home",
+            down: "first-1",
+            zoomIn: "first-1",
+            zoomOut: "start",
+            up: "start"
+        },
+        "first-1": {
+            up: "first-home",
+            left: "first-home",
+            right: "first-2",
+            zoomOut: "first-home"
+        },
+        "first-2": {
+            up: "first-home",
+            left: "first-1",
+            down: "first-2",
+            right: "first-3",
+            zoomOut: "first-home"
+        },
+        "first-3": {
+            up: "first-home",
+            left: "first-2",
+            zoomOut: "first-home",
+            right: "first-home"
+        },
+        "second-home": {
+            left: "first-home",
+            down: "second-1",
+            zoomIn: "second-1",
+            right: "third-home",
+            zoomOut: "start",
+            up: "start"
+        },
+        "second-1": {
+            up: "second-home",
+            left: "second-home",
+            right: "second-2",
+            zoomOut: "second-home"
+        },
+        "second-2": {
+            up: "second-home",
+            left: "second-1",
+            right: "second-3",
+            zoomOut: "second-home"
+        },
+        "second-3": {
+            up: "second-home",
+            left: "second-2",
+            right: "second-4",
+            down: "second-3",
+            zoomOut: "second-home",
+            right: "second-home"
+        },
+        "third-home": {
+            left: "second-home",
+            down: "third-1",
+            zoomIn: "third-1",
+            zoomOut: "start",
+            up: "start",
+            right: "first-home"
+        },
+        "third-1": {
+            up: "third-home",
+            left: "third-home",
+            right: "third-2",
+            zoomOut: "third-home"
+        },
+        "third-2": {
+            up: "third-home",
+            left: "third-1",
+            right: "third-3",
+            down: "third-2",
+            zoomOut: "third-home"
+        },
+        "third-3": {
+            up: "third-home",
+            left: "third-2",
+            zoomOut: "third-home",
+            up: "third-home",
+            right: "third-home"
+        }
+    };
+</script>
 <script src="../leap.min.js"></script>
 <!-- <script src="./jazz.min.js"></script> -->
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

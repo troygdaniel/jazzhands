@@ -2,97 +2,100 @@ $(function() {
 
 	impress().init();
 
-	var navigationMap = {
-		start: {
-			down: "basic-home",
-			zoomIn: "basic-home",
-			zoomOut: "start"
-		},
-		"basic-home": {
-			left: "basic-home",
-			right: "full-home",
-			down: "basic-1",
-			zoomIn: "basic-1",
-			zoomOut: "start",
-			up: "start"
-		},
-		"basic-1": {
-			up: "basic-home",
-			left: "basic-3",
-			right: "basic-2",
-			zoomOut: "basic-home"
-		},
-		"basic-2": {
-			up: "basic-home",
-			left: "basic-1",
-			down: "basic-2",
-			right: "basic-3",
-			zoomOut: "basic-home"
-		},
-		"basic-3": {
-			up: "basic-home",
-			left: "basic-2",
-			zoomOut: "basic-home"
-		},
-		"full-home": {
-			left: "basic-home",
-			down: "full-1",
-			zoomIn: "full-1",
-			right: "under-home",
-			zoomOut: "start",
-			up: "start"
-		},
-		"full-1": {
-			up: "full-home",
-			left: "full-1",
-			right: "full-2",
-			zoomOut: "full-home"
-		},
-		"full-2": {
-			up: "full-home",
-			left: "full-1",
-			right: "full-3",			
-			zoomOut: "full-home"
-		},
-		"full-3": {
-			up: "full-home",
-			left: "full-2",
-			right: "full-4",
-			down: "full-3",			
-			zoomOut: "full-home"
-		},
-		"under-home": {
-			left: "full-home",
-			down: "under-1",
-			zoomIn: "under-1",
-			zoomOut: "start",
-			up: "start"
-		},
-		"under-1": {
-			up: "under-home",
-			left: "under-1",
-			right: "under-2",
-			zoomOut: "under-home"
-		},
-		"under-2": {
-			up: "under-home",
-			left: "under-1",
-			right: "under-3",
-			down: "under-2",			
-			zoomOut: "under-home"
-		},
-		"under-3": {
-			up: "under-home",
-			left: "under-2",
-			zoomOut: "under-home",
-			up: "under-home"
-		}
-	};
+    var navigationMap = {
+        start: {
+            down: "first-home",
+            zoomIn: "first-home",
+            zoomOut: "start"
+        },
+        "first-home": {
+            left: "third-home",
+            right: "second-home",
+            down: "first-1",
+            zoomIn: "first-1",
+            zoomOut: "start",
+            up: "start"
+        },
+        "first-1": {
+            up: "first-home",
+            left: "first-home",
+            right: "first-2",
+            zoomOut: "first-home"
+        },
+        "first-2": {
+            up: "first-home",
+            left: "first-1",
+            down: "first-2",
+            right: "first-3",
+            zoomOut: "first-home"
+        },
+        "first-3": {
+            up: "first-home",
+            left: "first-2",
+            zoomOut: "first-home",
+            right: "first-home"
+        },
+        "second-home": {
+            left: "first-home",
+            down: "second-1",
+            zoomIn: "second-1",
+            right: "third-home",
+            zoomOut: "start",
+            up: "start"
+        },
+        "second-1": {
+            up: "second-home",
+            left: "second-home",
+            right: "second-2",
+            zoomOut: "second-home"
+        },
+        "second-2": {
+            up: "second-home",
+            left: "second-1",
+            right: "second-3",
+            zoomOut: "second-home"
+        },
+        "second-3": {
+            up: "second-home",
+            left: "second-2",
+            right: "second-4",
+            down: "second-3",
+            zoomOut: "second-home",
+            right: "second-home"
+        },
+        "third-home": {
+            left: "second-home",
+            down: "third-1",
+            zoomIn: "third-1",
+            zoomOut: "start",
+            up: "start",
+            right: "first-home"
+        },
+        "third-1": {
+            up: "third-home",
+            left: "third-home",
+            right: "third-2",
+            zoomOut: "third-home"
+        },
+        "third-2": {
+            up: "third-home",
+            left: "third-1",
+            right: "third-3",
+            down: "third-2",
+            zoomOut: "third-home"
+        },
+        "third-3": {
+            up: "third-home",
+            left: "third-2",
+            zoomOut: "third-home",
+            up: "third-home",
+            right: "third-home"
+        }
+    };
 
 	Jazz.init({
-		disableZoom: false,
+		disableZoom: true,
 		disableFingers: true,
-		// fingersHoverText: ["Zoom out?!","Zoom In!"],
 		waitTimer: 450
 	});
 
@@ -177,13 +180,13 @@ $(function() {
 
 	$(document).keypress(function(e) { 
 	    if (e.which == 49) { 
-	    	window.location.href="#basic-home";
+	    	window.location.href="#first-home";
 	    }
 	    if (e.which == 50) {
-	    	window.location.href="#full-home";
+	    	window.location.href="#second-home";
 	    }
 	    if (e.which == 51) {
-	    	window.location.href="#under-home";
+	    	window.location.href="#second-home";
 	    }
 	    if (e.which == 32 ) {
 	    	var isMainTopic = ($(".active").attr("id").indexOf("home") >= 0 || $(".active").attr("id").indexOf("main") >= 0);
@@ -203,15 +206,9 @@ $(function() {
 
 	function onTarget(href) {
 		window.captureFrames = false;
-		if (href === "full-1") {			
-			Jazz.setFingersText(["Zoom Out?", "Zoom in?"]);
-			Jazz.disableHelper = true;
-			// Jazz.WAIT_FINGER_MS=1800;
-		} else if (href === "under-1") {
-			Jazz.disableHelper = true;
-		} else if (href === "under-2") {
+		if (href === "third-2") {
 			window.captureFrames = true;
-		} else if (href === "full-3") {			
+		} else if (href === "second-3") {			
 			Jazz.disableHelper=true;
 		}
 		else {
