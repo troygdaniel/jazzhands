@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>jazz.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="documentation.html">
+                documentation.js
+              </a>
+            
+              
+              <a class="source" href="jazz.html">
+                jazz.js
+              </a>
+            
+              
+              <a class="source" href="jazz.min.html">
+                jazz.min.js
+              </a>
+            
+              
+              <a class="source" href="jazz_config.html">
+                jazz_config.js
+              </a>
+            
+              
+              <a class="source" href="jazz_event_helper.html">
+                jazz_event_helper.js
+              </a>
+            
+              
+              <a class="source" href="jazz_events.html">
+                jazz_events.js
+              </a>
+            
+              
+              <a class="source" href="jazz_hands.html">
+                jazz_hands.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui.html">
+                jazz_ui.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui_helper.html">
+                jazz_ui_helper.js
+              </a>
+            
+              
+              <a class="source" href="leap.min.html">
+                leap.min.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>jazz.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <pre><code>jshands.js 0.5 Alpha
+(c) 2013 Troy Daniel
+Jazz hands may be freely distributed under the MIT license.</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>(<span class="keyword">function</span>() {
+
+    <span class="keyword">var</span> Jazz = <span class="keyword">this</span>.Jazz = {};
+    Jazz.hands = <span class="keyword">new</span> JazzHands();
+    Jazz.ui = <span class="keyword">new</span> JazzUI();
+    Jazz.config = <span class="keyword">new</span> JazzConfig();
+    Jazz.events = <span class="keyword">new</span> JazzEvents();
+    Jazz.$ = <span class="keyword">this</span>.jQuery;
+    Jazz.VERSION = <span class="string">'0.5'</span>;
+
+    Jazz.init = <span class="keyword">function</span>(options, callback) {
+
+        Jazz.config.configureFromOptions(options);
+        Jazz.leapController = <span class="keyword">new</span> Leap.Controller({
+            enableGestures: <span class="literal">true</span>
+        });
+        Jazz.ui.createFingerCanvas();
+        Jazz.leapController.loop(<span class="keyword">function</span>(frame) {
+            Jazz.events.loop(frame);
+        });
+
+        <span class="keyword">if</span> (callback) callback();
+    };
+
+    Jazz.show = <span class="keyword">function</span>() {
+        Jazz.ui.show();
+    };
+    Jazz.hide = <span class="keyword">function</span>() {
+        Jazz.ui.showUI = <span class="literal">false</span>;
+    };
+    Jazz.clearFingersText = <span class="keyword">function</span>() {
+        Jazz.ui.clearFingersText();
+    };
+    Jazz.setFingersText = <span class="keyword">function</span>(hoverText) {
+        Jazz.ui.setFingersText(hoverText);
+    };
+    Jazz.on = <span class="keyword">function</span>(event, callback) {
+        Jazz.event[event] = callback;
+    };
+}).call(<span class="keyword">this</span>);</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

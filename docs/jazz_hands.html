@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>jazz_hands.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="documentation.html">
+                documentation.js
+              </a>
+            
+              
+              <a class="source" href="jazz.html">
+                jazz.js
+              </a>
+            
+              
+              <a class="source" href="jazz.min.html">
+                jazz.min.js
+              </a>
+            
+              
+              <a class="source" href="jazz_config.html">
+                jazz_config.js
+              </a>
+            
+              
+              <a class="source" href="jazz_event_helper.html">
+                jazz_event_helper.js
+              </a>
+            
+              
+              <a class="source" href="jazz_events.html">
+                jazz_events.js
+              </a>
+            
+              
+              <a class="source" href="jazz_hands.html">
+                jazz_hands.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui.html">
+                jazz_ui.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui_helper.html">
+                jazz_ui_helper.js
+              </a>
+            
+              
+              <a class="source" href="leap.min.html">
+                leap.min.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>jazz_hands.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">JazzHands</span><span class="params">()</span> {</span>
+
+    <span class="keyword">this</span>.getFingersMap = <span class="keyword">function</span>(key) {
+        <span class="keyword">if</span> (Jazz.lastFrame.pointablesMap) {
+            <span class="keyword">if</span> (key)
+                <span class="keyword">return</span> Jazz.lastFrame.pointablesMap[key];
+            <span class="keyword">else</span>
+                <span class="keyword">return</span> Jazz.lastFrame.pointablesMap;
+        }
+        <span class="keyword">return</span> <span class="literal">undefined</span>;
+    };
+    <span class="keyword">this</span>.getFinger = <span class="keyword">function</span>(key) {
+        <span class="keyword">return</span> <span class="keyword">this</span>.getFingersMap(key);
+    };
+    <span class="keyword">this</span>.getRadiusForFinger = <span class="keyword">function</span>(coords) {
+        <span class="keyword">return</span> Math.min(<span class="number">600</span> / Math.abs(coords[<span class="number">2</span>]), <span class="number">20</span>) * Jazz.CIRCLE_RADIUS;
+    };
+    <span class="keyword">this</span>.getYForCoords = <span class="keyword">function</span>(coords) {
+        <span class="keyword">return</span> (-coords[<span class="number">1</span>] - <span class="number">120</span>) - <span class="keyword">this</span>.getRadiusForFinger(coords) / <span class="number">2</span>;
+    };
+    <span class="keyword">this</span>.getXForCoords = <span class="keyword">function</span>(coords) {
+        <span class="keyword">return</span> parseInt((coords[<span class="number">0</span>] - <span class="number">900</span>) - <span class="keyword">this</span>.getRadiusForFinger(coords) / <span class="number">2</span>);
+    };
+    <span class="keyword">this</span>.getCapturedDigits = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> Jazz.frameDigitCount;
+    };
+    <span class="keyword">this</span>.isNewFingerCount = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> ((<span class="keyword">this</span>.getCapturedDigits() === <span class="number">0</span>) || Jazz.lastDigitsFound !== <span class="keyword">this</span>.getCapturedDigits());
+    };
+    <span class="keyword">this</span>.isHoldingFinger = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> (<span class="keyword">this</span>.getCapturedDigits() &gt; <span class="number">0</span> &amp;&amp; <span class="keyword">this</span>.isNewFingerCount() === <span class="literal">true</span>);
+    };
+    <span class="keyword">this</span>.isValidFinger = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> (<span class="keyword">this</span>.getCapturedDigits() &gt; <span class="number">0</span> &amp;&amp; <span class="keyword">this</span>.getCapturedDigits() &lt;= Jazz.LAST_VALID_FINGER);
+    };
+    <span class="keyword">this</span>.isHoldingValidFinger = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> (<span class="keyword">this</span>.isHoldingFinger() &amp;&amp; <span class="keyword">this</span>.isValidFinger()) === <span class="literal">true</span>;
+    };
+    <span class="keyword">this</span>.hasDetectedHand = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> Jazz.handsArray.length &gt; <span class="number">0</span>;
+    };
+    <span class="keyword">this</span>.isNewHandMotion = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> (Jazz.handNavigation !== Jazz.ui.getDetectedNav());
+    };
+    <span class="keyword">this</span>.getFirstFingerPos = <span class="keyword">function</span>() {
+        <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> <span class="keyword">this</span>.getFingersMap()) {
+            <span class="keyword">return</span> <span class="keyword">this</span>.getFingersMap(i).tipPosition;
+        }
+    };
+    <span class="keyword">this</span>.getHandPos = <span class="keyword">function</span>(indx) {
+        <span class="keyword">if</span> (Jazz.handsArray.length &lt;= <span class="number">0</span>)
+            <span class="keyword">return</span>;
+
+        <span class="keyword">if</span> (indx === <span class="number">0</span>)
+            <span class="keyword">return</span> <span class="keyword">this</span>.getXForCoords(Jazz.handsArray[<span class="number">0</span>].palmPosition);
+        <span class="keyword">else</span>
+            <span class="keyword">return</span> <span class="keyword">this</span>.getYForCoords(Jazz.handsArray[<span class="number">0</span>].palmPosition);
+    };
+    <span class="keyword">this</span>.getHandPosX = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.getHandPos(<span class="number">0</span>);
+    };
+    <span class="keyword">this</span>.getHandPosY = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.getHandPos(<span class="number">1</span>);
+    };
+    <span class="keyword">this</span>.palm = <span class="keyword">function</span>(palmPosition) {
+        <span class="keyword">if</span> (Jazz.handsArray.length === <span class="number">0</span>) <span class="keyword">return</span>;
+        <span class="keyword">var</span> hand = Jazz.handsArray[<span class="number">0</span>];
+        <span class="keyword">if</span> (palmPosition === <span class="string">"horizontal"</span>)
+            <span class="keyword">return</span> hand.palmPosition[<span class="number">0</span>];
+        <span class="keyword">else</span> <span class="keyword">if</span> (palmPosition === <span class="string">"vertical"</span>)
+            <span class="keyword">return</span> hand.palmPosition[<span class="number">1</span>];
+        <span class="keyword">else</span> <span class="keyword">if</span> (palmPosition === <span class="string">"depth"</span>)
+            <span class="keyword">return</span> hand.palmPosition[<span class="number">2</span>];
+    };
+    <span class="keyword">this</span>.isNewHand = <span class="keyword">function</span>() {
+        <span class="keyword">return</span> Jazz.lastHandId == Jazz.handsArray[<span class="number">0</span>].id;
+    };
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

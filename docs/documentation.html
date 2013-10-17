@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>documentation.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="documentation.html">
+                documentation.js
+              </a>
+            
+              
+              <a class="source" href="jazz.html">
+                jazz.js
+              </a>
+            
+              
+              <a class="source" href="jazz.min.html">
+                jazz.min.js
+              </a>
+            
+              
+              <a class="source" href="jazz_config.html">
+                jazz_config.js
+              </a>
+            
+              
+              <a class="source" href="jazz_event_helper.html">
+                jazz_event_helper.js
+              </a>
+            
+              
+              <a class="source" href="jazz_events.html">
+                jazz_events.js
+              </a>
+            
+              
+              <a class="source" href="jazz_hands.html">
+                jazz_hands.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui.html">
+                jazz_ui.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui_helper.html">
+                jazz_ui_helper.js
+              </a>
+            
+              
+              <a class="source" href="leap.min.html">
+                leap.min.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>documentation.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>$(<span class="keyword">function</span>() {
+
+	impress().init();
+
+    <span class="keyword">var</span> navigationMap = {
+        start: {
+            down: <span class="string">"first-home"</span>,
+            zoomIn: <span class="string">"first-home"</span>,
+            zoomOut: <span class="string">"start"</span>
+        },
+        <span class="string">"first-home"</span>: {
+            left: <span class="string">"third-home"</span>,
+            right: <span class="string">"second-home"</span>,
+            down: <span class="string">"first-1"</span>,
+            zoomIn: <span class="string">"first-1"</span>,
+            zoomOut: <span class="string">"start"</span>,
+            up: <span class="string">"start"</span>
+        },
+        <span class="string">"first-1"</span>: {
+            up: <span class="string">"first-home"</span>,
+            left: <span class="string">"first-home"</span>,
+            right: <span class="string">"first-2"</span>,
+            zoomOut: <span class="string">"first-home"</span>
+        },
+        <span class="string">"first-2"</span>: {
+            up: <span class="string">"first-home"</span>,
+            left: <span class="string">"first-1"</span>,
+            down: <span class="string">"first-2"</span>,
+            right: <span class="string">"first-3"</span>,
+            zoomOut: <span class="string">"first-home"</span>
+        },
+        <span class="string">"first-3"</span>: {
+            up: <span class="string">"first-home"</span>,
+            left: <span class="string">"first-2"</span>,
+            zoomOut: <span class="string">"first-home"</span>,
+            right: <span class="string">"first-home"</span>
+        },
+        <span class="string">"second-home"</span>: {
+            left: <span class="string">"first-home"</span>,
+            down: <span class="string">"second-1"</span>,
+            zoomIn: <span class="string">"second-1"</span>,
+            right: <span class="string">"third-home"</span>,
+            zoomOut: <span class="string">"start"</span>,
+            up: <span class="string">"start"</span>
+        },
+        <span class="string">"second-1"</span>: {
+            up: <span class="string">"second-home"</span>,
+            left: <span class="string">"second-home"</span>,
+            right: <span class="string">"second-2"</span>,
+            zoomOut: <span class="string">"second-home"</span>
+        },
+        <span class="string">"second-2"</span>: {
+            up: <span class="string">"second-home"</span>,
+            left: <span class="string">"second-1"</span>,
+            right: <span class="string">"second-3"</span>,
+            zoomOut: <span class="string">"second-home"</span>
+        },
+        <span class="string">"second-3"</span>: {
+            up: <span class="string">"second-home"</span>,
+            left: <span class="string">"second-2"</span>,
+            right: <span class="string">"second-4"</span>,
+            down: <span class="string">"second-3"</span>,
+            zoomOut: <span class="string">"second-home"</span>,
+            right: <span class="string">"second-home"</span>
+        },
+        <span class="string">"third-home"</span>: {
+            left: <span class="string">"second-home"</span>,
+            down: <span class="string">"third-1"</span>,
+            zoomIn: <span class="string">"third-1"</span>,
+            zoomOut: <span class="string">"start"</span>,
+            up: <span class="string">"start"</span>,
+            right: <span class="string">"first-home"</span>
+        },
+        <span class="string">"third-1"</span>: {
+            up: <span class="string">"third-home"</span>,
+            left: <span class="string">"third-home"</span>,
+            right: <span class="string">"third-2"</span>,
+            zoomOut: <span class="string">"third-home"</span>
+        },
+        <span class="string">"third-2"</span>: {
+            up: <span class="string">"third-home"</span>,
+            left: <span class="string">"third-1"</span>,
+            right: <span class="string">"third-3"</span>,
+            down: <span class="string">"third-2"</span>,
+            zoomOut: <span class="string">"third-home"</span>
+        },
+        <span class="string">"third-3"</span>: {
+            up: <span class="string">"third-home"</span>,
+            left: <span class="string">"third-2"</span>,
+            zoomOut: <span class="string">"third-home"</span>,
+            up: <span class="string">"third-home"</span>,
+            right: <span class="string">"third-home"</span>
+        }
+    };
+
+	Jazz.init({
+		disableZoom: <span class="literal">true</span>,
+		disableFingers: <span class="literal">true</span>,
+		waitTimer: <span class="number">450</span>
+	});
+
+	Jazz.on(<span class="string">"gestures"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(g)</span> {</span>
+
+		<span class="keyword">if</span> (g.type === <span class="string">"swipe"</span>) 
+			<span class="keyword">return</span>;
+
+		$(<span class="string">"#gesture-debug"</span>).html(<span class="string">"&lt;B&gt;&amp;gt;&lt;/B&gt; "</span>+g.type);
+		<span class="keyword">var</span> $img = $(<span class="string">"#gesture-image"</span>);
+		<span class="keyword">if</span> (g.type === <span class="string">"swipe"</span>) 
+			$img.attr(<span class="string">"src"</span>,<span class="string">"tutorial_images/swipe_gesture.png"</span>);
+		<span class="keyword">if</span> (g.type === <span class="string">"keyTap"</span>) 
+			$img.attr(<span class="string">"src"</span>,<span class="string">"tutorial_images/tap_gesture.png"</span>);
+		<span class="keyword">if</span> (g.type === <span class="string">"circle"</span>) 
+			$img.attr(<span class="string">"src"</span>,<span class="string">"tutorial_images/circle_gesture.png"</span>);
+		<span class="keyword">if</span> (g.type === <span class="string">"screenTap"</span>) 
+			$img.attr(<span class="string">"src"</span>,<span class="string">"tutorial_images/screen_tap_gesture.png"</span>);
+
+	});
+
+	Jazz.on(<span class="string">"grab"</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+		$(<span class="string">"#grab-release-debug"</span>).html(<span class="string">"&lt;B&gt;&amp;gt;&lt;/B&gt; Grabbing"</span>);
+		$(<span class="string">"#grab-release-image"</span>).attr(<span class="string">"src"</span>,<span class="string">"tutorial_images/closed_hand.png"</span>);
+	});
+	Jazz.on(<span class="string">"release"</span>, <span class="function"><span class="keyword">function</span> <span class="params">()</span> {</span>
+		$(<span class="string">"#grab-release-debug"</span>).html(<span class="string">"&lt;B&gt;&amp;gt;&lt;/B&gt; Release"</span>);
+		$(<span class="string">"#grab-release-image"</span>).attr(<span class="string">"src"</span>,<span class="string">"tutorial_images/open_hand.png"</span>);
+	});
+    Jazz.on(<span class="string">"progress"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(progress)</span> {</span>
+        $(<span class="string">"#progress-debug"</span>).html(<span class="string">"&lt;B&gt;&amp;gt;&lt;/B&gt; up = "</span>+progress[<span class="string">"up"</span>]+    <span class="string">"%, down = "</span>+progress[<span class="string">"down"</span>]+<span class="string">"%, right = "</span>+progress[<span class="string">"right"</span>]+<span class="string">"%, left = "</span>+progress[<span class="string">"left"</span>]+<span class="string">"%"</span>);
+        $(<span class="string">".axis-hand"</span>).hide();
+        <span class="keyword">if</span> (progress[<span class="string">"up"</span>]&gt;<span class="number">70</span>)
+        	$(<span class="string">"#y-axis-hand"</span>).show();
+        <span class="keyword">else</span> <span class="keyword">if</span> (progress[<span class="string">"right"</span>]&gt;<span class="number">70</span>)
+        	$(<span class="string">"#x-axis-hand"</span>).show();
+        <span class="keyword">else</span> <span class="keyword">if</span> (progress[<span class="string">"zoomOut"</span>]&gt;<span class="number">70</span>)
+        	$(<span class="string">"#z-axis-hand"</span>).show();
+        
+        <span class="keyword">if</span> (Jazz.isGrabbing === <span class="literal">true</span>) {
+	        <span class="keyword">var</span> $plane = $(<span class="string">"#paper-plane"</span>);
+	        <span class="keyword">var</span> leftpx = <span class="number">60</span> + (progress[<span class="string">"right"</span>] *<span class="number">4</span>);
+	        <span class="keyword">var</span> toppx = -<span class="number">20</span> + (progress[<span class="string">"down"</span>] * <span class="number">4</span>);
+	        <span class="keyword">var</span> widthpx = <span class="number">220</span> + (progress[<span class="string">"zoomOut"</span>] * <span class="number">3</span>);
+	        $plane.css(<span class="string">"left"</span>,leftpx+<span class="string">"px"</span>);
+	        $plane.css(<span class="string">"top"</span>,toppx+<span class="string">"px"</span>);
+	        $plane.width(widthpx);
+        }
+
+    });            
+    Jazz.on(<span class="string">"frames"</span>, <span class="function"><span class="keyword">function</span> <span class="params">(f)</span> {</span>
+		<span class="keyword">if</span> (window.captureFrames === <span class="literal">true</span>) {
+			$(<span class="string">"#frame-debug"</span>).html(<span class="string">"&lt;B&gt;&amp;gt;&lt;/B&gt; frame rate="</span>+parseInt(f.currentFrameRate)+<span class="string">", hands="</span> +f.hands.length+<span class="string">", fingers="</span>+f.fingers.length);
+			$(<span class="string">"#finger-count-image"</span>).attr(<span class="string">"src"</span>,<span class="string">"tutorial_images/"</span>+f.fingers.length+<span class="string">"_finger.png"</span>);
+		}
+    });
+	Jazz.on(<span class="string">"navigation"</span>, <span class="keyword">function</span>(nav) {
+		<span class="keyword">var</span> activeId = $(<span class="string">".active"</span>).attr(<span class="string">"id"</span>);
+		$(<span class="string">"#navigation-debug"</span>).html(<span class="string">"&lt;B&gt;&amp;gt;&lt;/B&gt; "</span>+nav);
+		<span class="keyword">if</span> (navigationMap[activeId]) {
+			go(navigationMap[activeId][nav])
+			onTarget(navigationMap[activeId][nav]);
+		}
+	});
+
+	Jazz.on(<span class="string">"fingers"</span>, <span class="keyword">function</span>(f) {
+		<span class="keyword">var</span> activeId = $(<span class="string">".active"</span>).attr(<span class="string">"id"</span>);
+		$(<span class="string">"#finger-debug"</span>).html(<span class="string">"&lt;B&gt;&amp;gt;&lt;/B&gt; "</span>+f);
+		<span class="keyword">if</span> (Jazz.disableFingers === <span class="literal">false</span> &amp;&amp; f === <span class="number">1</span> &amp;&amp; navigationMap[activeId]) {
+			<span class="keyword">if</span> (<span class="keyword">typeof</span>(navigationMap[activeId][<span class="string">"zoomOut"</span>]) !== <span class="literal">undefined</span>)
+				go(navigationMap[activeId][<span class="string">"zoomOut"</span>]);
+		}
+
+		<span class="keyword">if</span> (Jazz.disableFingers === <span class="literal">false</span> &amp;&amp; f === <span class="number">2</span> &amp;&amp; navigationMap[activeId]) {
+			go(navigationMap[activeId][<span class="string">"zoomIn"</span>]);
+			Jazz.disableFingers=<span class="literal">true</span>;
+			Jazz.clearFingersText();
+		}
+
+
+	});
+
+	$(document).keypress(<span class="keyword">function</span>(e) { 
+	    <span class="keyword">if</span> (e.which == <span class="number">49</span>) { 
+	    	window.location.href=<span class="string">"#first-home"</span>;
+	    }
+	    <span class="keyword">if</span> (e.which == <span class="number">50</span>) {
+	    	window.location.href=<span class="string">"#second-home"</span>;
+	    }
+	    <span class="keyword">if</span> (e.which == <span class="number">51</span>) {
+	    	window.location.href=<span class="string">"#second-home"</span>;
+	    }
+	    <span class="keyword">if</span> (e.which == <span class="number">32</span> ) {
+	    	<span class="keyword">var</span> isMainTopic = ($(<span class="string">".active"</span>).attr(<span class="string">"id"</span>).indexOf(<span class="string">"home"</span>) &gt;= <span class="number">0</span> || $(<span class="string">".active"</span>).attr(<span class="string">"id"</span>).indexOf(<span class="string">"main"</span>) &gt;= <span class="number">0</span>);
+	    	<span class="keyword">var</span> currentTopic = $(<span class="string">".active"</span>).attr(<span class="string">"id"</span>).substring(<span class="number">0</span>,$(<span class="string">".active"</span>).attr(<span class="string">"id"</span>).indexOf(<span class="string">"-"</span>));
+	    	
+	    	<span class="keyword">if</span> (isMainTopic === <span class="literal">true</span>)
+	    		window.location.href=<span class="string">"#start"</span>; 
+	    	<span class="keyword">else</span>
+	    		window.location.href=<span class="string">"#"</span>+currentTopic+<span class="string">"-home"</span>;
+	 	}  <span class="comment">// esc   (does not work)</span>
+	});
+
+	<span class="function"><span class="keyword">function</span> <span class="title">go</span><span class="params">(href)</span> {</span>
+		<span class="keyword">if</span> (href+<span class="string">""</span> != <span class="string">"undefined"</span>)
+			window.location.href=<span class="string">"#"</span>+href;
+	}
+
+	<span class="function"><span class="keyword">function</span> <span class="title">onTarget</span><span class="params">(href)</span> {</span>
+		window.captureFrames = <span class="literal">false</span>;
+		<span class="keyword">if</span> (href === <span class="string">"third-2"</span>) {
+			window.captureFrames = <span class="literal">true</span>;
+		} <span class="keyword">else</span> <span class="keyword">if</span> (href === <span class="string">"second-3"</span>) {			
+			Jazz.disableHelper=<span class="literal">true</span>;
+		}
+		<span class="keyword">else</span> {
+			Jazz.clearFingersText();
+			Jazz.disableHelper = <span class="literal">false</span>;
+		}
+	}
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

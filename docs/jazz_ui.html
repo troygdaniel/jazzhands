@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>jazz_ui.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="documentation.html">
+                documentation.js
+              </a>
+            
+              
+              <a class="source" href="jazz.html">
+                jazz.js
+              </a>
+            
+              
+              <a class="source" href="jazz.min.html">
+                jazz.min.js
+              </a>
+            
+              
+              <a class="source" href="jazz_config.html">
+                jazz_config.js
+              </a>
+            
+              
+              <a class="source" href="jazz_event_helper.html">
+                jazz_event_helper.js
+              </a>
+            
+              
+              <a class="source" href="jazz_events.html">
+                jazz_events.js
+              </a>
+            
+              
+              <a class="source" href="jazz_hands.html">
+                jazz_hands.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui.html">
+                jazz_ui.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui_helper.html">
+                jazz_ui_helper.js
+              </a>
+            
+              
+              <a class="source" href="leap.min.html">
+                leap.min.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>jazz_ui.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">JazzUI</span><span class="params">()</span> {</span>
+
+    <span class="keyword">var</span> helper = <span class="keyword">new</span> JazzUIHelper();
+    <span class="keyword">var</span> hands = Jazz.hands;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Create the canvas for rendering fingers and timers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">this</span>.createFingerCanvas = <span class="keyword">function</span>() {
+        Jazz.canvas = <span class="keyword">this</span>.appendCanvasToDOM();
+
+        helper.evalCtx(<span class="keyword">function</span>(ctx) {
+            ctx.translate(Jazz.canvas.width * <span class="number">1.2</span>, Jazz.canvas.height);
+            ctx.globalAlpha = Jazz.opacity;
+        });
+    };
+    <span class="keyword">this</span>.show = <span class="keyword">function</span>() {
+        Jazz.showUI = <span class="literal">true</span>;
+    };
+    <span class="keyword">this</span>.hide = <span class="keyword">function</span>() {
+        Jazz.showUI = <span class="literal">false</span>;
+    };
+    <span class="keyword">this</span>.clearFingersText = <span class="keyword">function</span>() {
+        Jazz.fingersText = [];
+        Jazz.disableFingers = <span class="literal">false</span>;
+        Jazz.LAST_VALID_FINGER = <span class="number">1</span>;
+    };
+    <span class="keyword">this</span>.showCanvas = <span class="keyword">function</span>() {
+        <span class="keyword">if</span> (Jazz.showUI === <span class="literal">true</span>) {
+            document.getElementById(<span class="string">"jazz-fingers"</span>).style.display = <span class="string">'block'</span>;
+            document.getElementById(<span class="string">"jazz-fingers-shadow"</span>).style.display = <span class="string">'block'</span>;
+        }
+    };
+    <span class="keyword">this</span>.hideCanvas = <span class="keyword">function</span>() {
+        document.getElementById(<span class="string">"jazz-fingers"</span>).style.display = <span class="string">'none'</span>;
+        document.getElementById(<span class="string">"jazz-fingers-shadow"</span>).style.display = <span class="string">'none'</span>;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Update the canvas with the fingers and timer circles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">this</span>.updateCanvas = <span class="keyword">function</span>() {
+
+        <span class="keyword">this</span>.clearCanvas();
+        <span class="keyword">var</span> fIndex = <span class="number">0</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Build a grid for the jazz-hands canvas
+render circles based on pointable positions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> hands.getFingersMap()) {
+
+            <span class="keyword">var</span> isLastFinger = (++fIndex === Jazz.lastFrame.fingers.length);
+            <span class="keyword">var</span> canDrawFingerText = (Jazz.timerPercentage &gt; <span class="number">10</span> &amp;&amp; isLastFinger);
+            <span class="keyword">var</span> circleCoords = hands.getFinger(i).tipPosition;
+
+            <span class="keyword">if</span> (Jazz.simpleMode === <span class="literal">true</span> &amp;&amp; Jazz.handsArray.length &gt; <span class="number">0</span>) {
+                circleCoords = Jazz.handsArray[<span class="number">0</span>].palmPosition;
+            }
+
+            helper.drawCircle(circleCoords);
+
+            <span class="keyword">if</span> (Jazz.disableHelper === <span class="literal">false</span>) {
+                helper.drawHelperArrows();
+            }
+
+            <span class="keyword">if</span> (Jazz.disableTimer === <span class="literal">false</span>)
+                helper.drawTimerArc(circleCoords, Jazz.timerPercentage);
+
+            <span class="keyword">if</span> (canDrawFingerText &amp;&amp; Jazz.disableFingers === <span class="literal">false</span>)
+                helper.drawFingerText();
+
+            <span class="keyword">if</span> (Jazz.simpleMode === <span class="literal">true</span>)
+                <span class="keyword">return</span>;
+        }
+
+    };
+    <span class="keyword">this</span>.setFingersText = <span class="keyword">function</span>(hoverText) {
+        <span class="keyword">if</span> (hoverText) {
+            Jazz.fingersText = hoverText;
+            Jazz.disableFingers = <span class="literal">false</span>;
+            Jazz.LAST_VALID_FINGER = hoverText.length + <span class="number">1</span>;
+        } <span class="keyword">else</span> {
+            Jazz.clearFingersText();
+        }
+    };
+    <span class="keyword">this</span>.clearCanvas = <span class="keyword">function</span>() {
+        <span class="keyword">var</span> canvas = Jazz.canvas;
+        helper.evalCtx(<span class="keyword">function</span>(ctx) {
+            ctx.clearRect(-canvas.width * <span class="number">1.2</span>, -canvas.height, canvas.width * <span class="number">1.2</span>, canvas.height);
+        });
+    };
+    <span class="keyword">this</span>.appendCanvasToDOM = <span class="keyword">function</span>() {
+        <span class="keyword">var</span> canvas = helper.createBaseCanvas(<span class="literal">false</span>, <span class="string">"jazz-fingers"</span>);
+        <span class="keyword">var</span> blurredCanvas = helper.createBaseCanvas(<span class="literal">true</span>, <span class="string">"jazz-fingers-shadow"</span>);
+        Jazz.blurredCanvas = blurredCanvas;
+        document.body.appendChild(blurredCanvas);
+        document.body.appendChild(canvas);
+
+        <span class="keyword">return</span> canvas;
+    };
+    <span class="keyword">this</span>.getTimerPercentage = <span class="keyword">function</span>() {
+        Jazz.timerPercentage = parseInt((Jazz.incr / Jazz.WAIT_FINGER_MS) * <span class="number">100</span>);
+        <span class="keyword">return</span> Jazz.timerPercentage;
+    };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p> Determine hand position and capture timed navigation event</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">this</span>.getDetectedNav = <span class="keyword">function</span>() {
+        <span class="keyword">var</span> detectedNav = <span class="literal">false</span>;
+
+        <span class="keyword">if</span> (helper.canDrawHandLeft())
+            detectedNav = <span class="string">"left"</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (helper.canDrawHandRight())
+            detectedNav = <span class="string">"right"</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (helper.canDrawHandUp())
+            detectedNav = <span class="string">"up"</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (helper.canDrawHandDown())
+            detectedNav = <span class="string">"down"</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (helper.canDrawZoomIn())
+            detectedNav = <span class="string">"zoomIn"</span>;
+        <span class="keyword">else</span> <span class="keyword">if</span> (helper.canDrawZoomOut())
+            detectedNav = <span class="string">"zoomOut"</span>;
+
+        <span class="keyword">return</span> detectedNav;
+    };
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

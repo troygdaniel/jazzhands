@@ -1,4 +1,44 @@
 $(function() {
+    window.showTheme = function (themeName) {
+        $(".space-theme").hide();
+        $(".sunrise-theme").hide();
+        $("."+themeName).show();
+
+        if (themeName === "sunrise-theme") {
+            $(".pres-1-title").css("color","white");
+            $(".pres-shortDesc").css("color","white");
+
+            $(".pres-title").css("color","white");
+            $(".pres-2-title").css("color","white");
+            $(".pres-3-title").css("color","white");
+        }
+        else if (themeName === "space-theme") {
+            $(".pres-1-title").css("color","white");
+            $(".pres-title").css("color","white");
+            $(".pres-shortDesc").css("color","white");
+            $(".pres-longDesc").css("color","white");
+
+            $(".pres-1-shortDesc").css("color","white");
+            $(".pres-1-longDesc").css("color","white");
+
+            $(".pres-2-title").css("color","white");
+            $(".pres-2-shortDesc").css("color","white");
+            $(".pres-2-longDesc").css("color","#A4A4A4");
+        }
+        else {
+            $(".pres-1-title").css("color","black");
+            $(".pres-title").css("color","black");
+            $(".pres-shortDesc").css("color","black");
+            $(".pres-longDesc").css("color","black");
+
+            $(".pres-1-shortDesc").css("color","black");
+            $(".pres-1-longDesc").css("color","black");
+
+            $(".pres-2-title").css("color","black");
+            $(".pres-2-shortDesc").css("color","black");
+            $(".pres-2-longDesc").css("color","black");            
+        }
+    }
 
     window.presentation = {
         title: "Presentation name",
@@ -53,6 +93,10 @@ $(function() {
     };
 
     loadUI();
+    // Load space theme
+    window.showTheme("space-theme");
+    // window.showTheme("sunrise-theme");
+
     var store = new Lawnchair({name:'jazz'}, function(store) {
         var me = {key:'presentation',value:window.presentation};
         store.save(me);
@@ -90,8 +134,7 @@ $(function() {
         $(".pres-"+cssIndx+"-3-desc").html(p.topics[indx].subTopics[2].desc);        
     }
 
-    impress().init();
-
+    impress().init();    
     Jazz.init({
         disableZoom: true,
         disableFingers: true,
@@ -135,5 +178,4 @@ $(function() {
     function onTarget(href) {
         window.captureFrames = false;
     }
-
 });

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>jazz_events.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="documentation.html">
+                documentation.js
+              </a>
+            
+              
+              <a class="source" href="jazz.html">
+                jazz.js
+              </a>
+            
+              
+              <a class="source" href="jazz.min.html">
+                jazz.min.js
+              </a>
+            
+              
+              <a class="source" href="jazz_config.html">
+                jazz_config.js
+              </a>
+            
+              
+              <a class="source" href="jazz_event_helper.html">
+                jazz_event_helper.js
+              </a>
+            
+              
+              <a class="source" href="jazz_events.html">
+                jazz_events.js
+              </a>
+            
+              
+              <a class="source" href="jazz_hands.html">
+                jazz_hands.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui.html">
+                jazz_ui.js
+              </a>
+            
+              
+              <a class="source" href="jazz_ui_helper.html">
+                jazz_ui_helper.js
+              </a>
+            
+              
+              <a class="source" href="leap.min.html">
+                leap.min.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>jazz_events.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="function"><span class="keyword">function</span> <span class="title">JazzEvents</span><span class="params">()</span> {</span>
+
+    <span class="keyword">var</span> ui = Jazz.ui;
+    <span class="keyword">var</span> hands = Jazz.hands;
+    <span class="keyword">var</span> helper = <span class="keyword">new</span> JazzEventHelper();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Jazz overrides the Leap event loop, and is internally referenced.
+This method is automatically initiated by Jazz.init()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="keyword">this</span>.loop = <span class="keyword">function</span>(frame) {
+
+        Jazz.lastFrame = frame;
+        Jazz.handsArray = frame.hands;
+
+        <span class="keyword">if</span> (Jazz.handsArray.length &gt; <span class="number">0</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>TODO: move show/hide canvas to UI</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            ui.showCanvas();
+        <span class="keyword">else</span> {
+            ui.hideCanvas();
+            Jazz.handNavigation = <span class="literal">null</span>;
+        }
+
+        Jazz.fingers = Jazz.frameDigitCount = frame.pointables.length;
+
+        ui.updateCanvas();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>DYNAMICALLY SWITCH from simple mode
+are we holding up more than last_valid fingers?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="keyword">if</span> (Jazz.frameDigitCount &gt;= Jazz.LAST_VALID_FINGER) {
+            Jazz.simpleMode = <span class="literal">true</span>;
+        } <span class="keyword">else</span> {
+            Jazz.simpleMode = <span class="literal">false</span>;
+            <span class="keyword">if</span> (Jazz.disableFingers === <span class="literal">false</span>) helper.handleFingers();
+        }
+
+        <span class="keyword">if</span> (Jazz.isGrabbing === <span class="literal">false</span> &amp;&amp; hands.isHoldingValidFinger() === <span class="literal">false</span>)
+            helper.handleNavigation();
+        helper.handleGestureEvents();
+        helper.handleGrabRelease();
+        helper.handleProgressNav();
+
+        Jazz.event.frames(Jazz.lastFrame);
+    };
+    <span class="keyword">this</span>.getFingersMap = <span class="keyword">function</span>(key) {
+        <span class="keyword">if</span> (Jazz.lastFrame.pointablesMap) {
+            <span class="keyword">if</span> (key)
+                <span class="keyword">return</span> Jazz.lastFrame.pointablesMap[key];
+            <span class="keyword">else</span>
+                <span class="keyword">return</span> Jazz.lastFrame.pointablesMap;
+        }
+        <span class="keyword">return</span> <span class="literal">undefined</span>;
+    };
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -4,12 +4,11 @@ function JazzEvents() {
     var hands = Jazz.hands;
     var helper = new JazzEventHelper();
 
-    /** 
-     * this.loop()
-     *
-     * Jazz overrides the Leap event loop, and is internally referenced.
-     * This method is automatically initiated by Jazz.init()
-     */
+
+
+    // Jazz overrides the Leap event loop, and is internally referenced.
+    // This method is automatically initiated by Jazz.init()
+
     this.loop = function(frame) {
 
         Jazz.lastFrame = frame;

@@ -29,6 +29,9 @@ time, mark, audio, video {
     vertical-align: baseline;
 }
 
+.space-theme { display: none;}
+.sunrise-theme { display: none;}
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
@@ -61,7 +64,7 @@ table {
     And yes, there is a lot of repetition there because of -prefixes but we don't
     want to leave anybody behind.
 */
-body {background:url(bg.png) repeat-x #FFFFFF; }
+body {background:url(../images/bg.png) font-color:white;}
 
 /*
     Now let's bring some text styles back ...
