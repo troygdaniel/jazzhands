@@ -82,7 +82,7 @@ function JazzConfig() {
         else if (direction === "zoomOut")
             return 120;
         else if (direction === "up")
-            return 225;
+            return 170; //225;
         else if (direction === "down")
             return 90;
         else if (direction === "left")

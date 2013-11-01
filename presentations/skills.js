@@ -62,7 +62,7 @@ $(function() {
             longDesc: "At TD, I introduced AJAX and JavaScript to a back-office application.  At D+H, I worked on an R&D team and gained usability/ux experience.  At YesMail, I continued along the R&D path and developed front-end JavaScript PoC's that consumed RESTful services.",
             subTopics: [{
                 title: "TD Canada Trust",
-                desc: "Lead and introduced Gof4 design patterns, advanced JavaScript options (XMLHttpRequest) to integrate the new J2EE app and existing legacy systems."
+                desc: "Lead and introduced advanced JavaScript options (XMLHttpRequest) to integrate the new J2EE app and existing legacy systems."
             }, {
                 title: "Davis+Henderson",
                 desc: "The CTO handpicked 5 individuals to work on an R&D team. Lead multiple teams in implementing business-rules engine service. Introduced usability best-practices to address to defend their dominance in marketplace."
@@ -82,7 +82,7 @@ $(function() {
                 desc: "Built 'FamilyFinder' was later purchased and implemented as Rogers Phone Finder.  Mobile web development using Rails, HTML and JavaScript. Deployed solutions onto Heroku and Amazon EC2."
             }, {
                 title: "Mosaic",
-                desc: "While at Mosaic, I had the opportunity to serve as a Scrum Master of 20+ during a critical launch period. Led and implemented best-practices of SCRUM, by splitting the teams and implementing basic Scrum ceremonies."
+                desc: "While at Mosaic, I had the opportunity to serve as a Scrum Master of 20+ during a critical launch period. Lead and implemented best-practices of Scrum, by splitting the teams and implementing basic Scrum ceremonies."
             }]
         }, ]
     };

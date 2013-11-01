@@ -88,7 +88,7 @@ function JazzUIHelper() {
     };
     this.drawHelperArrows = function() {
         this.evalCtx(function(ctx) {
-            ctx.drawImage(Jazz.upHelperArrow, hands.getHandPosX() - 17, -390);
+            ctx.drawImage(Jazz.upHelperArrow, hands.getHandPosX() - 17, -340); // 390
             ctx.drawImage(Jazz.rightHelperArrow, -820, hands.getHandPosY() - 15);
             ctx.drawImage(Jazz.leftHelperArrow, -1030, hands.getHandPosY() - 15);
             ctx.drawImage(Jazz.downHelperArrow, hands.getHandPosX() - 17, -215);
